@@ -1,0 +1,42 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- if settings.html_before_footer != blank -%}
+  <div class="basel-prefooter">
+    <div class="container">
+      {{settings.html_before_footer}}
+    </div>
+  </div>
+{%- endif -%}
+<footer class="footer-container color-scheme-{{settings.footer_color_scheme}}">
+   {%- section 'gl_footer' -%}
+   {%- if settings.copyrights_text != blank -%}
+      <div class="copyrights-wrapper copyrights-{{settings.copyrights_layout}}">
+        <div class="container">
+          <div class="min-footer">
+
+              <div class="col-left">
+                {%- include 'gl-region' -%}
+                {%- if settings.copyrights_text contains 'social_buttons_share' -%}
+                  {%- include 'social-sharing', gl_design:'icons-design-default', gl_size:'icons-size-default' -%}
+                {%- elsif settings.copyrights_text contains 'social_buttons_follow' -%}
+                  {%- include 'social-sharing', gl_design:'icons-design-default', gl_size:'icons-size-default', follow_social:true -%}
+                {%- else -%}
+                  {% comment %}ly_new_settings_replace_for_[ settings.copyrights_text ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13490088"] %}{% assign ly_translation = shop.metafields[namespace]["id13490088"] %}{% else %}{% assign ly_translation = settings.copyrights_text %}{% endif %}{{- ly_translation -}}{% comment %}ly_new_settings_replace_end{% endcomment %}
+                {%- endif -%}
+                </div>
+
+              {%- if settings.copyrights_next_text != blank -%}
+              <div class="col-right">
+                {%- if settings.copyrights_next_text contains 'social_buttons_share' -%}
+                  {%- include 'social-sharing', gl_design:'icons-design-default', gl_size:'icons-size-default' -%}
+                {%- elsif settings.copyrights_next_text contains 'social_buttons_follow' -%}
+                  {%- include 'social-sharing', gl_design:'icons-design-default', gl_size:'icons-size-default', follow_social:true -%}
+                {%- else -%}
+                  {{- settings.copyrights_next_text -}}
+                {%- endif -%}
+              </div>
+              {%- endif -%}
+          </div>
+        </div>
+      </div>
+   {%- endif -%}
+</footer>

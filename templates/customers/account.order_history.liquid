@@ -1,0 +1,126 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+ {%- assign title = 'customer.account.title' | t -%}
+
+{%- assign account_type = "consumer" -%}
+ {% for tag in customer.tags %}
+  {% if tag == "Business" %}
+    {%- assign account_type = "business" -%}
+    {% break %}
+  {% endif %}
+{% endfor %}
+<div class="main-page-wrapper account-wrapper">
+  {%- include 'page_heading', langify_title:title -%}
+  <!-- MAIN CONTENT AREA -->
+  <div class="container">
+    <div class="row">
+      <div class="site-content col-sm-12" role="main">
+        <article id="post-9" class="post-9 page type-page status-publish hentry">
+          <div class="entry-content">
+            <div class="shopify">
+              {% include 'account-nav' %}
+              <!-- .basel-my-account-sidebar -->
+              <div class="shopify-MyAccount-content">
+                <p class="page-title">{% comment %}ly_i18n_replace_for_[ 'customer.orders.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.orders.title' | t }}{% endcapture %}{% include 'ly-static-string' with '13491964' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                {%- if customer.orders.size != 0 -%}
+                  <div class="orders-wrapper">
+                    {%- paginate customer.orders by 15 -%}
+                    {%- for order in customer.orders -%}
+                      <div class="order-item">
+                        <div class="order-infos">
+                          <h3 class="order-title">Ordered on {{ order.created_at | date: "%m/%d/%Y" }} <span class="order_status"></span></h3>
+                          <div class="infos-wrapper">
+                            <div class="info-content">
+                              <div class="info-item">
+                                <label><ly-as-13491953>Purchase order</ly-as-13491953></label>
+                                <p>{{ order.order_number }}</p>
+                              </div>
+                              <div class="info-item">
+                                <label><ly-as-13491954>Shipped Via</ly-as-13491954></label>
+                                <p>
+                                {% for method in order.shipping_methods %}
+                                  {% comment %}ly_code_replace_for_[ method.title ]_begin{% endcomment %}{% include 'ly-title' with method %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</br>
+                                {% endfor %}
+                                </p>
+                              </div>
+                              <div class="info-item">
+                                <label><ly-as-13491955>Quantity</ly-as-13491955></label>
+                                {% assign quantity = 0 %}
+                                {% for item in order.line_items %}
+                                  {% assign quantity = quantity | plus: item.quantity %}
+                                {% endfor %}
+                                <p>{{ quantity }}</p>
+                              </div>
+                              <div class="info-item">
+                                <label><ly-as-13491956>Total</ly-as-13491956></label>
+                                <p>{{ order.total_price | money }}</p>
+                              </div>
+                              <div class="info-item last-item">
+                                <label><ly-as-13491957>Planned ship date</ly-as-13491957></label>
+                                <p>{{ order.name }}</p>
+                              </div>
+                              <div class="info-item last-item">
+                                <label><ly-as-13491958>Shipped to</ly-as-13491958></label>
+                                <p>{{ order.shipping_address | format_address }}</p>
+                              </div>
+                            </div><!--
+                            --><div class="buttons-wrapper">
+                              <a href="/track_url" class="btn cancel_edit"><ly-as-13491959>Cancel/Edit</ly-as-13491959></a>
+                              <a href="/track_url" class="btn track_order"><ly-as-13491960>Track</ly-as-13491960></a>
+                              <a href="/invoice_url" class="btn invoice"><ly-as-13491961>Invoice</ly-as-13491961></a>
+                              <a href="{{ order.customer_url }}" class="btn order_details"><ly-as-13491962>Order Details</ly-as-13491962></a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="order-products">
+                          <div class="responsive-table">
+                            <table class="gl_table_account shopify-orders-table shopify-MyAccount-orders shop_table shop_table_responsive my_account_orders account-orders-table">
+                              <tbody>
+                              {% for item in order.line_items %}
+                                <tr>
+                                  <td class="product-image">
+                                    <a href="{{ item.url }}">{{ item | img_url: '200x' | img_tag }}</a>
+                                    <span class="item-quantity">{{ item.quantity }}</span>
+                                  </td>
+                                  <td class="product-info">
+                                    <a href="{{ item.url }}"><h4 class="product-title">{% comment %}ly_code_replace_for_[ item.product.title ]_begin{% endcomment %}{% include 'ly-title' with item.product %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h4></a>
+                                    <p class="product-sku">{{ item.sku }}</p>
+                                    <p class="product-price">{{ item.original_price | money }}</p>
+                                    <a href="{{ item.url }}" class="cart-link"><ly-as-13491963>Add to cart</ly-as-13491963></a>
+                                  </td>
+                                </tr>
+                              {% endfor %}
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                   {% endfor %}
+                   {%- if paginate.pages > 1 -%}
+                      <div class="clear"></div>
+                      <div class="basel-pagination">{%- include 'pagination',blog_ajax:true -%}</div>
+                   {%- endif -%}
+                   {%- endpaginate -%}
+                  </div>
+                {%- else -%}
+                  <div class="shopify-message shopify-message--info shopify-Message shopify-Message--info shopify-info">
+                    {% comment %}ly_i18n_replace_for_[ 'customer.orders.none' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.orders.none' | t }}{% endcapture %}{% include 'ly-static-string' with '13491965' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}   
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div><!-- end container -->
+</div><!-- .main-page-wrapper -->
+
+
+{% comment %}ly_asset_replace_for_[ 'account-scripts.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'account-scripts.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+<style type="text/css">
+  .website-wrapper,
+  .main-page-wrapper {
+    background: #f3f3f3;
+  }
+</style>

@@ -1,0 +1,132 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+  <div class="custom-page-contact-form">
+  	<div class="custom-page-contact-form-text">
+  		{{ section.settings.text }}
+  		<a href="{{ section.settings.btn_url }}"><span>{{ section.settings.btn_text }}</span></a>
+  	</div>
+    <div class="custom-page-contact-form-wrapper">
+    	<form method="post" accept-charset="UTF-8" class="contact-form" novalidate="novalidate">
+        <div class="info-box"></div>
+    		<div class="custom-page-contact-form-group two-column-left">
+    			<label>{% comment %}ly_i18n_replace_for_[ 'contact.form.first_name' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.first_name' | t }}{% endcapture %}{% include 'ly-static-string' with '13487242' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}<span class="required"> *</span></label>
+    			<input type="text" name="first_name" size="40" aria-required="true" aria-invalid="false" required>
+					<div class="error-box"><ly-as-13487235>First Name is required</ly-as-13487235></div>
+    		</div>
+    		<div class="custom-page-contact-form-group two-column-right">
+    			<label>{% comment %}ly_i18n_replace_for_[ 'contact.form.last_name' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.last_name' | t }}{% endcapture %}{% include 'ly-static-string' with '13487243' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}<span class="required"> *</span></label>
+    			<input type="text" name="last_name" size="40" aria-required="true" aria-invalid="false" required>
+					<div class="error-box"><ly-as-13487236>Last Name is required</ly-as-13487236></div>
+    		</div>
+    		<div class="custom-page-contact-form-group one-column">
+    			<label>{% comment %}ly_i18n_replace_for_[ 'contact.form.email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.email' | t }}{% endcapture %}{% include 'ly-static-string' with '13487244' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}<span class="required"> *</span></label>
+    			<input type="email" name="email" size="40" aria-required="true" aria-invalid="false" required>
+					<div class="error-box"><ly-as-13487237>EMAIL is required</ly-as-13487237></div>
+    		</div>
+    		<div class="custom-page-contact-form-group two-column-left">
+    			<label>{% comment %}ly_i18n_replace_for_[ 'contact.form.company' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.company' | t }}{% endcapture %}{% include 'ly-static-string' with '13487245' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+    			<input type="text" name="company" value="" size="40"  aria-required="true" aria-invalid="false">
+    		</div>
+    		<div class="custom-page-contact-form-group two-column-right">
+    			<label>{% comment %}ly_i18n_replace_for_[ 'contact.form.project_title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.project_title' | t }}{% endcapture %}{% include 'ly-static-string' with '13487246' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+    			<input type="text" name="project_title" size="40" aria-required="true" aria-invalid="false">
+					<div class="error-box"><ly-as-13487238>Project Title is required</ly-as-13487238></div>
+    		</div>
+    		<div class="custom-page-contact-form-group">
+    			<label>{% comment %}ly_i18n_replace_for_[ 'contact.form.project_description' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.project_description' | t }}{% endcapture %}{% include 'ly-static-string' with '13487247' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}<span class="required"> *</span></label>
+    			<textarea name="body" cols="40" rows="10" aria-required="true" aria-invalid="false" required></textarea>
+					<div class="error-box"><ly-as-13487239>Project Description is required</ly-as-13487239></div>
+    		</div>
+    		<span class="required">* </span><span class="required-span"><ly-as-13487240>Required Field</ly-as-13487240></span><br>
+        <input type="hidden" name="site" value="{{settings.site}}">
+        {% include 'email-lang' %}
+        <input type="hidden" name="lang" value="{{lang}}">
+        <button type="submit" class="btn-submit"><ly-as-13487241>Submit</ly-as-13487241></button>
+    	</form>
+    </div>
+  </div>
+{% schema %}
+  {
+    "name": "Custom Solutions Form",
+    "class": "section-custom-solutions-form",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>For more information on developing your custom solutuon, contact our sales team, call us at 800-865-2112 or fill out the form below.</p>"
+      },
+      {
+      	"type": "text",
+      	"id": "btn_text",
+      	"label": "Button Text",
+      	"default": "View Sales Contacts"
+      },
+			{
+				"type": "url",
+				"id": "btn_url",
+				"label": "Button url"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Custom Solutions Form",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}
+
+
+<script>
+  function validateContactForm() {
+    var requiredFields = $('.contact-form [required]');
+    var validationError = false;
+    $('.contact-form .error-box').css('display', 'none');
+    requiredFields.each(function(key, item) {
+      var $parent = $(item).parent(),
+          $errorBox = $parent.find('.error-box');
+      if ($(item).val() == '') {
+        $errorBox.css('display', 'block');
+        validationError = true;
+      }
+    });
+    return validationError;
+  }
+
+  jQuery(document).ready(function () {
+    var url = '/apps/peerless/contact/custom-solutions';
+    $(".contact-form").submit(function (e) {
+      e.preventDefault();
+
+      var that            = $(this),
+          validationError = validateContactForm(),
+          data            = $(this).serialize();
+
+      if (validationError) {
+        return;
+      }
+      that.find('[type="submit"]').addClass('loading');
+
+      handleAjax(
+        url, 
+        data, 
+        "POST", 
+        function success (response) {
+          if (response.success) {
+            displaySuccess(response.message, '.contact-form');
+          } else {
+            displayErrors(response.message, '.contact-form');
+          }
+        }, 
+        function complete () {
+          that.find('[type="submit"]').removeClass('loading');
+        }, 
+        function error (error) {
+          displayErrors("Something went Wrong, please reload page and try again.", '.contact-form');
+        }
+      );
+    });
+  });
+</script>

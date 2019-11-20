@@ -1,0 +1,55 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="outdoor-enter-desc">
+  <div class="container">
+    <div class="row outdoor-enter-inner">
+      <div class="col-md-7 col-xs-12">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">
+          {{section.settings.desc}}
+        </div>
+        <a class="btn" href="{{ section.settings.url }}"><ly-as-13487296>Shop Ultraview™</ly-as-13487296></a>
+      </div>
+      <div class="col-md-5 col-xs-12 img-wrap">
+        <img src="{{ section.settings.img.src | img_url: '700x' }}">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Outdoor Enter Description",
+    "class": "section-outdoor-enter-desc",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "ULTRAVIEW™ UHD OUTDOOR TVs"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      },
+      {
+       "type": "url",
+       "id": "url",
+       "label": "Shop Ultraview™ link"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Outdoor Enter Description Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

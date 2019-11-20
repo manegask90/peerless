@@ -1,0 +1,85 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="xtreme-high-displays">
+  <div class="container">
+    <div class="row xtreme-high-displays-inner">
+      <div class="col-md-12 displays-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{ section.settings.desc }}</div>
+      </div>
+      <div class="col-md-12 displays-cards">
+        <div class="displays-cards-wrap">
+        {%- for block in section.blocks -%}
+          <div class="displays-card">
+            <div class="block-inner">
+            <div class="img-wrap">
+                <a href="{{block.settings.banner_url}}">
+                  <img src="{{block.settings.image  | img_url: '730x' }}" alt="Image" />
+                </a>
+                <div class="hover-block">
+                    <a href="{{block.settings.banner_url}}"><ly-as-13487641>Learn More</ly-as-13487641></a>
+                </div>
+            </div>
+            <div class="content-wrap">
+                <h5 class="app-title">{{block.settings.title}}</h5>
+            </div>
+            </div>
+          </div>
+        {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Xtreme High Displays",
+    "class": "section-xtreme-high-displays",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Xtreme™ High Bright Outdoor Displays"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "url",
+            "id": "banner_url",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Xtreme High Displays Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

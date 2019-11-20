@@ -1,0 +1,36 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="about-banner-wrapper select_region-banner-wrapper">
+	{% if section.settings.banner_background %}
+		<img src="{{ section.settings.banner_background | img_url: '2500x' }}" alt="Select Region Banner" />
+	{% endif %}
+	{% if section.settings.banner_title %}
+		<h2 class="select_region-title">{{ section.settings.banner_title }}</h2>
+	{% endif %}
+</div>
+
+{% schema %}
+	{
+      	"name": "Select Region Banner",
+      	"settings": [
+     		{
+       			"type": "header",
+           		"content": "Banner"
+         	},
+         	{
+	            "type": "image_picker",
+	            "id": "banner_background",
+	            "label": "Banner Background"
+         	},
+         	{
+	            "type": "text",
+	            "id": "banner_title",
+	            "label": "Banner Title"
+         	}
+        ],
+        "presets": [
+         	{
+            	"name": "Select Region Banner",
+            	"category": "Banner"
+         	}
+      	]
+    }
+{% endschema %}

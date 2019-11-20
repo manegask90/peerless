@@ -1,0 +1,7 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- if settings.use_wishlist and shop.customer_accounts_enabled and settings.display_wishlist_icon -%}
+{%- include 'nitro-wishlist' -%}
+<div class="wishlist-info-widget">
+<a href="{%- if customer -%}/pages/wishlist{%- else -%}/account/login{%- endif -%}"><ly-as-13490153>Wishlist</ly-as-13490153> <span class="gl_count_wishlist">{{ NITRO_WISHLIST_COUNT }}</span></a>
+</div>
+{%- endif -%}

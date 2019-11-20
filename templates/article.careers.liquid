@@ -1,0 +1,69 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="main-page-wrapper career-post">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <a href="/blogs/careers" class="back_url">&lt; <ly-as-13491150>Back</ly-as-13491150></a>
+                <div class="title-wrapper">
+                    <h1 class="title">{% comment %}ly_code_replace_for_[ article.title ]_begin{% endcomment %}{% include 'ly-title' with article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+                    <a href="javascript:void(0)" class="apply-btn"><ly-as-13491151>Apply Now</ly-as-13491151></a>
+                </div>
+                <div class="row top-block">
+                    <div class="col-sm-4 col-sm-offset-1 col-xs-12 col-xs-offset-0">
+                        <div class="block">
+                            <h3 class="block-title"><ly-as-13491152>Position Description</ly-as-13491152></h3>
+                            <div class="block-content">{% comment %}ly_code_replace_for_[ article.metafields.careers.position_description ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'careers' %}{% assign key = 'position_description' %}{% if article.metafields[ns][key] %}{% assign ly_translation = article.metafields[ns][key] %}{% else %}{% assign ly_translation =  article.metafields.careers.position_description  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-12">
+                        <div class="block">
+                            <h3 class="block-title"><ly-as-13491153>Qualifications</ly-as-13491153></h3>
+                            <div class="block-content">{% comment %}ly_code_replace_for_[ article.metafields.careers.qualifications ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'careers' %}{% assign key = 'qualifications' %}{% if article.metafields[ns][key] %}{% assign ly_translation = article.metafields[ns][key] %}{% else %}{% assign ly_translation =  article.metafields.careers.qualifications  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-xs-12">
+                        <div class="block">
+                            <h3 class="block-title"><ly-as-13491154>Skills/Abilities</ly-as-13491154></h3>
+                            <div class="block-content">{% comment %}ly_code_replace_for_[ article.metafields.careers.skills_abilities ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'careers' %}{% assign key = 'skills_abilities' %}{% if article.metafields[ns][key] %}{% assign ly_translation = article.metafields[ns][key] %}{% else %}{% assign ly_translation =  article.metafields.careers.skills_abilities  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="page_content">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3 col-xs-12 col-xs-offset-0">
+                    <div class="block">
+                        <h3 class="block-title"><ly-as-13491155>Essential Results</ly-as-13491155></h3>
+                        <div class="block-content">{% comment %}ly_code_replace_for_[ article.metafields.careers.essential_results ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'careers' %}{% assign key = 'essential_results' %}{% if article.metafields[ns][key] %}{% assign ly_translation = article.metafields[ns][key] %}{% else %}{% assign ly_translation =  article.metafields.careers.essential_results  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+                    <div class="career-bottom-area">
+                        <div class="company-overview">
+                            <h3 class="block-title"><ly-as-13491156>Company Overview</ly-as-13491156></h3>
+                            <div class="block-content">{% comment %}ly_code_replace_for_[ article.metafields.careers.company_overview ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'careers' %}{% assign key = 'company_overview' %}{% if article.metafields[ns][key] %}{% assign ly_translation = article.metafields[ns][key] %}{% else %}{% assign ly_translation =  article.metafields.careers.company_overview  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+                        </div>
+                        <div class="response-information">
+                            <h3 class="block-title"><ly-as-13491157>Response Information:</ly-as-13491157></h3>
+                            <div class="block-content">{% comment %}ly_code_replace_for_[ article.metafields.careers.response_information ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'careers' %}{% assign key = 'response_information' %}{% if article.metafields[ns][key] %}{% assign ly_translation = article.metafields[ns][key] %}{% else %}{% assign ly_translation =  article.metafields.careers.response_information  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0">
+                    <hr class="split-line">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-8 col-sm-offset-2 col-xs-12 col-xs-offset-0">
+                    <div class="contact-info">{% comment %}ly_code_replace_for_[ article.metafields.careers.manager ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'careers' %}{% assign key = 'manager' %}{% if article.metafields[ns][key] %}{% assign ly_translation = article.metafields[ns][key] %}{% else %}{% assign ly_translation =  article.metafields.careers.manager  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

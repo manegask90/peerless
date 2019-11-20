@@ -1,0 +1,99 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div id="displays" class="outdoor-enter-displays">
+  <div class="container">
+    <div class="row outdoor-enter-displays-inner">
+      <div class="col-md-12 displays-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{ section.settings.desc }}</div>
+      </div>
+      <div class="col-md-12 displays-cards">
+        <div class="displays-cards-wrap">
+        {%- for block in section.blocks -%}
+            <div class="displays-card">
+                <div class="block-inner">
+                <div class="img-wrap">
+                  <a href="{{block.settings.banner_url}}">
+                    <img src="{{block.settings.image  | img_url: '730x' }}" alt="Image" />
+                  </a>
+                    <div class="hover-block">
+                        <a href="{{block.settings.banner_url}}"><ly-as-13487312>Learn More</ly-as-13487312></a>
+                    </div>
+                </div>
+                <div class="content-wrap">
+                  <a href="{{block.settings.banner_url}}">
+                    <h5 class="app-title">{{block.settings.title}}</h5>
+                    <div class="desc">{{block.settings.desc}}</div>
+                  </a>
+                </div>
+                </div>
+            </div>
+        {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Outdoor Displays",
+    "class": "section-outdoor-enter-displays",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "SHOP ULTRAVIEW™ OUTDOOR TVs"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "desc",
+            "label": "Decsription"
+          },
+          {
+            "type": "url",
+            "id": "banner_url",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Outdoor Displays Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}
+
+<script>
+    var com = $(".displays-cards-wrap .displays-card:nth-child(4)");
+    com.addClass("coming-soon");
+    com.find("a").click(false);
+</script>

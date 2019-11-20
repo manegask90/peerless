@@ -1,0 +1,24 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<script>
+var NITRO_WISHLIST = null;
+var NITRO_WISHLIST_ARR = [];
+var NITRO_WISHLIST_ID_ARR = [];
+{%- if customer-%}
+	{%- if customer.metafields.nitro_wishlist.products and customer.metafields.nitro_wishlist.products != blank -%}
+        NITRO_WISHLIST = '{% comment %}ly_code_replace_for_[customer.metafields.nitro_wishlist.products]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'nitro_wishlist' %}{% assign key = 'products' %}{% if customer.metafields[ns][key] %}{% assign ly_translation = customer.metafields[ns][key] %}{% else %}{% assign ly_translation = customer.metafields.nitro_wishlist.products %}{% endif %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}';
+        NITRO_WISHLIST_ARR = NITRO_WISHLIST.split('|');
+        if (NITRO_WISHLIST_ARR[0]) {
+            NITRO_WISHLIST_ID_ARR = NITRO_WISHLIST_ARR[0].split(' ');
+        }
+    {% endif %}
+{% endif %}
+</script>
+	
+{%- assign view_not_default = false -%}
+{%- assign limit = settings.products_per_page | plus:0 -%}
+{%- if settings.view_default == 'grid' -%}
+ {%- include 'collection_grid' -%}
+{%- else -%}
+ {%- include 'collection_list' -%}
+{%- endif -%}
+

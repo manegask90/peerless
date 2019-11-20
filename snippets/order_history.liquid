@@ -1,0 +1,7 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- include 'account_type' -%}
+
+{% assign order_history = 'self' %}
+{% if customer.metafields.global.order_history %}
+    {% assign order_history = customer.metafields.global.order_history %}
+{% endif%}

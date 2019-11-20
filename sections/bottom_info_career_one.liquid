@@ -1,0 +1,39 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="career-bottom-area">
+	<div class="company-overview">
+		<h3 class="bottom-title">{{ section.settings.overview_title }}</h3>
+		<div class="bottom-content">{{ section.settings.overview_content }}</div>
+	</div>
+	<div class="response-information">
+		<h3 class="bottom-title">{{ section.settings.response_title }}</h3>
+		<div class="bottom-content">{{ section.settings.response_content }}</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "Career Bottom Area",
+	"class": "career_bottom_area",
+	"settings": [
+		{
+			"type": "text",
+			"id": "overview_title",
+			"label": "Overview Title"
+		},
+		{
+			"type": "html",
+			"id": "overview_content",
+			"label": "Overview Content"
+		},
+		{
+			"type": "text",
+			"id": "response_title",
+			"label": "Response Title"
+		},
+		{
+			"type": "html",
+			"id": "response_content",
+			"label": "Response Content"
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,24 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="main-page-wrapper articles-blog">
+    <div class="container">
+      <h1 class="main-title">{% comment %}ly_code_replace_for_[ blog.title ]_begin{% endcomment %}{% include 'ly-title' with blog %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+        <div class="page-container">
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+                    <div class="blocks">
+                        {% for article in blog.articles %}
+                        <div class="block">
+                          	<div class="block-image"><img src="{{ article.image.src | img_url: '1024x1024' }}" alt="{{ article.image.alt }}"></div>
+                            <div class="block-content">
+                              <h1>{% comment %}ly_code_replace_for_[ article.title ]_begin{% endcomment %}{% include 'ly-title' with article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+                              <p>{% comment %}ly_code_replace_for_[ article.content ]_begin{% endcomment %}{% include 'ly-content' with article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</p>
+                          	</div>
+                           	<div class="block-button"><a href="{{ article.url }}"><ly-as-13491192>More info</ly-as-13491192></a></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

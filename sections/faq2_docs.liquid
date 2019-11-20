@@ -1,0 +1,55 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="container">
+  <div class="row">
+    {% for block in section.blocks %}
+      <div class="col-sm-4">
+        <div class="faq2_docs-item">
+          <p class="faq2_docs-item-img">{{ block.settings.doc_img | img_url: '' | img_tag }}</p>
+          <h3 class="faq2_docs-item-title">{{ block.settings.title }}</h3>
+          <p class="faq2_docs-item-content">{{ block.settings.content }}</p>
+          <p class="faq2_docs-item-link-wrapper"><a href="{{ block.settings.link_url }}">{{ block.settings.link_text }}<i class="fa fa-long-arrow-right" aria-hidden="true"></i></a></p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Docs",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "faq_doc",
+      "name": "Faq Doc",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "doc_img",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "html",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link Url"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,64 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="faq-container container">
+    <div class="shop-loop-head">
+        <nav class="shopify-breadcrumb faq-nav">
+            <a href="/pages/faq">FAQs</a>
+            <span class="breadcrumb-last"><ly-as-13487673>Installation Tips</ly-as-13487673></span>
+        </nav>
+        <h2 class="text-center page-professional-faq header-faq"><ly-as-13487674>Installation FAQ</ly-as-13487674></h2>
+    </div>
+    {% for block in section.blocks %}
+        <div class="faq-block" id="{{block.settings.title | handleize }}">
+            {% if block.settings.title == '' %}
+                <div class="faq-title hide-title" id="installation-tip-title">
+            {% else %}
+                <div class="faq-title" id="installation-tip-title">
+            {%- endif -%}
+                {{- block.settings.title -}}
+            </div>
+        <div class="faq-content">
+            {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: '' }}" id="right_hardware"/>
+            {% endif %}
+            {{block.settings.content}}
+            {% if block.settings.image != blank %}
+                <img src="{{ block.settings.sec_image | img_url: '' }}" id="hardware_brick"/>
+            {% endif %}
+        </div>
+    </div>
+  {% endfor%}
+</div>
+
+{% schema %}
+{
+  "name": "Installation Tips",
+  "blocks": [
+    {
+      "type": "icongraphy",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "sec_image",
+          "label": "Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

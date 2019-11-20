@@ -1,0 +1,9 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- include 'account_type' -%}
+
+{%- assign reviews = true -%}
+
+{%  comment %} customer.metafields.global.reviews == '0' == User do not have access to leave reviews {% endcomment %}
+{%- if account_type == "business_join" and customer.metafields.global.reviews == '0' -%}
+  {%- assign reviews = false -%}
+{%- endif -%}

@@ -1,0 +1,20 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% layout none %}
+[
+{% paginate blogs.webinar-calendar.articles by blogs.webinar-calendar.articles_count %}
+  {% for article in blogs.webinar-calendar.articles %}
+    {  
+      "article":{ 
+        "id" : {{ article.id | json }},
+        "body_html" : {% comment %}ly_code_replace_for_[ article.content | json ]_begin{% endcomment %}{% include 'ly-content' with article %}{{ ly_translation | json }}{% comment %}ly_code_replace_end{% endcomment %},
+        "title" : {% comment %}ly_code_replace_for_[ article.title | json ]_begin{% endcomment %}{% include 'ly-title' with article %}{{ ly_translation | json }}{% comment %}ly_code_replace_end{% endcomment %},
+        "url" : {{ article.url | json }},
+        "image" : {{ article.image.src | img_url: '500x' | json }},
+        "webinar_date" : {% comment %}ly_code_replace_for_[ article.metafields.accentuate.webinar_date | json ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'accentuate' %}{% assign key = 'webinar_date' %}{% if article.metafields[ns][key] %}{% assign ly_translation = article.metafields[ns][key] %}{% else %}{% assign ly_translation =  article.metafields.accentuate.webinar_date | json  %}{% endif %}{{ ly_translation | json }}{% comment %}ly_code_replace_end{% endcomment %},
+        "webinar_time" : {% comment %}ly_code_replace_for_[ article.metafields.accentuate.webinar_time | json ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'accentuate' %}{% assign key = 'webinar_time' %}{% if article.metafields[ns][key] %}{% assign ly_translation = article.metafields[ns][key] %}{% else %}{% assign ly_translation =  article.metafields.accentuate.webinar_time | json  %}{% endif %}{{ ly_translation | json }}{% comment %}ly_code_replace_end{% endcomment %},
+        "tags" : {{ article.tags | join: ', ' | json }}
+      }
+    }
+    {% unless forloop.last == true %},{% endunless %}
+  {% endfor %}
+{% endpaginate %}
+]

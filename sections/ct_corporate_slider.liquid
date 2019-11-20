@@ -1,0 +1,82 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- include "ct_slider_content" -%}
+
+{% schema %}
+  {
+    "name": "Corporate Slider",
+    "class": "section-custom-page-slider",
+    "settings": [
+      {
+        "type": "select",
+        "id": "slider_show",
+        "label": "Show Slider",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slider",
+        "name": "Slider",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "bg_y_postion",
+            "min": 0,
+            "max":  100,
+            "step": 1,
+            "unit": "%",
+            "label": "Background y postion",
+            "default": 50
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Corporate"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Video Conferencing, Board Rooms, Conference Centers, Corporate Campuses, Training Facilities"
+          },
+          {
+            "type": "text",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>We offer all the audio visual solutions you need to give your workstations, boardrooms, conference centers, training facilities, or corporate campuses an AV upgrade – Peerless-AV® offers a wide range of high-quality AV solutions for a variety of applications. From mounts for desktops, displays, and projectors to video conferencing carts and stands to wireless HD multimedia streaming devices, your business can run on Peerless-AV.</p>"
+          },
+          {
+           "type": "html",
+           "id": "html_area",
+           "label": "Custom HTML"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Corporate Slider",
+        "settings": {
+          "slider_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

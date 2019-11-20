@@ -1,0 +1,301 @@
+/* See https://community.algolia.com/shopify/hogan-helpers.html */
+
+(function (algolia) {
+  'use strict';
+  var _ = algolia._;
+
+  var mounts = ['KIL747','ACC950','SUT670P','HP447','FPE55FH-EU-S','IM760P-S','IM760PU-S','MOD-PRSSKIT150','FPE42F-UK-S','FPE42FH-UK-S','FPE47F-EU-S','DST995','EPMU-08-S','FPE55F-EU-S','IM760P','MOD-FCS2KIT300','EPMU-05-S','IM746P','KIL742','EPMU-07-S','MOD-FPMS2','FPE47FH-EU-S','SR560M','SUT646P','EWMU','KIP555','EWMU-S','EPMU-06-S','HPF650','MOD-FPSKIT150','MOD-FPMD2','DST970X2','IM760PU','MOD-FCS2KIT300-B','PRGS-455','DS-VW765-LQR','DS-VWM770','MOD-FPSKIT100-B','FPECMC-01','MOD-PRSSKIT100','DSF290','MOD-FPSKIT150-B','FPE47F-UK-S','FPE55FH-UK-S','FPECMC-02','SR560G','HP455','KIP742','FPE42FH-EU-S','FPE47FH-UK-S','FPE55F-UK-S','FPE42F-EU-S','PSMU-PRSS'];
+  var ENGLISH_CODE = 'ly73951';
+
+  var isEnglishLang = function() {
+    return getCurrentLangCode() === ENGLISH_CODE;
+  };
+
+  var getTitle = function(_this) {
+    try {
+      return _this.meta[getCurrentLangCode()].title;
+    } catch(e) {
+      return _this.title;
+    }
+  };
+
+  var getDescription = function(_this) {
+    try {
+      return this.meta[getCurrentLangCode()].description;
+    } catch(e) {
+      return _this.body_html_safe;
+    }
+  };
+
+  var getMonitor = function() {
+    var monitor = $.cookie('mountsForMonitor');
+    if(typeof monitor !== 'undefined') {
+        try {
+            return JSON.parse(monitor);
+        } catch(e) {
+            console.error(e);
+        }
+    }
+    return null;
+  }
+
+  var formatPrice = function formatPrice (value) {
+    return algolia.formatMoney(+value * 100);
+  };
+
+  function formattedPriceWithComparison (price, compare_at_price, price_ratio) {
+    var comparing = +compare_at_price && +compare_at_price > +price,
+        discount_ratio = 1.0 - price_ratio,
+        res = '<b>' + formatPrice(price) + '</b>';
+    if (comparing) {
+      res += ' <span class="ais-hit--price-striked"><span>' + formatPrice(compare_at_price) + '</span></span> ';
+      res += ' <span class="ais-hit--price-discount" style="font-weight: ' + (Math.floor(discount_ratio * 10) * 100) + ';">-' + Math.floor(discount_ratio * 100) + '%</span>';
+    }
+
+    return res;
+  }
+
+  var escapeHtml = function escapeHtml (unsafe) {
+    return (unsafe || '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+
+  algolia.helpers = {
+    formatFacetTitle: function formatFacetTitle() {
+      return this.name.replace('(', '').replace(')', '');
+    },
+    formatActiveFacetTitle: function formatActiveFacetTitle() {
+      if(this.name === 'HasVesa') {
+        if(window.activeCustomFilters.vesaValue !== '') {
+          return window.activeCustomFilters.vesaValue;
+        } else {
+          algolia.instantsearch.search.helper.removeFacetRefinement('named_tags.Vesa');
+          algolia.instantsearch.search.helper.search();
+          return '';
+        }
+      } else {
+        return this.name.replace('(', '').replace(')', '');
+      }
+    },
+    formatNumber: function formatNumber (text, render) {
+      return Number(render(text)).toLocaleString();
+    },
+    formattedPrice: function formattedPrice (text, render) {
+      return formatPrice(render(text));
+    },
+    formattedPriceWithoutDecimals: function formattedPriceWithoutDecimals (text, render) {
+      return formatPrice(render(text)).replace(/\.\d+$/, '');
+    },
+    autocompletePrice: function autocompletePrice (text, render) {
+      if (this._distinct) {
+        var min = this.variants_min_price;
+        var max = this.variants_max_price;
+        if (min !== max) {
+          return '<b>' + formatPrice(min) + ' - ' + formatPrice(max) + '</b>';
+        }
+      }
+      return formattedPriceWithComparison(this.price, null);
+    },
+    instantsearchPrice: function instantsearchPrice (text, render) {
+      if (this._distinct) {
+        var min = this.variants_min_price;
+        var max = this.variants_max_price;
+        if (min !== max) {
+          return '<b>' + formatPrice(min) + ' - ' + formatPrice(max) + '</b>';
+        }
+      }
+      return formattedPriceWithComparison(this.price, this.compare_at_price, this.price_ratio);
+    },
+    instantsearchLink: function instantsearchLink () {
+      var addVariantId = !this._distinct && this.objectID !== this.id;
+      if(algolia.is_collection_results_page) {
+        var collectionFacetValue = null;
+        var matches = window.location.pathname.match(/\/collections\/([^/]+)/i);
+        if (!!matches && matches.length === 2) {
+          collectionFacetValue = matches[1];
+        }
+        if(collectionFacetValue !== null) {
+          return '/collections/'+collectionFacetValue+'/products/' + this.handle + (addVariantId ? ('?variant=' + this.objectID) : '');
+        } else {
+          return '/products/' + this.handle + (addVariantId ? ('?variant=' + this.objectID) : '');
+        }
+      } else {
+        return '/products/' + this.handle + (addVariantId ? ('?variant=' + this.objectID) : '');
+      }
+    },
+    instantPriceProduct: function instantPriceProduct () {
+      var price = this.price;
+      if (price == 0) {
+        price = 'no-price';
+      } else {
+        price = 'price';
+      }
+      return price;
+    },
+
+    instantsearchcustomLink: function instantsearchcustomLink () {
+      return '/products/' + this.handle;
+    },
+    compareLink: function compareLink () {
+      return this.handle + '_sp_' + this.id;
+    },
+    handleCustom: function handleCustom () {
+      return this.handle;
+    },
+
+    hideCompatibility: function hideCompatibility() {
+      if(this.attributeName === 'named_tags.SKU') {
+        return 'current_named_tags_sku';
+      } else if(this.attributeName === 'named_tags.Vesa') {
+        return 'current_named_tags_vesa';
+      } else {
+        return '';
+      }
+    },
+
+    adaptorNeeded: function adaptorNeeded() {
+      var res = '';
+      var monitor = getMonitor();
+      var _this = this;
+      if(monitor !== null && window.compatibilityVariants.indexOf(parseInt(this.objectID)) !== -1) {
+        monitor['product_handle'] = this.sku;
+        $.get('/apps/peerless/monitor-adapters/search', monitor, function(response) {
+          if(response.adaptor_needed === true) {
+            $('.adaptorneeded_tag_btn'+_this.sku).removeClass('hidden');
+          }
+        });
+        var res = '<div class="adaptorneeded_tag_btn hidden adaptorneeded_tag_btn'+this.sku+'">Adaptor Plate Needed</div>';
+      }
+      return res;
+    },
+
+    discontinuedStatus: function discontinuedStatus () {
+      var tags = this.tags;
+
+      // if (tags.indexOf('AdaptorNeeded')  != -1 && tags.indexOf('Discontinued')  != -1) {
+      //   var res = '<div class="adaptorneeded_tag_btn">Adaptor Plate Needed</div><div class="discontinued_tag_btn">Discontinued</div>';
+      // } else if (tags.indexOf('AdaptorNeeded')  != -1) {
+      //   var res = '<div class="adaptorneeded_tag_btn">Adaptor Plate Needed</div>';
+      // } else 
+      if (tags.indexOf('Discontinued')  != -1) {
+        var res = '<div class="discontinued_tag_btn">Discontinued</div>';
+      }
+
+      return res;
+    },
+    wishlist: function wishlist () {
+      var wishlist = NITRO_WISHLIST_ID_ARR.indexOf(this.id);
+
+      if (wishlist != -1) {
+        var res = 'style="display: block;"';
+      } else {
+        var res = 'style="display: none;"';
+      }
+      return res;
+    },
+    nowishlist: function nowishlist () {
+      var wishlist = NITRO_WISHLIST_ID_ARR.indexOf(this.id);
+
+      if (wishlist != -1) {
+        var res = 'style="display: none;"';
+      } else {
+        var res = 'style="display: block;"';
+      }
+      return res;
+    },
+    productVariantCustom: function productVariantCustom () {
+      var id_prod = this.id,
+          prod = id_prod.indexOf(id_prod);
+
+      // return res;
+    },
+    fullTitle: function fullTitle() {
+      if(isEnglishLang()) {
+        var res = this.title;
+      } else {
+        var res =  getTitle(this);
+      }
+      if (!this._distinct && this.variant_title && this.variant_title !== 'Default Title' && this.variant_title !== 'Default') {
+        res += ' (' + this.variant_title + ')';
+      }
+
+      return escapeHtml(res);
+    },
+
+    fullTitleWithHTML: function fullTitleWithHTML() {
+      if(isEnglishLang()) {
+        var res = this.title;
+      } else {
+        var res =  getTitle(this);
+      }
+      if (!this._distinct && this.variant_title && this.variant_title !== 'Default Title' && this.variant_title !== 'Default') {
+        res += ' (' + this.variant_title + ')';
+      }
+
+      return res;
+    },
+
+    fullHTMLTitle: function fullHTMLTitle() {
+      if(isEnglishLang()) {
+        var res = this._highlightResult.title && this._highlightResult.title.value ? this._highlightResult.title.value : this._distinct && this.variant_title;
+      } else {
+        var res =  getTitle(this);
+      }
+      if (!this._distinct && this.variant_title && this.variant_title !== 'Default Title' && this.variant_title !== 'Default') {
+        res += ' <span class="algolia-variant">(' + this._highlightResult.variant_title.value + ')</span>';
+      }
+
+      return res;
+    },
+    floor: function floor (text, render) {
+      return '' + Math.floor(+render(text));
+    },
+    ceil: function ceil (text, render) {
+      return '' + Math.ceil(+render(text));
+    },
+    sizedImage: function sizedImage (text, render) {
+      var image = this._distinct ? this.product_image : this.image;
+      if (!image) {
+        return 'http://cdn.shopify.com/s/images/admin/no-image-compact.gif';
+      }
+      var size = render(text).replace(/^\s+|\s+$/g, ''); // Render and trim
+      if (size === 'original') {
+        return image;
+      }
+      return image.replace(/\/(.*)\.(\w{2,4})/g, '/$1_' + size + '.$2');
+    }
+  };
+
+  _.forEach(['pico', 'icon', 'thumb', 'small', 'compact', 'medium', 'large', 'grande', 'original'], function (size) {
+    algolia.helpers[size + 'Image'] = (function (_size) {
+      return function () {
+        var image = this._distinct ? this.product_image : this.image;
+        if (!image) {
+          return 'http://cdn.shopify.com/s/images/admin/no-image-compact.gif';
+        }
+        if (_size === 'original') {
+          return image;
+        }
+        return image.replace(/\/(.*)\.(\w{2,4})/g, '/$1_' + _size + '.$2');
+      };
+    })(size); // We need to create a new scope so that the internal size has the good value.
+  });
+
+  /* Create an Hogan lambda, which doesn't respect the mustache doc */
+  algolia.hoganHelpers = _.reduce(Object.assign({}, algolia.helpers, algolia.translation_helpers ), function (res, helper, name) {
+    res[name] = function () {
+      return function (text) {
+        var render = function (value) {
+          return Hogan.compile(value, algolia.hoganOptions).render(this);
+        }.bind(this);
+        return helper.call(this, text, render);
+      }.bind(this);
+    };
+    return res;
+  }, {});
+}(algoliaShopify));

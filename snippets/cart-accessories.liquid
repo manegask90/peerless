@@ -1,0 +1,20 @@
+
+{%- if settings.show_related_products -%}
+  
+<div class="container related-and-upsells">    
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        $.ajax({
+            url: window.location.pathname + '?view=related',
+            method: 'GET',
+            success: function (response) {
+              $('.related-and-upsells').append(response);
+              if (baselThemeModule && baselThemeModule.shopcarousel) {
+                  baselThemeModule.shopcarousel();
+              }
+            },
+        });
+      });
+  </script>
+</div>
+{%- endif -%}

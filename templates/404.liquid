@@ -1,0 +1,30 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="main-page-wrapper">
+   <!-- MAIN CONTENT AREA -->
+   <div class="container">
+      <div class="row">
+         <div class="site-content col-md-12" role="main">
+            <header class="page-header">
+               <h1 class="page-title">{% comment %}ly_i18n_replace_for_[ 'general.404.header_title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.404.header_title' | t }}{% endcapture %}{% include 'ly-static-string' with '13491145' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h1>
+            </header>
+            <div class="page-wrapper">
+               <div class="page-content">
+                  <h2>{% comment %}ly_i18n_replace_for_[ 'general.404.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.404.title' | t }}{% endcapture %}{% include 'ly-static-string' with '13491146' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h2>
+                  <h6>{% comment %}ly_i18n_replace_for_[ 'general.404.sub_text' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.404.sub_text' | t }}{% endcapture %}{% include 'ly-static-string' with '13491147' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h6>
+                  <form role="search" method="get" id="searchform_404" class="searchform" action="/search">
+                     <div>
+                        <label class="screen-reader-text" for="q"></label>
+                        <input type="text" placeholder="{% comment %}ly_i18n_replace_for_[ 'general.search.placeholder' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.search.placeholder' | t }}{% endcapture %}{% include 'ly-static-string' with '13491148' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" value="" name="q" id="q">
+                        <button type="submit" id="searchsubmit">{% comment %}ly_i18n_replace_for_[ 'general.search.search_submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.search.search_submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13491149' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                     </div>
+                  </form>
+               </div>
+               <!-- .page-content -->
+            </div>
+            <!-- .page-wrapper -->
+         </div>
+         <!-- .site-content -->
+      </div>
+      <!-- end row -->
+   </div>
+   <!-- end container -->
+</div>

@@ -1,0 +1,83 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% if section.settings.article_show == 'yes' %}
+  <div class="custom-page-container">
+    <div class="custom-page-cards">
+      {% for block in section.blocks %}
+      <div class="custom-page-card">
+        <img src="{{ block.settings.image.src | img_url: '1024x' }}">
+        <div class="custom-page-card-text">
+          <span class="custom-page-card-num">0{{ forloop.index }}</span>
+          <span class="custom-page-card-title">{{ block.settings.title }}</span>
+          <span class="custom-page-card-subtitle">{{ block.settings.subtitle }}</span>
+          <span class="custom-page-card-content">{{ block.settings.content }}</span>
+        </div>
+      </div>
+      <br class="responsive-br-{{forloop.index}}">
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+  {
+    "name": "LCD and LED Article",
+    "class": "section-custom-page-article",
+    "settings": [
+      {
+        "type": "select",
+        "id": "article_show",
+        "label": "Show Article",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Article",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Highest Quality"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Government"
+          },
+          {
+            "type": "text",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Our large selection of Trade Agreement Act (TAA) compliant mounts and AV accessories are reliable and functional.</p>"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "LCD and LED",
+        "settings": {
+          "article_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

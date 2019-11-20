@@ -1,0 +1,82 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- include "ct_slider_content" -%}
+
+{% schema %}
+  {
+    "name": "Hospitality Slider",
+    "class": "section-custom-page-slider",
+    "settings": [
+      {
+        "type": "select",
+        "id": "slider_show",
+        "label": "Show Slider",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slider",
+        "name": "Slider",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "bg_y_postion",
+            "min": 0,
+            "max":  100,
+            "step": 1,
+            "unit": "%",
+            "label": "Background y postion",
+            "default": 50
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Hospitality"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Hotels, Motels, Resorts, Bars, Restaurants, Clubs"
+          },
+          {
+            "type": "html",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Make your guest’s experience one-of-a-kind with top of the line products from Peerless-AV®. We understand the importance of keeping your guests informed, entertained, and pleased with their stay. What better way than with high-quality audio visual products? We have the industry’s most comprehensive line of solutions for outfitting the entire hotel facility. From digital signage mounts for the banquet hall to completely weatherproof outdoor TVs for the pool to fully-integrated kiosks for the lobby, we have all the solutions you need to enhance your guests’ experiences.</p>"
+          },
+          {
+           "type": "html",
+           "id": "html_area",
+           "label": "Custom HTML"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Hospitality Slider",
+        "settings": {
+          "slider_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

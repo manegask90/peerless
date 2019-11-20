@@ -1,0 +1,28 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="list-view-item__image-column">
+  <div class="list-view-item__image-wrapper">
+    <img class="list-view-item__image" src="{{ product.featured_image.src | img_url: '95x95', scale: 2 }}" alt="{{ product.featured_image.alt | escape }}">
+  </div>
+</div>
+
+<div class="list-view-item__title-column">
+  <div class="list-view-item__title">{% comment %}ly_code_replace_for_[ product.title ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+  {% if product.compare_at_price > product.price %}
+    <div class="list-view-item__on-sale">{% comment %}ly_i18n_replace_for_[ 'products.product.on_sale' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.on_sale' | t }}{% endcapture %}{% include 'ly-static-string' with '13490522' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</div>
+  {% endif %}
+  {% if section.settings.show_vendor %}
+    <div class="list-view-item__vendor medium-up--hide">{% comment %}ly_code_replace_for_[ product.vendor ]_begin{% endcomment %}{% include 'ly-vendor' with product %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+  {% endif %}
+  {% unless product.available %}
+    <div class="list-view-item__sold-out">{% comment %}ly_i18n_replace_for_[ 'products.product.sold_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.sold_out' | t }}{% endcapture %}{% include 'ly-static-string' with '13490523' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</div>
+  {% endunless %}
+</div>
+
+{% if section.settings.show_vendor %}
+  <div class="list-view-item__vendor-column small--hide">
+    <div class="list-view-item__vendor">{% comment %}ly_code_replace_for_[ product.vendor ]_begin{% endcomment %}{% include 'ly-vendor' with product %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</div>
+  </div>
+{% endif %}
+
+<div class="list-view-item__price-column">
+  {% include 'product-price' %}
+</div>

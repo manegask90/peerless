@@ -1,0 +1,81 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{%- include "ct_slider_content" -%}
+
+{% schema %}
+  {
+    "name": "Transportation Slider",
+    "class": "section-custom-page-slider",
+    "settings": [
+      {
+        "type": "select",
+        "id": "slider_show",
+        "label": "Show Slider",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slider",
+        "name": "Slider",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "bg_y_postion",
+            "min": 0,
+            "max":  100,
+            "step": 1,
+            "unit": "%",
+            "label": "Background y postion",
+            "default": 50
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Transportation"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Airports, Train Stations, Bus Stations, Parking Facilities, Public Transportation"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Improve the commuter experience with Peerless-AV®. Our products are designed with safety, security and durability in mind for high-traffic areas such as airports, train stations, bus stations, parking facilities and public transportation stops. From real-time arrival and departure information to digital advertising to wayfinding, our top-of-the-line AV solutions allow you to digitally display information quickly and easily.</p>"
+          },
+          {
+           "type": "html",
+           "id": "html_area",
+           "label": "Custom HTML"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Transportation Slider",
+        "settings": {
+          "slider_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,82 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- include "ct_slider_content" -%}
+
+{% schema %}
+  {
+    "name": "HouseWorship Slider",
+    "class": "section-custom-page-slider",
+    "settings": [
+      {
+        "type": "select",
+        "id": "slider_show",
+        "label": "Show Slider",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slider",
+        "name": "Slider",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "bg_y_postion",
+            "min": 0,
+            "max":  100,
+            "step": 1,
+            "unit": "%",
+            "label": "Background y postion",
+            "default": 50
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Houses of Worship"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Religious Facilities, Conference Rooms, Churches, Temples, Synagogues, Mosques"
+          },
+          {
+            "type": "text",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Modern religious facilities’ AV requirements have changed over the years. As venues grow, many churches, synagogues, temples, and other houses of worship now need quality AV solutions for unique worship spaces, as well as conference rooms. From interactive kiosks to video wall mounts, Peerless-AV® provides high-quality and easy-to-install solutions that offer a appealing digital experience for all members of the congregation.</p>"
+          },
+          {
+           "type": "html",
+           "id": "html_area",
+           "label": "Custom HTML"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "HouseWorship Slider",
+        "settings": {
+          "slider_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

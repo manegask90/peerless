@@ -1,0 +1,21 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}  {% if block.settings.location == blank %}
+    <div class="sale-contact-item no-border-top">
+  {% else %}
+    <div class="sale-contact-item {{ block.settings.location_color }}">
+      <h2 class="sale-contact-item-title {{ block.settings.location_color }}">{{ block.settings.location }}</h2>
+      <p class="sale-contact-item-location">{{ block.settings.covered_areas }}</p>
+  {% endif %}
+  <h4 class="sale-contact-item-name">{{ block.settings.name }}</h4>
+  <p class="sale-contact-item-position">{{ block.settings.position }}</p>
+  <div class="contacts">
+    {% unless block.settings.phone == blank %}
+      <p class="sale-contact-item-phone"><span><ly-as-13490578>P:</ly-as-13490578> </span>{{ block.settings.phone }}</p>
+    {% endunless %}
+    {% unless block.settings.c == blank %}
+      <p class="sale-contact-item-g"><span><ly-as-13490579>C:</ly-as-13490579> </span>{{ block.settings.c }}</p>
+    {% endunless %}
+    {% unless block.settings.email == blank %}
+      <p class="sale-contact-item-email"><span><ly-as-13490580>E:</ly-as-13490580> </span><a href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a></p>
+    {% endunless %}
+  </div>
+</div>

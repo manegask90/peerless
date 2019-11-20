@@ -1,0 +1,12 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{%- assign check_vendor = false -%}
+  {%- assign vendor_downcase =  product.vendor | downcase -%}
+  {%- for tag in product.tags -%}
+  {%- assign tag_downcase = tag | downcase -%}
+  {%- if tag_downcase contains vendor_downcase -%}
+    {%- assign check_vendor = true -%}
+    {%- break -%}
+  {%- endif -%}
+  {%- endfor -%}
+  {%- if check_vendor -%}
+  <div class="brand_link"><a href="/collections/{%- if collection.handle != blank-%}{{collection.handle}}{%- else -%}all{%-endif-%}/{{ product.vendor | handleize}}" title="{% comment %}ly_code_replace_for_[product.vendor]_begin{% endcomment %}{% include 'ly-vendor' with product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}">{% comment %}ly_code_replace_for_[product.vendor]_begin{% endcomment %}{% include 'ly-vendor' with product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</a></div>
+  {%- endif -%}

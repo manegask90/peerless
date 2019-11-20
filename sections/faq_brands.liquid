@@ -1,0 +1,59 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="faq-container container">
+<div class="shop-loop-head">
+    <nav class="shopify-breadcrumb faq-nav">
+      {% comment %} <a href="/pages/faq">{{ 'general.breadcrumbs.faq' | t }}</a> {% endcomment %}
+      <a href="/pages/faq">FAQs</a>
+      <span class="breadcrumb-last"><ly-as-13487671>Brands</ly-as-13487671></span>
+    </nav>
+    <h2 class="text-center page-brands-faq header-faq">{% comment %}ly_code_replace_for_[page.title]_begin{% endcomment %}{% include 'ly-title' with page %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</h2>
+  </div>
+
+  {% for block in section.blocks %}
+  <div class="row brands-row">
+    <div class="col-xs-12 col-md-8">
+      <div class="row">
+        <div class="col-sm-2 brands-img">
+            <img src="{{ block.settings.image | img_url: '' }}" />
+        </div>
+        <div class="col-sm-10">
+          <h2 class="brands-title" id="{{block.settings.title | replace: '™', '' | handleize }}">{{ block.settings.title }}</h2>
+          <article>
+              {{ block.settings.content }}
+          </article>
+        </div>
+      </div>
+    </div>
+    </div>
+  {% endfor %}
+
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Brands",
+  "blocks": [
+    {
+      "type": "icongraphy",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

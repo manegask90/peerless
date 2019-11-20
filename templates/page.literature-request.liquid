@@ -1,0 +1,401 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="main-page-wrapper literature-page">
+  <div class="container">
+    <div class="row">
+      <!-- MAIN CONTENT AREA -->
+      <div class="col-md-12 title-wrap">
+        <h1 class="page-title">{{ langify_title }}</h1>
+      </div>
+      {% section 'literature-top' %}
+
+      <div class="literature-info-box"></div>
+
+      <form accept-charset="UTF-8" id="contact_form" class="contact-form contact_form_literature">
+        <!-- <div class="col-md-12 inputs-wrap">
+          <div class="inputs-wrap-title"><ly-as-13491885>Catalog</ly-as-13491885></div>
+          <div class="inputs-block">
+            <label><ly-as-13491886>Peerless-AV® Product Catalog</ly-as-13491886></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+        </div> -->
+        {% section 'literature-catalog' %}
+        {% section 'literature-brochures' %}
+        <!-- <div class="col-md-12 inputs-wrap">
+          <div class="inputs-wrap-title"><ly-as-13491887>Brochures</ly-as-13491887></div>
+          <div class="inputs-block">
+            <label><ly-as-13491888>Absen LED Mounting Solutions</ly-as-13491888></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491889>DesignerSeries™</ly-as-13491889></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491890>Digital Signage Solutions</ly-as-13491890></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491891>Education Collection</ly-as-13491891></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491892>Home Installation Collection</ly-as-13491892></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491893>Kiosk Solutions</ly-as-13491893></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491894>Kiosk and Mounting Solutions for LG Ultra Stretch Signage Display</ly-as-13491894></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491895>LED Mounting Solutions</ly-as-13491895></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491896>Microsoft Surface Hub Solutions</ly-as-13491896></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491897>Modular Solutions</ly-as-13491897></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491898>NEC LED Mounting Solutions</ly-as-13491898></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491899>OLED Mounting Solutions</ly-as-13491899></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491900>Paramount</ly-as-13491900></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491901>Samsung OHF Mounting Solutions</ly-as-13491901></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491902>Samsung LED Mounting Solutions</ly-as-13491902></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491903>SEAMLESS</ly-as-13491903></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491904>SmartMount®</ly-as-13491904></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491905>SmartMountXT</ly-as-13491905></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491906>UltraView™ UHD Outdoor TVs</ly-as-13491906></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491907>Universal Mounting Solutions</ly-as-13491907></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+          <div class="inputs-block">
+            <label><ly-as-13491908>Xtreme™ High Bright Outdoor Displays</ly-as-13491908></label>
+            <input type="number" name="quantity" min="1" placeholder="0">
+          </div>
+        </div> -->
+        <div class="col-md-12 contact-form-wrapper">
+          <input name="form_type" type="hidden" value="literature" />
+          <input name="utf8" type="hidden" value="✓" />
+          {%- if form.posted_successfully? -%}
+          <div class="wpcf7-response-output wpcf7-mail-sent-ok" role="alert">{% comment %}ly_i18n_replace_for_[
+            'contact.form.post_success' | t
+            ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.post_success' | t }}{% endcapture %}{% include 'ly-static-string' with '13491922' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+          </div>
+          {%- elsif form.errors -%}
+          <div class="wpcf7-response-output wpcf7-validation-errors" role="alert">{{ form.errors | default_errors }}
+          </div>
+          {%- endif -%}
+          <div class="form-block">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="required form-group">
+                  <label><ly-as-13491909>First Name</ly-as-13491909></label>
+                  <span class="wpcf7-form-control-wrap your-name">
+                    <input type="text" name="first_name"
+                      value="{%- if form[name][first] -%}{{ form[name][first] }}{%- elsif customer -%}{{ customer.first_name }}{%- endif -%}"
+                      size="40"
+                      class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}"
+                      aria-required="true" aria-invalid="false">
+                    <div class="error-box"><ly-as-13487133>First Name is required</ly-as-13487133></div>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="required form-group">
+                  <label><ly-as-13491910>Last Name</ly-as-13491910></label>
+                  <span class="wpcf7-form-control-wrap your-name">
+                    <input type="text" name="last_name"
+                      value="{%- if form[last_name] -%}{{ form[last_name] }}{%- elsif customer -%}{{ customer.last_name }}{%- endif -%}"
+                      size="40"
+                      class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}"
+                      aria-required="true" aria-invalid="false">
+                    <div class="error-box"><ly-as-13487135>Last Name is required</ly-as-13487135></div>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="required form-group">
+                  <label><ly-as-13491911>Title</ly-as-13491911></label>
+                  <span class="wpcf7-form-control-wrap your-name">
+                    <input type="text" name="title"
+                      value="{%- if form[title] -%}{{ form[name][title] }}{%- endif -%}" size="40"
+                      class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}"
+                      aria-required="true" aria-invalid="false">
+                    <div class="error-box"><ly-as-13487135111>Title is required</ly-as-13487135111></div>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="required form-group">
+                  <label><ly-as-13491912>Company</ly-as-13491912></label>
+                  <span class="wpcf7-form-control-wrap your-name">
+                    <input type="text" name="company"
+                      value="{%- if form[company] -%}{{ form[company] }}{%- elsif customer and customer.metafields.global.company -%}{{ customer.metafields.global.company }}{%- endif -%}"
+                      size="40"
+                      class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}"
+                      aria-required="true" aria-invalid="false">
+                    <div class="error-box"><ly-as-13487135112>Company is required</ly-as-13487135112></div>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <p>
+                  <label><ly-as-13491913>Industry</ly-as-13491913></label>
+                  <span class="wpcf7-form-control-wrap your-name">
+                    <select id="industry" name="industry">
+                      <option value=""><ly-as-13491604>Please Select</ly-as-13491604></option>
+                      <option value="Airports"><ly-as-13491616>Airports</ly-as-13491616></option>
+                      <option value="Boats/RV"><ly-as-13491617>Boats/RV</ly-as-13491617></option>
+                      <option value="Broadcast"><ly-as-13491618>Broadcast</ly-as-13491618></option>
+                      <option value="Conferencing"><ly-as-134916181>Conferencing</ly-as-134916181></option>
+                      <option value="Control Room"><ly-as-134916182>Control Room</ly-as-134916182></option>
+                      <option value="Corporate"><ly-as-134916183>Corporate</ly-as-134916183></option>
+                      <option value="Education"><ly-as-13491619>Education</ly-as-13491619></option>
+                      <option value="Entertainment"><ly-as-13491620>Entertainment</ly-as-13491620></option>
+                      <option value="Gaming"><ly-as-13491621>Gaming</ly-as-13491621></option>
+                      <option value="Government"><ly-as-13491622>Government</ly-as-13491622></option>
+                      <option value="Healthcare/Hospital"><ly-as-13491623>Healthcare/Hospital</ly-as-13491623></option>
+                      <option value="Home"><ly-as-13491624>Home</ly-as-13491624></option>
+                      <option value="Hospitality"><ly-as-13491625>Hospitality</ly-as-13491625></option>
+                      <option value="House of Worship"><ly-as-13491626>House of Worship</ly-as-13491626></option>
+                      <option value="Restaurant/Bar"><ly-as-13491627>Restaurant/Bar</ly-as-13491627></option>
+                      <option value="Retail"><ly-as-13491628>Retail</ly-as-13491628></option>
+                      <option value="Security"><ly-as-13491629>Security</ly-as-13491629></option>
+                      <option value="Stadiums"><ly-as-13491630>Stadiums</ly-as-13491630></option>
+                      <option value="Transportation"><ly-as-13491631>Transportation</ly-as-13491631></option>
+                    </select>
+                  </span>
+                </p>
+              </div>
+              <div class="col-md-6">
+                <div class="required form-group">
+                  <label>{% comment %}ly_i18n_replace_for_[ 'contact.form.phone' | t
+                    ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.phone' | t }}{% endcapture %}{% include 'ly-static-string' with '13491923' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+                  <span class="wpcf7-form-control-wrap your-name">
+                    <input type="text" name="phone"
+                      value="{%- if form[phone] -%}{{ form[phone] }}{%- elsif customer and customer.phone -%}{{ customer.phone }}{%- endif -%}"
+                      size="40"
+                      class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}"
+                      aria-required="true" aria-invalid="false">
+                    <div class="error-box"><ly-as-13487140>Phone Number is required</ly-as-13487140></div>
+                    <div class="phone-invalid"><ly-as-13487141>Please provide a valid Phone Number.</ly-as-13487141></div>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="required form-group">
+              <label>{% comment %}ly_i18n_replace_for_[ 'contact.form.email' | t
+                ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.email' | t }}{% endcapture %}{% include 'ly-static-string' with '13491924' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+              <span class="wpcf7-form-control-wrap your-email">
+                <input type="email" name="email"
+                  value="{%- if form.email -%}{{ form.email }}{%- elsif customer -%}{{ customer.email }}{%- endif -%}"
+                  size="40"
+                  class="{%- if form.errors contains 'email' -%}input__error{%- else -%}input__ok{%- endif -%}"
+                  aria-required="true" aria-invalid="false">
+                <div class="error-box email"><ly-as-13487137>Email Address is required</ly-as-13487137></div>
+                <div class="email-invalid"><ly-as-13487138>Please provide a valid Email Address.</ly-as-13487138></div>
+              </span>
+            </div>
+          </div>
+          <div class="form-block">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="required form-group">
+                  <label><ly-as-13491917>Address</ly-as-13491917></label>
+                  <span class="wpcf7-form-control-wrap your-name">
+                    <input type="text" name="address"
+                      value="{%- if form[address] -%}{{ form[address] }}{%- elsif customer.default_address.address1 -%}{{ customer.default_address.address1 }}{%- endif -%}"
+                      size="40"
+                      class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}"
+                      aria-required="true" aria-invalid="false">
+                    <div class="error-box"><ly-as-13487135>Address is required</ly-as-13487135></div>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="required form-group">
+                  <label><ly-as-13491918>City</ly-as-13491918></label>
+                  <span class="wpcf7-form-control-wrap your-name">
+                    <input type="text" name="city"
+                      value="{%- if form[city] -%}{{ form[city] }}{%- elsif customer.default_address.city -%}{{ customer.default_address.city }}{%- endif -%}"
+                      size="40"
+                      class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}"
+                      aria-required="true" aria-invalid="false">
+                    <div class="error-box"><ly-as-13487135>City is required</ly-as-13487135></div>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <p class="form-row form-row-wide address-field validate-state" id="AddressProvinceContainerNew">
+                  <label for="AddressProvinceNew">{% comment %}ly_i18n_replace_for_[ 'customer.addresses.province' | t
+                    ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.addresses.province' | t }}{% endcapture %}{% include 'ly-static-string' with '13491587' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+                  <select id="AddressProvinceNew" name="province" data-default="{{ form.province }}"
+                    class="usa-reg">
+                    {%- if settings.site == 'DE' -%}
+                      {%- include 'province-ge' -%}
+                    {% else %}
+                      {%- include 'states-options', province: form.province -%}
+                    {% endif %}
+                  </select>
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="required form-group">
+                  <label><ly-as-13491920>Zip/Postal Code</ly-as-13491920></label>
+                  <span class="wpcf7-form-control-wrap your-name">
+                    <input type="text" name="zip"
+                      value="{%- if form[zip] -%}{{ form[zip] }}{%- elsif customer.default_address.zip -%}{{ customer.default_address.zip }}{%- endif -%}"
+                      size="40"
+                      class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}"
+                      aria-required="true" aria-invalid="false">
+                    <div class="error-box"><ly-as-13487135>Zip/Postal Code is required</ly-as-13487135></div>
+                  </span>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <p class="form-row form-row-wide address-field validate-state required" id="billing_state_field">
+                  <label for="AddressCountryNew">{% comment %}ly_i18n_replace_for_[ 'customer.addresses.country' | t
+                    ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.addresses.country' | t }}{% endcapture %}{% include 'ly-static-string' with '13491586' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+                  <select id="AddressCountryNew" name="country" class="address-country-option-custom"
+                    data-default="{{ form.country }}" required>
+                    {%- if settings.site == 'DE' -%}
+                      <option value="Germany" data-provinces="[]"><ly-as-1349004211>Germany</ly-as-1349004211></option>
+                    {%- else -%}
+                    {{ country_option_tags }}{{ countries }}
+                    {%- endif -%}
+                    </select>
+                    <script>
+                     console.log('countries', {{ countries | json}});
+                     console.log('form.country', {{ form.country | json}});
+                    </script>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="form-bottom">
+            <p class="no-margin">
+              <input type="hidden" value="{{ settings.site }}" name="site">
+              {% include 'email-lang' %}
+              <input type="hidden" name="lang" value="{{lang}}">
+              <button type="submit"
+                class="wpcf7-form-control wpcf7-submit btn btn-color-primary">
+                {{- 'Submit Request' -}}
+              </button>
+            </p>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+  $('.contact_form_literature').on('submit', function (e) {
+    e.preventDefault();
+    var that = $(this),
+      error = validateLiteratureForm(that);
+
+    if (error) return;
+    sendLitereatureFormRequest(that);
+  });
+
+  function sendLitereatureFormRequest (form) {
+    form.find('[type="submit"]').addClass('loading');
+    handleAjax(
+        '/apps/peerless/contact/literature_request',
+        form.serialize(),
+        "post",
+        function (response) {
+          if (response.success) {
+            displaySuccess(response.message, '.literature-info-box');
+            scrollTo($('.literature-info-box'));
+          } else {
+            displayErrors(response.message, '.literature-info-box');
+            scrollTo($('.literature-info-box'));
+          }
+        },
+        function () {
+          form.find('[type="submit"]').removeClass('loading');
+        },
+        function (error) {
+          displayErrors('Something went wrong, please reload page and try again', '.literature-info-box');
+          scrollTo($('.literature-info-box'));
+        }
+    );
+  }
+
+  function scrollTo($el){
+    if (!$el.length) return;
+    $('html, body').animate({
+      scrollTop: $el.offset().top
+    }, 300);
+  }
+
+  function validateLiteratureForm(form) {
+    var requiredWrap = form.find('.required'),
+      error = false,
+      count_literature = form.find('.literature_count'),
+      literatureToReturn = 0;
+
+    count_literature.each(function () {
+      if (parseInt($(this).val()) > 0) literatureToReturn += 1;
+    });
+    if (literatureToReturn == 0) {
+      displayErrors(['Please choose at least one brochures or catalogs'], '.literature-info-box');
+      scrollTo($('.literature-info-box'));
+      error = true;
+    }
+
+    requiredWrap.each(function () {
+      var that = $(this),
+        field = that.find('input');
+      if (field.val() == '') {
+        error = true;
+        that.addClass('error');
+      } else that.removeClass('error');
+    });
+    return error;
+  }
+</script>

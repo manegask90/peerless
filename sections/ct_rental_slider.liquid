@@ -1,0 +1,81 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{%- include "ct_slider_content" -%}
+
+{% schema %}
+  {
+    "name": "Rental Slider",
+    "class": "section-custom-page-slider",
+    "settings": [
+      {
+        "type": "select",
+        "id": "slider_show",
+        "label": "Show Slider",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slider",
+        "name": "Slider",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "bg_y_postion",
+            "min": 0,
+            "max":  100,
+            "step": 1,
+            "unit": "%",
+            "label": "Background y postion",
+            "default": 50
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Rental & Staging"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Concert Touring, Trade Shows and Industry Events, Temporary Sporting Events, Convention Facilities"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Want to make a splash at your trade show or industry event? Need to create a rich sensory experience for a concert tour or temporary sporting event? We provide solutions to fit every theater, stadium or convention facility. Our products are easy-to-use and assemble, are tested to meet the highest safety standards, and offer sleek, stylish aesthetics to fit into your venue’s décor.</p>"
+          },
+          {
+           "type": "html",
+           "id": "html_area",
+           "label": "Custom HTML"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Rental Slider",
+        "settings": {
+          "slider_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

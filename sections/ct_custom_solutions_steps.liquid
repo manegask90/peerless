@@ -1,0 +1,82 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% if section.settings.steps_show == 'yes' %}
+  <div class="custom-page-steps-container">
+    <div class="custom-page-steps">
+      {% for block in section.blocks %}
+      <div class="custom-page-steps-card">
+        <img src="{{ block.settings.image.src | img_url: '1024x' }}">
+        <div class="custom-page-steps-card-text">
+          <span class="custom-page-steps-card-title">{{ block.settings.title }}</span>
+          <span class="custom-page-steps-card-days">{{ block.settings.days }}</span>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="custom-page-steps-arrow">
+      {% for block in section.blocks %}
+      <div class="custom-page-step-arrow">
+        <div class="arrow-tri-before"></div>
+        <div class="arrow-rect"></div>
+        <div class="arrow-tri-after"></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+  {
+    "name": "Custom Solutions Steps",
+    "class": "section-custom-solutions-steps",
+    "settings": [
+      {
+        "type": "select",
+        "id": "steps_show",
+        "label": "Show Steps",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "steps",
+        "name": "Steps",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Concept"
+          },
+          {
+            "type": "text",
+            "id": "days",
+            "label": "Days",
+            "default": "1-6 Days"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Custom Solutions Steps",
+        "settings": {
+          "steps_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

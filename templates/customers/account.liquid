@@ -1,0 +1,400 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+ {%- assign title = 'customer.account.title' | t -%}
+
+{%- include 'account_type' -%}
+
+{%- assign user_management = customer.metafields.global.user_management -%}
+
+{%- assign phone_pin = customer.metafields.global.phone_pin -%}
+{%- assign customerLanguage = customer.metafields.global.language -%}
+
+<div class="main-page-wrapper account-wrapper">
+  {%- include 'page_heading', langify_title:title -%}
+  <!-- MAIN CONTENT AREA -->
+  <div class="container">
+    <div class="row">
+      <div class="site-content col-sm-12" role="main">
+        <article id="post-9" class="post-9 page type-page status-publish hentry">
+          <div class="entry-content">
+            <div class="shopify">
+              {% include 'account-nav' %}
+              <!-- .basel-my-account-sidebar -->
+              <div class="shopify-MyAccount-content account-overview">
+                <div class="info-box"></div>
+                <p class="page-title">{% comment %}ly_i18n_replace_for_[ 'customer.account.dashboard' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.dashboard' | t }}{% endcapture %}{% include 'ly-static-string' with '13491299' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                <table class="account-info">
+                  <tr class="email-info">
+                    <td class="info-title"><ly-as-13491285>Email:</ly-as-13491285></td>
+                    <td class="info-content">{{ customer.email }}</td>
+                  </tr>   
+                  {% if account_type != "consumer" %}
+                    <tr class="type-info">
+                      <td class="info-title"><ly-as-13491286>Account Type:</ly-as-13491286></td>
+                      <td class="info-content"><ly-as-13491287>Business</ly-as-13491287></td>
+                    </tr>
+                  {% endif %}
+                </table>
+                <div class="account-form" id="account-overview-form" data-customer="{{ customer.id }}">
+                  {% for error in form.errors %}
+                    {%- if form.errors -%}
+                      {%- assign gl_shopify_error = true -%}
+                      {%- for field in form.errors -%}
+                        {%- if field == 'form' -%}
+                          {%- assign error_html = form.errors.messages[field] -%}
+                        {%- else -%}
+                          {%- assign error_html = form.errors.translated_fields[field] | append:form.errors.messages[field] -%}
+                        {%- endif -%}
+                      {%- endfor -%}
+                    {%- endif -%}
+                  {% endfor %}
+
+                  <div class="form-group">
+                    <div class="half-cell">
+                      <label for="customerFirstName"><ly-as-13491288>First Name</ly-as-13491288><span class="required-sign">*</span></label>
+                      <input type="text" id="customerFirstName" name="customer[first_name]" value="{% if customer.first_name %}{{ customer.first_name }}{% endif %}" placeholder="{% unless customer.first_name %}First Name{% endunless %}" required />
+                    </div>
+                    <div class="half-cell">
+                      <label for="customerLastName"><ly-as-13491289>Last Name</ly-as-13491289><span class="required-sign">*</span></label>
+                      <input type="text" id="customerLastName" name="customer[last_name]" value="{% if customer.last_name %}{{ customer.last_name }}{% endif %}" placeholder="{% unless customer.last_name %}Last Name{% endunless %}" required />
+                    </div>
+                  </div>
+                  {% if account_type != "consumer" %}
+                  <div class="form-group">
+                    <label for="customerPhone"><ly-as-13491290>Phone Number</ly-as-13491290><span class="required-sign">*</span></label>
+                    <div class="inline-wrapper">
+                      {% comment %} <select name="customer[phone-region]" id="phone_pin">
+                        <!-- <option {% if phone_pin == "+81" %} selected {% endif %} value="+81" data-region="Afghanistan">+81</option>
+                        <option {% if phone_pin == "+91" %} selected {% endif %} value="+91" data-region="India">+91</option> -->
+                        <option {% if phone_pin == "+1" %} selected {% endif %} value="+1" data-region="USA">+1</option>
+                      </select> {% endcomment %}
+                      <input type="tel" id="customerPhone" name="customer[phone]" value="{% if customer.phone %}{{ customer.phone | replace: phone_pin , '' }}{% endif %}" placeholder="{% unless customer.phone %}+1 (555) 555-5555{% endunless %}" required />
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% if settings.site == 'UK' %}
+                    <input type="hidden" name="contact[language]" value="English">
+                  {% elsif settings.site == 'FR' %}
+                    <input type="hidden" name="contact[language]" value="French">
+                  {% elsif settings.site == 'DE' %}
+                    <input type="hidden" name="contact[language]" value="German">
+                  {% elsif settings.site == 'Latin America' %}
+                    <div class="form-group">
+                      <label for="customerLanguage"><ly-as-13491291>Language</ly-as-13491291><span class="required-sign">*</span></label>
+                      <select id="customerLanguage" name="contact[language]">
+                        <option {% if customerLanguage == "English" %} selected {% endif %} value="English"><ly-as-13491292>English</ly-as-13491292></option>
+                        <option {% if customerLanguage == "French" %} selected {% endif %} value="French"><ly-as-13491293>French</ly-as-13491293></option>
+                        <option {% if customerLanguage == "German" %} selected {% endif %} value="German"><ly-as-13491294>German</ly-as-13491294></option>
+                        <option {% if customerLanguage == "Spanish" %} selected {% endif %} value="Spanish"><ly-as-13491295>Spanish</ly-as-13491295></option>
+                      </select>
+                    </div>
+                  {% elsif settings.site == 'US' %}
+                    <div class="form-group">
+                      <label for="customerLanguage"><ly-as-13491291>Language</ly-as-13491291><span class="required-sign">*</span></label>
+                      <select id="customerLanguage" name="contact[language]">
+                        <option {% if customerLanguage == "English" %} selected {% endif %} value="English"><ly-as-13491292>English</ly-as-13491292></option>
+                        <option {% if customerLanguage == "French" %} selected {% endif %} value="French"><ly-as-13491293>French</ly-as-13491293></option>
+                        <option {% if customerLanguage == "German" %} selected {% endif %} value="German"><ly-as-13491294>German</ly-as-13491294></option>
+                        <option {% if customerLanguage == "Spanish" %} selected {% endif %} value="Spanish"><ly-as-13491295>Spanish</ly-as-13491295></option>
+                      </select>
+                    </div>
+                  {% endif %}
+                  <div class="form-group">
+                    <input type="checkbox" id="customerUpdateReceive" name="contact[update_receive]"
+                    {% if customer.tags contains 'newsletter'  %} checked="" {% endif %}/><ly-as-13491296>Yes, I’d like to receive updates from Peerless-AV® about new products and offers.</ly-as-13491296></div>
+                  <div class="form-group">
+                    <input type="button" id="overview-btn" name="customer[submit]" value="Save Changes" />
+                  </div>
+                </div>
+                
+                <div class="change-password-wrapper">
+                  <h2 class="title"><ly-as-13491297>Change Password</ly-as-13491297></h2>
+                  <div class="pass-info-box"></div>
+                  {%- form 'reset_customer_password', class:'lost_reset_password' -%}
+                    {%- if form.errors -%}
+                        {%- assign gl_shopify_error = true -%}
+                        {%- for field in form.errors -%}
+                          {%- if field == 'form' -%}
+                              {%- assign error_html = form.errors.messages[field] -%}
+                          {%- else -%}
+                              {%- assign error_html = form.errors.translated_fields[field] | append:form.errors.messages[field] -%}
+                          {%- endif -%}
+                        {%- endfor -%}
+                    {%- endif -%}
+
+                    <!-- <div class="form-group">
+                    <label for="CurrentPass"><ly-as-13491298>Current Password</ly-as-13491298><span class="required">*</span></label>
+                    <input type="password" value="" name="customer[current_password]" id="CurrentPass" class="{% if form.errors contains 'password' %} input--error{% endif %}">
+                    </div> -->
+
+                    <div class="form-group">
+                      <label for="ResetPassword">{% comment %}ly_i18n_replace_for_[ 'customer.reset_password.password' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.reset_password.password' | t }}{% endcapture %}{% include 'ly-static-string' with '13491300' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}<span class="required">*</span></label>
+                      <input type="password" value="" name="customer[password]" id="ResetPassword" class="{% if form.errors contains 'password' %} input--error{% endif %}">
+                    </div>
+
+                    <div class="form-group">
+                      <label for="PasswordConfirmation">{% comment %}ly_i18n_replace_for_[ 'customer.reset_password.password_confirm' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.reset_password.password_confirm' | t }}{% endcapture %}{% include 'ly-static-string' with '13491301' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}<span class="required">*</span></label>
+                      <input type="password" value="" name="customer[password_confirmation]" id="PasswordConfirmation" class="{% if form.errors contains 'password_confirmation' %} input--error{% endif %}">
+                    </div>
+                    <input type="submit" class="button" value="{% comment %}ly_i18n_replace_for_[ 'customer.reset_password.save' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.reset_password.save' | t }}{% endcapture %}{% include 'ly-static-string' with '13491302' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+                  {%- endform -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div><!-- end container -->
+</div><!-- .main-page-wrapper -->
+
+{% comment %}ly_asset_replace_for_[ 'account-scripts.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'account-scripts.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+{% comment %}ly_asset_replace_for_[ 'imask.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'imask.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+<script type="text/javascript">
+  var element = document.getElementById('customerPhone');
+  var havePhone = false;
+  if (element) {
+    havePhone = true;
+    var maskOptions = {
+      mask: '+1 (000) 000-0000'
+    };
+    var mask = new IMask(element, maskOptions);
+  }
+
+  function _ajax_request(url, data, callback, method) {
+    return jQuery.ajax({
+      url: url,
+      
+      type: method,
+      data: data,
+      success: callback
+    });
+  }
+
+  jQuery.extend({
+    put: function(url, data, callback) {
+      return _ajax_request(url, data, callback, 'PUT');
+  }});  
+
+  
+
+  function overviewChange () {
+    var customer_id = $("#account-overview-form").data("customer");
+
+    var first_name = $('#customerFirstName').val();
+    var last_name = $('#customerLastName').val();
+    // var phone_pin= $('#phone_pin').val();
+    var phone_number = $('#customerPhone').val();
+    var language = $('#customerLanguage').val();
+
+    // Form Validation
+
+    if(first_name == ""){
+      $("#customerFirstName").addClass( "email_err_msg" );
+      $('#customerFirstName').focus();
+      return false;
+    } else {
+      $( "#customerFirstName" ).removeClass( "email_err_msg" );
+    }
+
+    if(last_name == ""){
+      $("#customerLastName").addClass( "email_err_msg" );
+      $('#customerLastName').focus();
+      return false;
+    } else {
+      $( "#customerLastName" ).removeClass( "email_err_msg" );
+    }
+
+    if(phone_number == ""){
+      $("#customerPhone").parent().addClass( "email_err_msg" );
+      $('#customerPhone').focus();
+      return false;
+    } else {
+      $( "#customerPhone" ).parent().removeClass( "email_err_msg" );
+    }
+
+    if(language == ""){
+      $("#customerLanguage").addClass( "email_err_msg" );
+      $('#customerLanguage').focus();
+      return false;
+    } else {
+      $( "#customerLanguage" ).removeClass( "email_err_msg" );
+    }
+
+    var customerId = '{{ customer.id }}';
+
+    var data = {
+      action: 'update',
+      id: customerId,
+      first_name: first_name,
+      last_name: last_name,
+      //phone_pin: phone_pin,
+      language: language,
+      newsletter: $('#customerUpdateReceive').prop('checked') ? 1 : 0,
+    };
+    if (havePhone) {
+      data['phone'] = "+1" + mask.unmaskedValue;
+    }
+
+    var appUrl = '/apps/peerless/customers/update';
+    var langObj = {
+      "English": "ly73951",
+      "Spanish": "ly73954",
+      "French": "ly77552",
+      "German": "ly73952",
+    };
+    var userLang = $('.account-form #customerLanguage option:selected').val();
+
+    $.ajax({
+      type:"POST",
+      url: appUrl,
+      dataType: 'json',
+      crossDomain: true,
+      data: data,
+      success: function(response) {
+        if(response.success) {
+          displayUserUpdated('Changes successfully saved.', '.info-box');
+          if (langObj[userLang]) langify.helper.saveLanguageCustom(langObj[userLang], window.location);
+        } else {
+          displayErrors(response.error, '.info-box');
+        }
+        $(window).unbind('beforeunload');
+      },
+      error: function(data){
+        $(window).unbind('beforeunload');
+      }
+    });
+  }
+
+  $( document ).ready(function() {
+    if (!localStorage.getItem('accessToken')) {
+      checkUserAccess();
+    }
+
+    $("#overview-btn").click(function(){
+      overviewChange();
+    });
+
+    $('.lost_reset_password').submit(function (e) {
+      e.preventDefault();
+
+      var ressPass = $('#ResetPassword');
+          ressPassConf = $('#PasswordConfirmation'),
+          errors = [];
+
+      if (ressPass.val().trim() == '') {
+        errors.push('Please enter new password.');
+      }
+      if (ressPassConf.val().trim() == '') {
+        errors.push('Please enter confirm new password.');
+      }
+      if (ressPassConf.val() != ressPass.val()) {
+        errors.push('New passwords do not match.');
+      }
+      if (errors.length) {
+        displayErrors(errors, '.pass-info-box');
+      } else {
+        var data = {
+          password: ressPass.val()
+        }
+        updateUser(data, function (response) {
+          if (response.data.customerUpdate.userErrors.length) {
+            displayErrors(response.data.customerUpdate.userErrors, '.pass-info-box');
+          } else {
+            displayUserUpdated('Password successfully updated.', '.pass-info-box');
+          }
+          $(window).unbind('beforeunload');
+        });
+      }
+    });
+
+    $("input, select").on("change", function() {
+      $(window).bind('beforeunload', function(){
+        return 'You have unsaved changes. Are you sure you want to leave without saving?';
+      });
+    });
+  });
+
+  function updateUser(data, callback) {
+    var accessToken = localStorage.getItem('accessToken');
+
+    var mutation = "\n mutation {\n"+ 
+        "  customerUpdate(\n"+
+          "    customerAccessToken: \""+accessToken+"\"\n"+
+          "    customer: {\n";
+          if (data.first_name) {
+            mutation += "      firstName: \""+data.first_name+"\"\n";
+          }
+          if (data.last_name) {
+            mutation += "      lastName: \""+data.last_name+"\"\n";
+          }
+          if (data.phone) {
+            mutation += "      phone: \""+data.phone+"\"\n";
+          }
+          if (data.password) {
+            mutation += "      password: \""+data.password+"\"\n";
+          }
+          mutation += "    }\n"+
+        "  ){\n"+
+        "    customer {\n"+
+          "      id\n"+
+        "    }\n"+
+        "    customerAccessToken {\n"+
+          "      accessToken\n"+ 
+          "      expiresAt\n"+
+        "    }\n"+
+        "    userErrors {\n"+
+          "      field\n"+
+          "      message\n"+
+        "    }\n"+
+      "  }\n"+ 
+    "}\n";
+
+    $.ajax({
+      type:"POST",
+      url: window.location.origin+'/api/graphql',
+      dataType: 'json',
+      crossDomain: true,
+      headers: {
+        "X-Shopify-Storefront-Access-Token": storefrontToken,
+        'Content-Type': 'application/graphql',
+      },
+      data: mutation,
+      success: function(response) {
+        if (callback) callback(response);
+      },
+      error: function(data){
+        console.log(data);
+      }
+    });
+  }
+
+  function displayUserUpdated(message, passWrap) {
+    $(passWrap).html("<div class='alert alert-success'>"+message+"</div>");
+  }
+
+  function delateErrors (passWrap) {
+    $(passWrap).html(''); 
+  }
+
+  function checkUserAccess () {
+    var userDate = window.localStorage.getItem('user');
+    if (userDate) {
+      userDate = JSON.parse(userDate);
+      if (!userDate.email) {
+        userDate.email = '{{ customer.email }}';
+      }
+      getAceessToken(userDate);
+      localStorage.removeItem('user');
+    } else {
+      $('.change-password-wrapper').remove();
+    }
+  }
+</script>
+
+<style type="text/css">
+  .website-wrapper,
+  .main-page-wrapper {
+    background: #f3f3f3;
+  }
+</style>

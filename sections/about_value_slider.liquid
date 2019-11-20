@@ -1,0 +1,208 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="about-tabs-slider-wrapper">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				{% if section.settings.summary_text %}
+				<h4 class="summary-text">{{ section.settings.summary_text }}</h4>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+
+	{% if section.blocks.size > 0 %}
+	<div class="tabs-wrapper" data-current="1">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<ul class="tab-title">
+						{% for block in section.blocks %}
+						<li class="{% if forloop.first == true %}active{% endif %}"  data-target="tab-{{ forloop.index }}">
+							<span class="index-number">0{{ forloop.index }}</span>
+							<span class="tab-text">{{ block.settings.tab_title }}</span>
+						</li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="tabs-content">
+			<div class="container">
+				<div class="row">
+					{% for block in section.blocks %}
+					<div class="tab-content {% if forloop.first == true %}active{% endif %}" id="tab-{{ forloop.index }}">
+						<div class="hidden-image">
+							<img src="{{ block.settings.tab_image | img_url: '500x' }}" alt="" />
+						</div>
+						<div class="text-content col-xs-12 col-sm-6 col-md-6 col-lg-8">{{ block.settings.tab_description }}</div>
+						<div class="tab-image">
+							<img src="{{ block.settings.tab_image | img_url: '500x' }}" alt="" />
+						</div>
+					</div>
+					{% endfor %}
+					<div class="dots-wrapper">
+						<div class="col-xs-12 col-sm-8 text-center column">
+							<div class="dots">
+								{% for block in section.blocks %}
+								<a href="javascript:void(0)" class="{% if forloop.first == true %}active{% endif %}" data-target="tab-{{ forloop.index }}">{{ forloop.index }}</a>
+								{% endfor %}
+							</div>
+						</div>
+					</div>					
+				</div>
+				<div class="nav-wrapper hidden">
+					<a href="javascript:void(0)" class="nav-btn prev-btn"></a>
+					<a href="javascript:void(0)" class="nav-btn next-btn"></a>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+</div>
+
+{% schema %}
+	{
+      	"name": "About Tabs Slider",
+      	"settings": [
+         	{
+	            "type": "text",
+	            "id": "summary_text",
+	            "label": "Summray Text"
+         	}
+        ],
+        "blocks": [
+        	{
+        		"type": "tab_item",
+	            "name": "TAB Item",
+	            "settings": [
+	               {
+	                  "type": "text",
+	                  "id": "tab_title",
+	                  "label": "TAB Title"
+	               },
+	               {
+	                  "type": "html",
+	                  "id": "tab_description",
+	                  "label": "TAB Description"
+	               },
+	               {
+	                  "type": "image_picker",
+	                  "id": "tab_image",
+	                  "label": "TAB Image"
+	               }
+	            ]
+        	}
+        ],
+        "presets": [
+         	{
+            	"name": "About Tabs Slider",
+            	"category": "Content",
+            	"blocks": [
+	               { 
+	                  "type": "tab_item"
+	               }
+	            ]
+         	}
+      	]
+    }
+{% endschema %}
+
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+		$(".tab-title li").click(function(){
+			if(!$(this).hasClass('active')) {
+				var target = $(this).data('target');
+				var current_index = target.split("-")[1];
+				$(".tabs-wrapper").attr('data-current', current_index);
+				$(this).siblings().removeClass('active');
+				$(this).addClass('active');
+
+				$(".tabs-content .tab-content").removeClass('active');
+				$("#" + target).addClass("active");
+
+				$(".dots-wrapper a").each(function(){
+					if($(this).data("target") == target) {
+						$(this).addClass('active');
+					} else {
+						$(this).removeClass('active');
+					}
+				});
+			} 
+		});
+		$(".dots-wrapper a").click(function(){
+			if(!$(this).hasClass('active')) {
+				var target = $(this).data('target');
+				var current_index = target.split("-")[1];
+				$(".tabs-wrapper").attr('data-current', current_index);
+				$(this).siblings().removeClass('active');
+				$(this).addClass('active');
+
+				$(".tabs-content .tab-content").removeClass('active');
+				$("#" + target).addClass("active");
+				
+				$(".tab-title li").each(function(){
+					if($(this).data("target") == target) {
+						$(this).addClass('active');
+					} else {
+						$(this).removeClass('active');
+					}
+				});
+			} 
+		});
+		$(".nav-wrapper .nav-btn").click(function(){
+			var current_index = parseInt($(".tabs-wrapper").attr('data-current'));
+			var count_items = parseInt($(".tabs-wrapper .tab-title li").length);
+			if($(this).hasClass('next-btn')){
+				if(current_index < count_items) {
+					var target = "tab-" + (current_index + 1);
+
+					$(".tabs-wrapper").attr('data-current', current_index + 1);
+
+					$(".about-tabs-slider-wrapper .tab-title li").each(function(){
+						if($(this).data("target") == target) {
+							$(this).addClass('active');
+						} else {
+							$(this).removeClass('active');
+						}
+					});
+
+					$(".tabs-content .tab-content").removeClass('active');
+					$("#" + target).addClass("active");
+
+					$(".dots-wrapper a").each(function(){
+						if($(this).data("target") == target) {
+							$(this).addClass('active');
+						} else {
+							$(this).removeClass('active');
+						}
+					});
+				}
+			} else {
+				if(current_index > 1) {
+					var target = "tab-" + (current_index - 1);
+
+					$(".tabs-wrapper").attr('data-current', current_index - 1);
+					
+					$(".about-tabs-slider-wrapper .tab-title li").each(function(){
+						if($(this).data("target") == target) {
+							$(this).addClass('active');
+						} else {
+							$(this).removeClass('active');
+						}
+					});
+
+					$(".tabs-content .tab-content").removeClass('active');
+					$("#" + target).addClass("active");
+
+					$(".dots-wrapper a").each(function(){
+						if($(this).data("target") == target) {
+							$(this).addClass('active');
+						} else {
+							$(this).removeClass('active');
+						}
+					});
+				}
+			}
+		})
+	});
+</script>

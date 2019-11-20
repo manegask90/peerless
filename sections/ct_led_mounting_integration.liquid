@@ -1,0 +1,77 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="led-mounting-integration">
+  <div class="container">
+    <div class="row led-mounting-integration-inner">
+      <div class="col-md-12 integation-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{section.settings.desc}}</div>
+      </div>
+      <div class="integation-cards">
+        {%- for block in section.blocks -%}
+          <div class="col-md-12 integation-card">
+            <div class="block-inner">
+              <div class="img-wrap">
+                <img src="{{block.settings.image  | img_url: '115x' }}" alt="Image" />
+              </div>
+              <div class="content-wrap">
+                <h5>{{block.settings.title}}</h5>
+                <div>{{block.settings.content}}</div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Led Mounting Integration",
+    "class": "section-led-mounting-int",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Seamless LED Video Wall Integration – From Start to Finish"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "Content Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "content",
+            "label": "Content"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Led Mounting Description Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

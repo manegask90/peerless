@@ -1,0 +1,120 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="patents-wrap">
+  <div class="container">
+    <div class="header-info">
+      {% include 'title-red-underline', classes: 'underline-left', head_title: 'Peerless-AV<sup>®</sup> Patents' %}
+      <article>
+        {% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+      </article>
+    </div>
+
+    {% unless section.settings.csv_url == blank %}
+      <table id="patents-table">
+        <thead>
+          <tr>
+            <th><ly-as-13489432>Model Number</ly-as-13489432></th>
+            <th><ly-as-13489433>Patent</ly-as-13489433></th>
+          </tr>
+        </thead>
+      </table>
+    {% endunless %}
+  </div>
+  {% unless section.settings.csv_url == blank %}
+</div>
+  <script>
+
+    {% case language %}
+      {% when 'ly73951' %}
+          {% assign lang_selected = 'English' %}
+          {% assign show = 'Show' %}
+          {% assign m_per_page = 'Models per page' %}
+          {% assign info = '<strong>_START_ to _END_</strong> of _TOTAL_ Models' %}
+          
+      {% when 'ly73952' %}
+          {% assign lang_selected = 'German' %}
+          {% assign show = 'Anzeigen' %}
+          {% assign m_per_page = 'Modelle pro Seite' %}
+          {% assign info = '<strong>_START_ bis _END_</strong> von _TOTAL_ Modellen' %}
+      {% when 'ly73954' %}
+          {% assign lang_selected = 'Spanish' %}
+          {% assign show = 'Mostrar' %}
+          {% assign m_per_page = 'Modelos por página' %}
+          {% assign info = '<strong>_START_ a _END_</strong> de _TOTAL_ modelos' %}
+      {% when 'ly77552' %}
+          {% assign lang_selected = 'France' %}
+          {% assign show = 'Show' %}
+          {% assign m_per_page = 'Modèles par page' %}
+          {% assign info = 'Modèles <strong>_START_ à _END_</strong> sur _TOTAL_ modèles' %}
+    {% endcase %}
+
+
+    $(function(){
+      var csvUrl = '{{ section.settings.csv_url }}';
+      var csvData = [];
+      $table = $('#patents-table');
+      $.get(csvUrl, function(data) {
+        var csvArr = data.split('\n');
+        try {
+          for(var i = 0; i < csvArr.length; i++) {
+            if( i !== 0) {
+              var row = (csvArr[i].split('"').join('')).split(',');
+              csvData.push([row[0].trim(), row[1].trim()]);
+            }
+          }
+        } catch(e) {
+          console.error(e);
+        }
+        $table.DataTable({ 
+          data: csvData,
+          "pagingType": "full_numbers",
+          "language": {
+            "paginate": {
+              "previous": "<i class='fa fa-angle-left' aria-hidden='true'></i>",
+              "next": "<i class='fa fa-angle-right' aria-hidden='true'></i>"
+            },
+            "lengthMenu": '{{show}} '+
+              '<select class="select-length">'+
+              '<option value="10">10</option>'+
+              '<option value="25">25</option>'+
+              '<option value="50">50</option>'+
+              '<option value="100">100</option>'+
+              '</select>'+
+              '<ul class="ul-length">'+
+              '<li data-value="10" class="active">10</li>'+
+              '<li data-value="25">25</li>'+
+              '<li data-value="50">50</li>'+
+              '<li data-value="100">100</li>'+
+              '</ul>'+
+              ' {{m_per_page}}',
+              "search": "<span>Search</span>",
+              "info": "{{info}}",
+              "infoFiltered":   "",
+          },
+          "dom": '<"search-box"f><"tab-top"<"left"l><"right"i>><"table-box"t><"table-pag"p>'
+        });
+      });
+    });
+
+  </script>
+  <script>
+      $(document).on('click', '.ul-length li', function() {
+       var liVal = $(this).attr('data-value');
+           jQuery('.select-length').val(liVal).trigger('change');
+           jQuery('.ul-length li').removeClass('active');
+           jQuery(this).addClass('active');
+     });
+  </script>
+{% endunless %}
+
+{% schema %}
+{
+  	"name": "Patents CSV",
+  	"settings": [  
+  		{
+  			"type": "text",
+  			"id": "csv_url",
+  			"label": "CSV URL"
+  		}
+  	]
+}
+{% endschema %}

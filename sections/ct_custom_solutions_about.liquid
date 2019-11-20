@@ -1,0 +1,71 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% if section.settings.about_show == 'yes' %}
+  <div class="custom-page-about-container">
+    <div class="custom-page-about-cards">
+      {% for block in section.blocks %}
+      <div class="custom-page-about-card">
+        <img src="{{ block.settings.image.src | img_url: '1024x' }}">
+        <span class="custom-page-about-card-title">{{ block.settings.title }}</span>
+        <span class="custom-page-about-card-content">{{ block.settings.content }}</span>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+  {
+    "name": "Custom Solutions About",
+    "class": "section-custom-solutions-about",
+    "settings": [
+      {
+        "type": "select",
+        "id": "about_show",
+        "label": "Show About",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "about",
+        "name": "About",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Custom Project Managers"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>The Peerless-AV® Custom Solutions Team provides a single point of contact who oversees the project every step of the way, ensuring an ideal solution and timely delivery of your custom project.</p>"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Custom Solutions About",
+        "settings": {
+          "about_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

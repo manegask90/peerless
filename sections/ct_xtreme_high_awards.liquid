@@ -1,0 +1,61 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="xtreme-high-awards">
+  <div class="container">
+    <div class="xtreme-high-awards-inner">
+      <div class="xtreme-highAwards-awards-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{section.settings.desc}}</div>
+      </div>
+        <ul class="xtreme-high-awards-list">
+          {%- for block in section.blocks -%}
+            <li class="list-item">
+              <div class="img-wrap">
+                <img src="{{block.settings.image  | img_url: 'master' }}" alt="{{block.settings.image.alt}}" />
+              </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Xtreme High Awards",
+    "class": "section-xtreme-high-awards",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Award-Winning Outdoor Displays"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "Awards image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Xtreme High Awards",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

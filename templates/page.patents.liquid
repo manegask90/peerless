@@ -1,0 +1,14 @@
+{{ 'dataTable.js' | asset_url | script_tag }}
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% section 'patents_template' %}
+<style>
+  .lang-fr .patents-wrap .search-box:before {
+    content: 'Modèle (contenu)';
+  }
+  .lang-ger .patents-wrap .search-box:before {
+    content: 'Modell (Enthält)';
+  }
+  .lang-es .patents-wrap .search-box:before {
+    content: 'Modelo (contiene)';
+  }
+</style>

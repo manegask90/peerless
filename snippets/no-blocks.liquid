@@ -1,0 +1,3 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="placeholder-noblocks">
+  {% comment %}ly_i18n_replace_for_[ 'homepage.onboarding.no_content' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'homepage.onboarding.no_content' | t }}{% endcapture %}{% include 'ly-static-string' with '13490506' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+</div>

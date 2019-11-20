@@ -1,0 +1,104 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="top-bar-contact-dropdown" id="us-customer">
+    {% for block in section.blocks %}
+      {% if block.type == 'america_contacts' %}
+        <span class="top-bar-contact-dropdown-header">
+          {{ block.settings.country }}
+        </span>
+        <span class="top-bar-contact-dropdown-num">
+          {{ block.settings.phone }}<br>{{ block.settings.email }}
+        </span>
+      {% endif %}
+    {% endfor %}
+    <span class="top-bar-contact-dropdown-header">
+      <ly-as-13487232>NORTH AMERICA</ly-as-13487232>
+    </span>
+    <span class="top-bar-contact-dropdown-num">
+      630-375-5100<br>800-865-2112<br><ly-as-13487233>info@peerless-av.com</ly-as-13487233>
+    </span>
+    <a class="btn" href="/pages/sales-contacts"><ly-as-13487234>CONTACT FORM</ly-as-13487234></a>
+</div>
+
+
+<div class="top-bar-contact-dropdown" id="non-us-customer">
+    {% for block in section.blocks %}
+      {% if block.type == 'world_contacts' %}
+        <span class="top-bar-contact-dropdown-header">
+          {{ block.settings.country }}
+        </span>
+        <span class="top-bar-contact-dropdown-num">
+          {{ block.settings.phone }}<br>{{ block.settings.email }}
+        </span>
+      {% endif %}
+    {% endfor %}
+      {% if settings.site  == 'US' %}
+        <a class="btn" href="/pages/sales-contacts"><ly-as-13487234>CONTACT FORM</ly-as-13487234></a>
+      {% else %}
+        <a class="btn" href="/pages/customer-care-contact"><ly-as-13487234>CONTACT FORM</ly-as-13487234></a>
+      {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Contact us dropdown",
+    "blocks": [
+      {
+        "type": "america_contacts",
+        "name": "America Contacts",
+        "settings": [
+          {
+            "type": "text",
+            "id": "country",
+            "label": "Country"
+          },
+          {
+            "type": "text",
+            "id": "country_de",
+            "label": "Country DE"
+          },
+          {
+            "type": "text",
+            "id": "country_es",
+            "label": "Country ES"
+          },
+          {
+            "type": "text",
+            "id": "country_fr",
+            "label": "Country FR"
+          },
+          {
+            "type": "text",
+            "id": "email",
+            "label": "Email"
+          },
+          {
+            "type": "html",
+            "id": "phone",
+            "label": "Phones"
+          }
+        ]
+      },
+      {
+        "type": "world_contacts",
+        "name": "World Contacts",
+        "settings": [
+          {
+            "type": "text",
+            "id": "country",
+            "label": "Country"
+          },
+          {
+            "type": "text",
+            "id": "email",
+            "label": "Email"
+          },
+          {
+            "type": "html",
+            "id": "phone",
+            "label": "Phones"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,43 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="faq-container container">
+  <div class="shop-loop-head">
+    <nav class="shopify-breadcrumb faq-nav">
+      <a href="/pages/faq">FAQs</a>
+      <span class="breadcrumb-last">{% comment %}ly_code_replace_for_[page.title]_begin{% endcomment %}{% include 'ly-title' with page %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</span>
+    </nav>
+    <h2 class="text-center page-mount-buying-faq header-faq">{% comment %}ly_code_replace_for_[page.title]_begin{% endcomment %}{% include 'ly-title' with page %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</h2>
+  </div>
+  {% for block in section.blocks %}
+    <div class="faq-block" id="{{block.settings.title | handleize }}">{%- if block.settings.title == '' -%}
+        <div class="faq-title hide-title" id="mount-title">
+      {%- else -%}
+        <div class="faq-title" id="mount-title">
+      {%- endif -%}{{block.settings.title}}</div>
+      <div class="faq-content">{{block.settings.content}}</div>
+    </div>
+  {% endfor%}
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Mount Buying Guide",
+  "blocks": [
+    {
+      "type": "faq_block",
+      "name": "Faq Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type":"textarea",
+          "id": "content",
+          "label": "Block content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

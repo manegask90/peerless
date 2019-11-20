@@ -1,0 +1,52 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="led-mounting-top-banner" style="background-image:url({{ section.settings.back_img.src | img_url: 'master' }});">
+  <div class="led-mounting-top-banner-inner">
+    <img src="{{ section.settings.overlay_img.src | img_url: '1440x' }}">
+    <h1 class="lead-mounting-top-banner-title">{{ section.settings.title }}</h1>
+    <div class="lead-mounting-top-banner-sub-title">{{ section.settings.subtitle }}</div>
+    <div class="lead-mounting-top-banner-under-title">{{ section.settings.undertitle }}</div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Led Mounting Top Banner",
+    "class": "section-led-mounting-top-banner",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "back_img",
+        "label": "Background Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "overlay_img",
+        "label": "Seamless Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Seamless"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Sub Title",
+        "default": "by Peerless-AV®"
+      },
+      {
+        "type": "text",
+        "id": "undertitle",
+        "label": "Under Title",
+        "default": "LED Video Wall Integration"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Led Mounting Top Banner",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

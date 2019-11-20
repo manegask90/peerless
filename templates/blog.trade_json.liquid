@@ -1,0 +1,51 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% layout none %}
+[{%- paginate blogs.trade-show.articles by blogs.trade-show.articles_count -%}
+  {%- for article in blogs.trade-show.articles -%}
+    {%- capture content-%}
+      {%- if article.metafields[language].content -%}
+        {{article.metafields[language].content}}
+      {%- else -%}
+        {{article.content}}
+      {%- endif -%}
+    {%- endcapture -%}
+    {%- capture title-%}
+      {%- if article.metafields[language].title -%}
+        {{article.metafields[language].title}}
+      {%- else -%}
+        {{article.title}}
+      {%- endif -%}
+    {%- endcapture -%}
+    {  
+      "article":{ 
+        "id" : {{ article.id | json }},
+        "lang": {{language | json }},
+        "body_html" : {{ content | json }},
+        "handle": {{ article.handle | json }},
+        "title" : {{ title | json }},
+        "brand" : {{ article.metafields.accentuate.trade_brand | json }},
+        "url" : {{ article.url | json }},
+        "image" : {{ article.image.src | img_url: '500x' | json }},
+        "webinar_date" : {{ article.metafields.accentuate.trade_date | json }},
+        "webinar_time" : {{ article.metafields.accentuate.webinar_enddate | json }},
+        "booth_id" : {{ article.metafields.accentuate.booth_id | json }},
+        "tags" : {{ article.tags | join: ', ' | json }},
+        "author": {{ article.author | json }},
+        "location": {{ article.metafields.accentuate.trade_location | json }},
+        "trade_brochure": {{ article.metafields.accentuate.trade_brochure | json }},
+        "venue_map": {{ article.metafields.accentuate.venue_map | json }},
+        "marketing_brochure": {{ article.metafields.accentuate.marketing_brochure | json }},
+        "link_to_post": {{ article.metafields.accentuate.link_to_post | json }},
+        "images": [
+          {%- for image in article.metafields.accentuate.image -%}
+          {
+            "url": {{image | json }},
+            "title": {{article.metafields.accentuate.image_title[forloop.index0] | json }},
+            "description": {{article.metafields.accentuate.image_desc[forloop.index0] | json }}
+          }{%- unless forloop.last == true -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+    }{%- unless forloop.last == true -%},{%- endunless -%}
+  {%- endfor -%}
+{%- endpaginate -%}]

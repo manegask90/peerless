@@ -1,0 +1,349 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<!-- Purchasing permissions -->
+{%- include 'purchasing' -%}
+
+{% assign url_last_part = canonical_url | split: '/' | last %}
+
+{%-if settings.use_wishlist -%}
+  {%- assign NITRO_WISHLIST_ID = '' | split:' '-%}
+  {%- assign NITRO_WISHLIST_HANDLE = '' | split:' '-%}
+  {%- assign NITRO_WISHLIST_COUNT = 0 -%}
+  {%- assign NITRO_WISHLIST = '' -%}
+  {%- if customer-%}
+  	{%- if customer.metafields.nitro_wishlist.products and customer.metafields.nitro_wishlist.products != blank -%}
+  		{%- assign NITRO_WISHLIST_HANDLE = customer.metafields.nitro_wishlist.products | strip | split: '|' | last | split: ' ' -%}
+				{%- assign NITRO_WISHLIST_COUNT = NITRO_WISHLIST_HANDLE.size  -%}
+				{%- assign NITRO_WISHLIST = customer.metafields.nitro_wishlist.products | strip | split: '|' | first -%}
+  	{%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+{%- assign stt_limit = 20 -%}
+{%- assign cart_title = page.title | capitalize -%}
+
+{% if url_last_part == 'ajax' %}
+  {% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+  {% capture ly_content %}
+    {% layout none %}
+    
+    {%- assign index = NITRO_WISHLIST_HANDLE.size -%}
+    {%- if index <= stt_limit -%}
+      {%- for wishlist in NITRO_WISHLIST_HANDLE -%}
+        {%- assign product = all_products[wishlist]-%}
+        {%- if product == blank -%} {%- continue -%}{%- endif-%}
+        {%- assign index = index | plus:1 -%}
+        {%- assign current_variant = product.selected_or_first_available_variant -%}
+        {%- assign image = current_variant.featured_image | default: product.featured_image -%}
+        {%- assign product_image_size = image.width | append: 'x' -%}
+        {%- assign image_size = '219x' -%}
+        {%- assign on_sale = false -%}
+        {%- if current_variant.compare_at_price > current_variant.price -%}
+          {%- unless product.tags contains 'notsale'-%}
+            {%- assign on_sale = true -%}
+          {%-endunless-%}
+        {%- endif -%}
+        {%- assign sold_out = true -%}
+        {%- if current_variant.available  -%}
+          {%- assign sold_out = false -%}
+        {%- endif -%}
+        {%- if product.metafields.external and settings.catalog_mode == false -%}
+          {%- assign check = product.metafields.external | first | last -%}
+          {%- if check contains 'https:' or check  contains 'http:' -%}{%- assign check_external = true -%}{%-else-%}{%- assign check_external = false -%}{%-endif-%}
+        {%-endif-%}
+        {% for tag in product.tags %}
+          {% if tag contains 'Discontinued' or tag contains 'discontinued' %}
+            {%- assign prod_discontinued_tag = true -%}
+          {% endif %}
+        {% endfor %}
+        <tr id="yith-wcwl-row-{{product.id}}" data-row-id="{{product.id}}">
+            <td class="product-remove">
+              <div>
+                  <a href="javascript:void(0);" class="remove remove_popup" title="Remove this product">×</a>
+              </div>
+              <div class="del_popup_wrapper">
+                  <div class="del_popup_inner">
+                    <p><ly-as-13492738>Are you sure you want to remove this product from your saved products?</ly-as-13492738></p>
+                      <a href="javascript:void(0);" class="del_popup_cancel"><ly-as-13492739>No</ly-as-13492739></a>
+                      <a href="javascript:void(0);" class="del_popup_remove remove remove_from_wishlist" title="Remove this product" data-action="remove" data-id="{{product.id}}" data-email="{{customer.email}}" data-customer_id="{{customer.id}}" data-handle="{{product.handle}}"><ly-as-13492740>Delete</ly-as-13492740></a>
+                  </div>
+              </div>
+            </td>
+            <td class="product-thumbnail">
+              <a href="{{ product.url | within: product.collections.last }}">
+                  <img width="219" height="280" src="{%-include 'gl_image_format',src: image , size: image_size %}" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" alt="{{image.alt | strip_html}}"  
+                    srcset="{%-include 'gl_image_format',src: image , size: image_size %} 219w, 
+                      {%-include 'gl_image_format',src: image , size: '235x300' %} 235w, 
+                      {%-include 'gl_image_format',src: image , size: '768x980' %} 768w, 
+                      {%-include 'gl_image_format',src: image , size: '803x1024' %} 803w, 
+                      {%-include 'gl_image_format',src: image , size: '266x340' %} 266w, 
+                      {%-include 'gl_image_format',src: image , size: '219x280' %} 219w, 
+                      {%-include 'gl_image_format',src: image , size: '526x671' %} 526w, 
+                      {%-include 'gl_image_format',src: image , size: product_image_size %} {{image.width}}w" sizes="(max-width: 219px) 100vw, 219px">                            
+              </a>
+            </td>
+            <td class="product-name">
+              <a href="{{ product.url | within: product.collections.last }}">{% comment %}ly_code_replace_for_[ product.title ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+            </td>
+            <td class="product-model-no text-left">
+              {{ product.selected_or_first_available_variant.sku }}                       
+            </td>
+            {%- if settings.catalog_mode == false -%}
+              {% if prod_discontinued_tag == true %}
+                <div class="discontinued_prod_txt {{both_tags}}"><ly-as-13492741>Discontinued</ly-as-13492741></div>                   
+              {% endif %}
+            <td class="product-add-to-cart text-right">
+              {%- if purchasing == true linklists[product.handle] == empty or linklists[product.handle] == "" -%}
+                  {%- if product.variants.size > 1-%}
+                    <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" class="button add_to_cart button alt {% if prod_discontinued_tag == true %}disabled{% endif %}">
+                      {% if prod_discontinued_tag == true %}
+                      <ly-as-13492741>Discontinued</ly-as-13492741>
+                      {% else %}
+                      {% comment %}ly_i18n_replace_for_['products.product.select_option'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.select_option'|t}}{% endcapture %}{% include 'ly-static-string' with '13492745' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+                      {% endif %}
+                  </a>                            
+                  {%- elsif check_external == true -%}
+                    <a href="{{ check }}" rel="nofollow" class="button add_to_cart button alt">{% comment %}ly_code_replace_for_[ product.metafields.external | first | first ]_begin{% endcomment %}{{ ly_translation | first | first }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+                  {%- else -%}
+                    {%- if sold_out -%}
+                        <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" class="button add_to_cart button alt">{% comment %}ly_i18n_replace_for_['products.product.read_more'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.read_more'|t}}{% endcapture %}{% include 'ly-static-string' with '13492746' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                    {%- else -%}
+                        <div class="shopify_quantity_wrapper">
+                          <div class="shopify_quantity quantity">
+                            <input type="button" value="-" class="minus">
+                            <input type="number" step="1" min="1" max="" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric">
+                            <input type="button" value="+" class="plus">
+                          </div>
+                          {%- unless settings.regional_site_enabled -%}
+                            <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" data-pid="{{ product.variants.first.id}}" class="button add_to_cart_button add_to_cart button alt ajax_add_to_cart">{% comment %}ly_i18n_replace_for_['products.product.add_to_cart'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.add_to_cart'|t}}{% endcapture %}{% include 'ly-static-string' with '13492747' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                            <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" data-pid="{{ product.variants.first.id}}" class="button add_to_cart_button add_to_cart button alt ajax_add_to_cart" style="display: none !important;">{% comment %}ly_i18n_replace_for_['products.product.add_to_cart'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.add_to_cart'|t}}{% endcapture %}{% include 'ly-static-string' with '13492747' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                          {%- endunless -%}
+                        </div>
+                        {%- unless settings.regional_site_enabled -%}
+                          <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" data-pid="{{ product.variants.first.id}}" class="button add_to_cart quantity_open_btn">{% comment %}ly_i18n_replace_for_['products.product.add_to_cart'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.add_to_cart'|t}}{% endcapture %}{% include 'ly-static-string' with '13492747' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                        {%- endunless -%}
+                    {%- endif -%}
+                  {%- endif -%}
+              {%- endif -%}
+              <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" class="button add_to_cart button alt">{% comment %}ly_i18n_replace_for_['products.product.view'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.view'|t}}{% endcapture %}{% include 'ly-static-string' with '13492748' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+            </td>
+            {%- endif -%} 
+        </tr>
+      {%- endfor-%}
+    {%- else -%}
+      {%- if canonical_url contains '?q=1' -%}
+        {%- assign limit_offset = 0 -%}
+        {%- assign number_text = 1 -%}
+      {%- elsif canonical_url contains '?q=' -%}
+        {%- assign number_text = canonical_url | split:'?q=' | last | plus:0 -%}
+        {%- assign limit_offset = stt_limit | times:number_text | minus:stt_limit -%}
+      {%- else -%}
+        {%- assign number_text = 1 -%}
+        {%- assign limit_offset = 0 -%}
+      {%- endif -%}
+      {%- assign ck_index = 0 -%}
+
+      {%- for wishlist in NITRO_WISHLIST_HANDLE offset:limit_offset -%}
+        {%- assign product = all_products[wishlist]-%}
+        {%- if product != blank -%} 
+          {%- assign current_variant = product.selected_or_first_available_variant -%}
+          {%- assign image = current_variant.featured_image | default: product.featured_image -%}
+          {%- assign product_image_size = image.width | append: 'x' -%}
+          {%- assign image_size = '219x' -%}
+          {%- assign on_sale = false -%}
+          {%- if current_variant.compare_at_price > current_variant.price -%}
+            {%- unless product.tags contains 'notsale'-%}
+              {%- assign on_sale = true -%}
+            {%-endunless-%}
+          {%- endif -%}
+          {%- assign sold_out = true -%}
+          {%- if current_variant.available  -%}
+            {%- assign sold_out = false -%}
+          {%- endif -%}
+          {%- if product.metafields.external and settings.catalog_mode == false -%}
+            {%- assign check = product.metafields.external | first | last -%}
+            {%- if check contains 'https:' or check  contains 'http:' -%}
+              {%- assign check_external = true -%}
+            {%-else-%}
+              {%- assign check_external = false -%}
+            {%-endif-%}
+          {%-endif-%}
+            <tr id="yith-wcwl-row-{{product.id}}" data-row-id="{{product.id}}">
+              <td class="product-remove">
+                <div>
+                  <a href="javascript:void(0);" class="remove remove_from_wishlist" title="Remove this product" data-action="remove" data-id="{{product.id}}" data-email="{{customer.email}}" data-customer_id="{{customer.id}}" data-handle="{{product.handle}}">×</a>
+                </div>
+              </td>
+              <td class="product-thumbnail">
+                <a href="{{ product.url | within: product.collections.last }}">
+                  <img width="219" height="280" src="{%-include 'gl_image_format',src: image , size: image_size %}" class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image" alt="{{image.alt}}"  
+                    srcset="{%-include 'gl_image_format',src: image , size: image_size %} 219w, 
+                    {%-include 'gl_image_format',src: image , size: '235x300' %} 235w, 
+                    {%-include 'gl_image_format',src: image , size: '768x980' %} 768w, 
+                    {%-include 'gl_image_format',src: image , size: '803x1024' %} 803w, 
+                    {%-include 'gl_image_format',src: image , size: '266x340' %} 266w, 
+                    {%-include 'gl_image_format',src: image , size: '219x280' %} 219w, 
+                    {%-include 'gl_image_format',src: image , size: '526x671' %} 526w, 
+                    {%-include 'gl_image_format',src: image , size: product_image_size %} {{image.width}}w" sizes="(max-width: 219px) 100vw, 219px">                            
+                </a>
+              </td>
+              <td class="product-name">
+                <a href="{{ product.url | within: product.collections.last }}">{% comment %}ly_code_replace_for_[ product.title ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+              </td>
+              <td class="product-price">
+                {%- if linklists[product.handle] == empty or linklists[product.handle] == "" -%}
+                  {%- if product.price_varies -%}
+                    <span class="shopify-Price-amount amount">{{ product.price_min | money }}</span> – <span class="shopify-Price-amount amount">{{ product.price_max | money }}</span>
+                  {%- elsif on_sale -%}
+                    <del id="old-product-price"><span class="shopify-Price-amount amount">{{current_variant.compare_at_price | money }}</span></del> <ins id="product-price"><span class="shopify-Price-amount amount">{{ current_variant.price | money }}</span></ins>
+                  {%- else -%}
+                    <span class="shopify-Price-amount amount">{{ current_variant.price | money }}</span> 
+                  {%- endif -%}
+                {%- else -%}
+                  {%- if on_sale -%}
+                    <span class="shopify-Price-amount amount">{{ current_variant.price | money }}</span> – <span class="shopify-Price-amount amount">{{ current_variant.compare_at_price | money }}</span>
+                  {%- else -%}
+                    <span class="shopify-Price-amount amount">{{ current_variant.price | money }}</span>
+                  {%- endif -%}
+                {%- endif -%}                           
+              </td>
+              <td class="product-stock-status">
+                {%- if sold_out == false -%}
+                  <span class="wishlist-in-stock">{% comment %}ly_i18n_replace_for_[ 'products.product.in_stock' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.in_stock' | t }}{% endcapture %}{% include 'ly-static-string' with '13492749' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span> 
+                {%- else -%}
+                  <span class="wishlist-out-of-stock">{% comment %}ly_i18n_replace_for_[ 'products.product.outofstock' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.outofstock' | t }}{% endcapture %}{% include 'ly-static-string' with '13492750' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span> 
+                {%- endif -%}                           
+              </td>
+              {%- if settings.catalog_mode == false -%}
+                <td class="product-add-to-cart">
+                  {%- unless settings.regional_site_enabled -%}
+                      {%- if linklists[product.handle] == empty or linklists[product.handle] == "" -%}
+                        {%- if product.variants.size > 1-%}
+                          <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" class="button add_to_cart button alt">{% comment %}ly_i18n_replace_for_['products.product.select_option'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.select_option'|t}}{% endcapture %}{% include 'ly-static-string' with '13492745' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>                            
+                        {%- elsif check_external == true -%}
+                          <a href="{{ check }}" rel="nofollow" class="button add_to_cart button alt">{% comment %}ly_code_replace_for_[ product.metafields.external | first | first ]_begin{% endcomment %}{{ ly_translation | first | first }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+                        {%- else -%}
+                          {%- if sold_out -%}
+                              <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" class="button add_to_cart button alt">{% comment %}ly_i18n_replace_for_['products.product.read_more'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.read_more'|t}}{% endcapture %}{% include 'ly-static-string' with '13492746' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                          {%- else -%}
+                              <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" data-pid="{{ product.variants.first.id}}" class="button add_to_cart_button add_to_cart button alt ajax_add_to_cart">{% comment %}ly_i18n_replace_for_['products.product.add_to_cart'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.add_to_cart'|t}}{% endcapture %}{% include 'ly-static-string' with '13492747' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                          {%- endif -%}
+                        {%- endif -%}
+                    {%- else -%}
+                        <a href="{{ product.url | within: product.collections.last }}" rel="nofollow" class="button add_to_cart button alt">{% comment %}ly_i18n_replace_for_['products.product.view'|t]_begin{% endcomment %}{% capture ly_template %}{{'products.product.view'|t}}{% endcapture %}{% include 'ly-static-string' with '13492748' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                    {%- endif -%}
+                  {%- endunless -%}
+                </td>
+              {%- endif -%} 
+            </tr>
+          {%- endif-%}
+          {%- assign ck_index = ck_index | plus:1 -%}
+          {%- if ck_index >= stt_limit -%}{%- break -%}{%- endif -%}
+      {%- endfor-%}
+    {%- endif -%}
+    {% comment %}ly_static_code_begin{% endcomment %}{% endcapture %}{% include 'ly-static' with ly_content %}{% comment %}ly_static_code_end{% endcomment %}
+{% else %}
+
+  {%- assign title = 'customer.account.title' | t -%}
+
+  {% comment %} {{customer.metafields.nitro_wishlist.products}} {% endcomment %}
+  {% comment %} {{NITRO_WISHLIST_HANDLE}} {% endcomment %}
+
+  <div class="main-page-wrapper account-wrapper">
+    {%- include 'page_heading', langify_title:title -%}
+    <!-- MAIN CONTENT AREA -->
+    <div class="container">
+      <div class="row">
+        <div class="site-content col-sm-12" role="main">
+          <article id="post-9" class="post-9 page type-page status-publish hentry">
+            <div class="entry-content">
+              <div class="shopify">
+                {% include 'account-nav' %}
+                <!-- .basel-my-account-sidebar -->
+                <div class="shopify-MyAccount-content">
+                  <div id="yith-wcwl-messages"></div>
+                  <!-- TITLE -->
+                  <p class="page-title">{% comment %}ly_i18n_replace_for_[ 'customer.account.wishlist' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.wishlist' | t }}{% endcapture %}{% include 'ly-static-string' with '13492743' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                  <!-- WISHLIST TABLE -->
+                  <div class="responsive-table">
+                    {%- if customer -%}
+                      <table class="shop_table cart wishlist_table gl_respon_table">
+                        <thead>
+                          <tr>
+                            <th class="product-remove"></th>
+                            <th class="product-thumbnail"></th>
+                            <th class="product-name"><span class="nobr">{% comment %}ly_i18n_replace_for_[ 'products.product.product-name' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.product-name' | t }}{% endcapture %}{% include 'ly-static-string' with '13492744' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span></th>
+                            <th class="product-model-no text-left"> <span class="nobr"><ly-as-13492737>Model Number</ly-as-13492737></span> </th>
+                            {%- if settings.catalog_mode == false -%}<th class="product-add-to-cart"></th>{%- endif -%}
+                          </tr>
+                        </thead>
+                         <tbody>
+                          {%- if NITRO_WISHLIST_COUNT > 0 -%}
+                            <tr>
+                              <td colspan="6" class="loading">
+                                <script>
+                                  document.addEventListener('DOMContentLoaded', function () {
+                                    $.ajax({
+                                      url: window.location.pathname + '/ajax',
+                                      method: 'GET',
+                                      success: function (response) {
+                                        $('.shop_table tbody .loading').parent().remove();
+                                        $('.shop_table tbody').append(response);
+                                      }
+                                    });
+                                  });
+                                </script>
+                              </td>
+                            </tr>
+                          {%- else -%}
+                            <tr>
+                              <td colspan="6" class="wishlist-empty">{% comment %}ly_i18n_replace_for_[ 'products.wishlist.no_products_wishlist' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.wishlist.no_products_wishlist' | t }}{% endcapture %}{% include 'ly-static-string' with '13492751' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</td>                     
+                            </tr>
+                          {%- endif -%}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <td colspan="6">
+                            </td>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    {%- else -%}
+                      {%- comment-%} <ly-as-13492742>don't have product in wishlist</ly-as-13492742> {%- endcomment-%}
+                        <p class="text-center">{% comment %}ly_i18n_replace_for_[ 'products.wishlist.info_wishlist' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.wishlist.info_wishlist' | t }}{% endcapture %}{% include 'ly-static-string' with '13492752' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                    {%- endif -%}
+                  </div>
+                {%- if index > stt_limit -%}
+                  {%- assign num_di = index | times: 1.0 | divided_by:stt_limit -%}
+                  {%- assign num_ceil = num_di | ceil -%}
+                  <div class="products-footer hidden"><nav class="shopify-pagination">
+                    <ul class="page-numbers">
+                      {% for i in (1..num_ceil) %}
+                      {% if number_text != i %}
+                      <li>
+                        <a class="page-numbers" href="{{page.url}}?q={{i}}">{{ i }}</a>
+                      </li>
+                      {% else %}
+                      <li><span class="page-numbers current">{{ i }}</span></li>
+                      {% endif %}
+                      {% endfor %}
+                    </ul>
+                    </nav>
+                  </div>
+                {%- endif -%}  
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div><!-- end container -->
+  </div><!-- .main-page-wrapper -->
+
+  {% comment %}ly_asset_replace_for_[ 'account-scripts.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'account-scripts.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+  <style type="text/css">
+    .website-wrapper,
+    .main-page-wrapper {
+      background: #f3f3f3;
+    }
+  </style>
+{% endif%}

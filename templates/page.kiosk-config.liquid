@@ -1,0 +1,24 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="kiosk-builder-wrapper">
+	<img class="kiosk-builder-stroke-1" src="{{ 'kiosk_builder_stroke_1.png' | file_url }}">
+	<div class="kiosk-builder-stroke-2">
+		<img class="" src="{{ 'kiosk_builder_stroke_2.png' | file_url }}">
+	</div>
+	<img class="kiosk-builder-stroke-3" src="{{ 'kiosk_builder_stroke_3.png' | file_url }}">
+	<div class="kiosk-builder-form">
+		<p class="kiosk-builder-form-header"><strong><ly-as-13491840>Kiosk</ly-as-13491840></strong><ly-as-13491841>Builder</ly-as-13491841></span><span class="kiosk-builder-form-header-tm">™</p>
+		<p class="kiosk-builder-form-build"><ly-as-13491842>Build a custom Kiosk</ly-as-13491842></p>
+		<p class="kiosk-builder-form-or"><ly-as-13491843>or</ly-as-13491843></p>
+		<div class="kiosk-builder-form-btns">
+			<input class="kiosk-builder-form-input" type="text" placeholder="Browse my configurations">
+			<input class="kiosk-builder-form-go" type="button" value="Go">
+		</div>
+	</div>
+	<img class="kiosk-builder-red-shape" src="{{ 'kiosk_builder_red_shape.png' | file_url }}">
+</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.main-header').addClass('kiosk-header');
+    $('.header-wrap').addClass('kiosk-header');
+	})
+</script>

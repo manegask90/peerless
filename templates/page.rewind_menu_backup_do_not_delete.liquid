@@ -1,0 +1,17 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}          <div class="page-width">
+            <div class="grid">
+              <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+                <div class="section-header text-center">
+                  <h1>{% comment %}ly_code_replace_for_[ page.title ]_begin{% endcomment %}{% include 'ly-title' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+                </div>
+
+                <div class="rte">
+                  {% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+                </div>
+
+                <div style="display: none">
+                  {% include 'rewind_menu_backup_do_not_delete' %}
+                </div>
+              </div>
+            </div>
+          </div>

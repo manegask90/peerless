@@ -1,0 +1,57 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="outdoor-enter-awards">
+  <div class="container">
+    <div class="outdoor-enter-awards-inner">
+      <div class="outdoor-enterAwards-awards-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{section.settings.desc}}</div>
+      </div>
+        <div class="img-wrap">
+        {%- for block in section.blocks -%}
+                <img src="{{block.settings.image  | img_url: 'master' }}" alt="{{block.settings.image.alt}}" />
+        {%- endfor -%}
+        </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Outdoor Enter Awards",
+    "class": "section-outdoor-enter-awards",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "AWARD-WINNING OUTDOOR TVs"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "Awards",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Outdoor Enter Awards",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

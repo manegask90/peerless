@@ -1,0 +1,13 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% comment %}
+  DO NOT MODIFY THIS FILE DIRECTLY. THIS FILE WILL BE OVERWRITTEN.
+  YOU CAN MODIFY THE LIQUID CODE FOR THIS CUSTOM FIELD HERE:
+  https://customfields.bonify.io/dashboard/peerless-demo.myshopify.com/products/edit-field/38213
+{% endcomment %}
+{% if product.metafields.custom_fields["warranty"] != blank %}
+  <div class="custom-field custom-field__warranty custom-field__type--text">
+    <h3 class="custom-field--title"><ly-as-13490063>warranty</ly-as-13490063></h3>
+    <div class="custom-field--value">
+      {{ product.metafields.custom_fields["warranty"] }}
+    </div>
+  </div>
+{% endif %}

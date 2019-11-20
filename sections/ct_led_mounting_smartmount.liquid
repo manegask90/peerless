@@ -1,0 +1,202 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="led-mounting-smartmount">
+  <div class="led-mounting-smartmount-inner">
+    <div class="container">
+      <div class="led-mounting-smartmount-top">
+        <img class="logo" src="{{section.settings.logo | img_url: 'master'}}" alt="{{section.settings.logo.alt}}">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{section.settings.desc}}</div>
+      </div>
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <div class="led-mounting-smartmount-list">
+        {%- for block in section.blocks -%}
+          <div class="list-item">
+            <div class="title_bg">{{block.settings.title_bg}}</div>
+            <div class="container">
+              <div class="row">
+                <div class="img-wrap col-md-7 col-xs-12">
+                  <img src="{{block.settings.image  | img_url: 'master' }}" alt="{{block.settings.image.alt}}" />
+                  {%- if block.settings.tooltip != blank and block.settings.tooltip_desc != blank -%}
+                    <div class="tooltip tooltip_1">
+                      <div class="pulse-icon">
+                        <span class="center"></span>
+                        <span class="pulse-owerlay"></span>
+                      </div>
+                      <div class="tooltip-inner">
+                        <div class="title">{{block.settings.tooltip}}</div>
+                        <div class="content">{{block.settings.tooltip_desc}}</div>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.tooltip_2 != blank and block.settings.tooltip_desc_2 != blank -%}
+                    <div class="tooltip tooltip_2">
+                      <div class="pulse-icon">
+                        <span class="center"></span>
+                        <span class="pulse-owerlay"></span>
+                      </div>
+                      <div class="tooltip-inner">
+                        <div class="title">{{block.settings.tooltip_2}}</div>
+                        <div class="content">{{block.settings.tooltip_desc_2}}</div>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                  {%- if block.settings.tooltip_3 != blank and block.settings.tooltip_desc_3 != blank -%}
+                    <div class="tooltip tooltip_3">
+                      <div class="pulse-icon">
+                        <span class="center"></span>
+                        <span class="pulse-owerlay"></span>
+                      </div>
+                      <div class="tooltip-inner">
+                        <div class="title">{{block.settings.tooltip_3}}</div>
+                        <div class="content">{{block.settings.tooltip_desc_3}}</div>
+                      </div>
+                    </div>
+                  {%- endif -%}
+                </div>
+                <div class="content-wrap col-md-5 col-xs-12">
+                  <h5>{{block.settings.title}}
+                      <span>({{block.settings.title_bg}})</span>
+                  </h5>
+                  <div class="desc">{{block.settings.desc}}</div>
+                  <div class="list">{{block.settings.list}}</div>
+                  <div class="btn-wrap">
+                    {%- if block.settings.btnText != blank and block.settings.btnUrl != blank -%}
+                      <a href="{{block.settings.btnUrl}}">{{block.settings.btnText}}</a>
+                    {%- endif -%}
+                    {%- if block.settings.btnText2 != blank and block.settings.btnUrl2 != blank -%}
+                      <a href="{{block.settings.btnUrl2}}">{{block.settings.btnText2}}</a>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Led Video Smartmount",
+    "class": "section-led-mounting-smartmount",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Smartmont logo"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Our Partners"
+      },
+      {
+        "type": "textarea",
+        "id": "desc",
+        "label": "Box Decsription",
+        "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "Smartmount box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title_bg",
+            "label": "Title in background"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "desc",
+            "label": "Box Decsription",
+            "placeholder": "Enter decsription"
+          },
+          {
+            "type": "html",
+            "id": "list",
+            "label": "List",
+            "placeholder": "Enter decsription"
+          },
+          {
+            "type": "text",
+            "id": "btnText",
+            "label": "Button text",
+            "default": "Configure Fixed Mount"
+          },
+          {
+            "type": "url",
+            "id": "btnUrl",
+            "label": "Button link"
+          },
+          {
+            "type": "text",
+            "id": "btnText2",
+            "label": "Button text 2",
+            "default": "Product Specifications"
+          },
+          {
+            "type": "url",
+            "id": "btnUrl2",
+            "label": "Button link 2"
+          },
+          {
+            "type": "text",
+            "id": "tooltip",
+            "label": "Tooltip 1 title"
+          },
+          {
+            "type": "textarea",
+            "id": "tooltip_desc",
+            "label": "Tooltip 1 Decsription",
+            "placeholder": "Enter Tooltip decsription"
+          },
+          {
+            "type": "text",
+            "id": "tooltip_2",
+            "label": "Tooltip 2 title"
+          },
+          {
+            "type": "textarea",
+            "id": "tooltip_desc_2",
+            "label": "Tooltip 2 Decsription",
+            "placeholder": "Enter Tooltip decsription"
+          },
+          {
+            "type": "text",
+            "id": "tooltip_3",
+            "label": "Tooltip 3 title"
+          },
+          {
+            "type": "textarea",
+            "id": "tooltip_desc_3",
+            "label": "Tooltip 3 Decsription",
+            "placeholder": "Enter Tooltip decsription"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Led Mounting Description Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,111 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="xtreme-high-accessories">
+  <div class="container">
+    <div class="row xtreme-high-accessories-inner">
+      <div class="col-md-12 accessories-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{ section.settings.desc }}</div>
+      </div>
+      <div class="col-md-12 accessories-cards">
+        <div class="accessories-cards-wrap">
+        {%- for block in section.blocks -%}
+          <div class="accessories-card">
+              <a href="{{block.settings.banner_url}}">
+                  <div class="block-inner">
+                  <div class="img-wrap">
+                      <img src="{{block.settings.image  | img_url: '730x' }}" alt="Image" />
+                  </div>
+                  <div class="content-wrap">
+                      <h5 class="app-title">{{block.settings.title}}</h5>
+                  </div>
+                  </div>
+              </a>
+          </div>
+        {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Xtreme High Accessories",
+    "class": "section-xtreme-high-accessories",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Outdoor Accessories"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "url",
+            "id": "banner_url",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Xtreme High Accessories Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}
+
+<script>
+  $(".accessories-cards-wrap .accessories-card:nth-child(4)").hover(function(){
+    var r = $( this ).find(".app-title");
+    {% case language %}
+        {% when 'ly73951' %}
+          r.html('Coming Soon');
+        {% when 'ly73952' %}
+          r.html('Demnächst');
+        {% when 'ly73954' %}
+          r.html('Coming Soon');
+        {% when 'ly77552' %}
+          r.html('Coming Soon');
+    {% endcase %}
+    }, function(){
+   var r = $( this ).find(".app-title");
+    r.html('Ambient Light Sensor Extender');
+  });
+
+
+  $(".accessories-cards-wrap .accessories-card:nth-child(5)").hover(function(){
+    var r = $( this ).find(".app-title");
+    r.html('Coming Soon');
+    }, function(){
+   var r = $( this ).find(".app-title");
+    r.html('Outdoor Display Cover');
+  });
+</script>

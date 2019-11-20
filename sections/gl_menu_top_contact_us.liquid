@@ -1,0 +1,49 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="top-bar-contact-dropdown" id="non-us-customer">
+   {% for block in section.blocks %}
+      {% if block.type == "menu_item_contact" %}
+         <span class="top-bar-contact-dropdown-header">
+            {{ block.settings.title }}
+         </span>
+         <span class="top-bar-contact-dropdown-num">
+            {{ block.settings.tel_num }}
+            <br>{{ block.settings.email_addr }}
+         </span>
+      {% endif %} 
+      <a href="#"><ly-as-13487757>CONTACT FORM</ly-as-13487757></a>
+   {% endfor %}
+   <a href="#"><ly-as-13487757>CONTACT FORM</ly-as-13487757></a>
+</div>
+
+{%- schema -%}
+  {
+    "name": "Top Menu Contact",
+    "class": "top_bar_contact_us",
+    "blocks": [
+      {
+         "type":"menu_item_contact",
+         "name":"Contact",
+         "settings": [
+            {
+               "type": "text",
+               "id": "title",
+               "label": "Contact Header",
+               "default": "UNITED KINGDOM"
+            },
+            {
+               "type": "text",
+               "id": "tel_num",
+               "label": "Telephone Number",
+               "default":"+44 (0) 1923 200 100"
+            },
+            {
+               "type": "text",
+               "id": "email_addr",
+               "label": "Email Address",
+               "default": "sales@peerless-av.co.uk"
+            }
+         ]
+      }
+   ]
+  }
+{% endschema %}

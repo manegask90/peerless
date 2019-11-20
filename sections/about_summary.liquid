@@ -1,0 +1,94 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="about-summary-wrapper">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-sm-7">
+				{% if section.settings.summary_text %}
+					<h4 class="summary-text">{{ section.settings.summary_text }}</h4>
+				{% endif %}
+
+				{% if section.settings.summary_title %}
+					<h2 class="summary-title">{{ section.settings.summary_title }}</h2>
+				{% endif %}
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-12 col-sm-8">
+				{% if section.settings.summary_excerpt %}
+					<div class="summary-excerpt">{{ section.settings.summary_excerpt }}</div>
+				{% endif %}	
+			</div>
+		</div>
+		<div class="row">
+			<div class="summary-content">
+				<div class="col-xs-12 col-sm-7 video_wrap">
+					{% if section.settings.company_front %}
+					<div>{{ section.settings.company_front }}</div>
+					{% endif %}
+				</div>
+				<div class="col-xs-12 col-sm-5 description_btn">
+					{% if section.settings.summary_description %}
+						<div class="summary-description">{{ section.settings.summary_description }}</div>
+					{% endif %}
+
+					{% if section.settings.button_text or section.settings.link_portal %}
+						<a href="/account{% if customer == blank %}/login{% endif %}" class="summary-portal">{% if section.settings.button_text %}{{ section.settings.button_text }}{% else %}<ly-as-13487113>B2B Portal</ly-as-13487113>{% endif %}</a>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+	{
+      	"name": "About Summary",
+      	"settings": [
+         	{
+	            "type": "text",
+	            "id": "summary_text",
+	            "label": "Summray Text"
+         	},
+         	{
+	            "type": "html",
+	            "id": "summary_title",
+	            "label": "Summary Title"
+         	},
+         	{
+	            "type": "textarea",
+	            "id": "summary_excerpt",
+	            "label": "Excerpt"
+         	},
+         	{
+	            "type": "html",
+	            "id": "company_front",
+	            "label": "The front of the Company"
+         	},
+         	{
+	            "type": "textarea",
+	            "id": "summary_description",
+	            "label": "Summary Description"
+         	},
+         	{
+       			"type": "header",
+           		"content": "Portal Button"
+         	},
+         	{
+         		"type": "text",
+         		"id": "button_text",
+         		"label": "Button Text"
+         	},
+         	{
+	            "type": "url",
+	            "id": "link_portal",
+	            "label": "Button Link"
+         	}
+        ],
+        "presets": [
+         	{
+            	"name": "About Summary",
+            	"category": "Content"
+         	}
+      	]
+    }
+{% endschema %}

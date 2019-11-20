@@ -1,0 +1,27 @@
+<div class="out-stock-eu">
+    {%- if prod_low_stock_tag == true -%}
+        <div class="text-box">Low Stock</div>
+        <div class="tooltip-box">
+            <span class="tooltip hidden">This product may currently be out of stock and may require special order, which requires a 6 to 8-week lead time for delivery.</span>
+    {%- endif -%}
+    {%- if prod_special_order_tag == true -%}
+        <div class="text-box">Special Order</div>
+        <div class="tooltip-box">
+            <span class="tooltip hidden">This product is not stocked in your region and requires a special order with a 6 to 8-week lead time for delivery.</span>
+    {%- endif -%}
+    {%- if prod_out_of_stock_tag == true -%}
+        <div class="text-box">Out of Stock</div>
+        <div class="tooltip-box">
+            <span class="tooltip hidden">This product is not currently available in your region.</span>
+    {%- endif -%}
+        <i class="fa fa-info-circle"></i>
+    </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('.tooltip-box i').hover (function(){
+      $( '.tooltip-box .tooltip' ).toggleClass( "hidden" );
+  })
+});
+</script>

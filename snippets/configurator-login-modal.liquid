@@ -1,0 +1,179 @@
+<div class="model transition" id="login">
+  <div class="model-contain two-col transition">
+    <div class="model-header">
+      <h1>Hold on!</h1>
+      <p>It looks like you’re attempting to save your configuration as a guest. In order to save, you must have a
+        registered account with Peerless-AV. </p><br>
+      <p>Please login below or register a new account.</p>
+      <span class="model-close transition">
+        <img alt="" src="{{ 'btn-close.png' | asset_url }}">
+      </span>
+    </div>
+    <div class="model-body">
+      <div class="login-info-box"></div>
+      {%- form 'customer_login',class:'form-group',id:'customer_login_form' -%}
+      <div class="fitem">
+        <div class="full-item">
+          <label class="required" for="userEmail">Email</label>
+          <input class="form-control" id="userEmail" name="customer[email]" type="text" />
+        </div>
+      </div>
+      <div class="fitem">
+        <div class="full-item">
+          <label class="required" for="password">Password</label>
+          <input class="form-control" id="passWord" name="customer[password]" type="password" />
+        </div>
+      </div>
+      <div class="fitem">
+        <button class="btn btn-full" type="submit">Login</button>
+      </div>
+      <div class="fitem text-center">
+        <a class="btn-txt" href="/account/login?redirect=/" target="_blank">Don’t have
+          an account? Register now.</a>
+      </div>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+<script>
+  var langObj = {
+    "English": "ly73951",
+    "Spanish": "ly73954",
+    "French": "ly77552",
+  };
+
+  var model         = model || {};
+  model.id          = '#login';
+  model.form        = $(model.id).find('form');
+  model.email       = model.form.find('#userEmail');
+  model.pass        = model.form.find('#passWord');
+  model.submitBtn   = model.form.find('[type="submit"]');
+  model.closeBtn    = $(model.id).find('.model-close');
+  model.iframeEvent = null;
+
+  model.openModal = function () {
+    $(this.id).addClass('open');
+  }
+
+  model.closeModal = function () {
+    $(this.id).removeClass('open');
+  }
+
+  model.validate = function () {
+    var error = {};
+
+    if (!validateEmail(this.email.val())) error['userEmail'] = 'Please enter valid email';
+    if (this.email.val() == '') error['userEmail'] = 'Email can not be empty';
+    if (this.pass.val() == '') error['passWord'] = 'Password cannot be empty';
+
+    // hide prev errors
+    this.form.find('.alert').remove();
+
+    if (Object.values(error).length) {
+      showLoginErrors(error);
+      return true;
+    }
+    return false;
+  }
+
+  model.submit = function (e) {
+    if (!this.form.hasClass('to-many-request')) {
+      e.preventDefault();
+      var error = this.validate();
+      if (error) return;
+      this.submitBtn.addClass('loading');
+
+      this.loginUser();
+    }
+  }
+
+  model.customerDisabled = function (tempDomResp) {
+    if (tempDomResp.find('#disabled-user').length) {
+      displayErrors(['This account has been disabled. For assistance, contact your administrator.'], '.login-info-box');
+      logoutUser();
+      return true;
+    }
+    return false;
+  }
+
+  model.handleUserLogged = function (response, tempDomResp, data) {
+    if ($(response).find('.header-links .logout').length) {
+      var userLang = null;
+      if (tempDomResp.find('#user_lang_meta').length && tempDomResp.find('#user_lang_meta').attr('content')) {
+        userLang = tempDomResp.find('#user_lang_meta').attr('content');
+      }
+      $('body').append(tempDomResp.find('#userObj'));
+
+      getAceessToken(data, function () {
+        if (langObj[userLang])
+          langify.helper.saveLanguageCustom(langObj[userLang], false);
+
+        if (this.iframeEvent){
+          this.iframeEvent.source.postMessage(JSON.stringify(user), this.iframeEvent.origin);
+        }
+
+        this.closeModal();
+      }.bind(this));
+    }
+  }
+
+  model.handleLoginError = function (response) {
+    if ($(response).find('.login-error').length) {
+      var errors = [];
+      $(response).find('.login-error').each(function () {
+        errors.push($(this).html());
+      });
+      displayErrors(errors, '.login-info-box');
+    }
+  }
+
+  model.handleAjaxError = function (jqXHR, data) {
+    if (jqXHR.status == 429) {
+      storeUserCredential(data); // store credentials in localstorage
+      this.form.addClass('to-many-request').submit(); // this will redirect user to /chalenge link
+    } else {
+      displayErrors(['Error happend. Please contact us.'], '.login-info-box');
+    }
+  }
+
+  model.loginUser = function () {
+    var serilizedData = this.form.serialize(),
+        data = {};
+
+    data.email = this.email.val();
+    data.pass = this.pass.val();
+
+    $.ajax({
+      type: "POST",
+      url: "/account/login",
+      data: serilizedData,
+      success: function (response, status) {
+        var tempDom = $('<div>').append(response);
+        // check if user disabled
+        if (this.customerDisabled(tempDom)) return;
+
+        // get user access token
+        this.handleUserLogged(response, tempDom, data);
+
+        // find error in html
+        this.handleLoginError(response);
+      }.bind(this),
+
+      error: function (jqXHR) {
+        this.handleAjaxError(jqXHR, data);
+      }.bind(this),
+
+      complete: function () {
+        this.submitBtn.removeClass('loading');
+      }.bind(this)
+    });
+  }
+
+  model.init = function (iframeEvent) {
+    this.closeBtn.on('click', this.closeModal.bind(this));
+    this.form.on('submit', this.submit.bind(this));
+  }
+
+  model.init();
+</script>

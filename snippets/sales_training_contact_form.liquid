@@ -1,0 +1,263 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="reserve-area sales-reserve-area">
+  <div class="reserve-wrapper">
+    <div class="top-info">
+      <h2 class="reserve-title border-title white-border">{{ section.settings.reserve_title }}</h2>
+      <p class="reserve-description">{{ section.settings.reserve_description }}</p>
+    </div>
+    <form class="reserve-form" id="reserve-train-form" novalidate="">
+      <div class="country-error error-box">
+        <ly-as-13490584>Sorry, but we only offer in-person training in the United States at this time.</ly-as-13490584>
+      </div>
+      <div class="info-box"></div>
+      <div class="form-group">
+        <div class="half-cell">
+          <label for="firstName"><ly-as-13490585>First Name</ly-as-13490585></label>
+          <input type="text" class="form-control" id="firstName" name="first_name" placeholder="First Name*" required>
+          <div class="error-box"><ly-as-13490586>First Name is required</ly-as-13490586></div>
+        </div>
+        <div class="half-cell">
+          <label for="lastName"><ly-as-13490587>Last Name</ly-as-13490587></label>
+          <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Last Name*" required>
+          <div class="error-box"><ly-as-13490588>Last Name is required</ly-as-13490588></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="half-cell">
+          <label for="emailAddress"><ly-as-13490589>Email address</ly-as-13490589></label>
+          <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Email Address*" required>
+          <div class="error-box"><ly-as-13490590>Email Address is required</ly-as-13490590></div>
+          <div class="email-invalid"><ly-as-13490591>Please provide a valid Email Address.</ly-as-13490591></div>
+        </div>
+        <div class="half-cell">
+          <label for="phone"><ly-as-13490592>Phone Number</ly-as-13490592></label>
+          <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+          <div class="error-box"><ly-as-13490593>Phone Number is required</ly-as-13490593></div>
+          <div class="phone-invalid"><ly-as-13490594>Please provide a valid Phone Number.</ly-as-13490594></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="half-cell">
+          <label for="title"><ly-as-13490595>Title</ly-as-13490595></label>
+          <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+        </div>
+        <div class="half-cell">
+          <label for="company"><ly-as-13490596>Company</ly-as-13490596></label>
+          <input type="text" class="form-control" id="company" name="company" placeholder="Company*" required>
+          <div class="error-box"><ly-as-13490597>Company is required</ly-as-13490597></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="tri-cell">
+          <label for="city"><ly-as-13490598>City</ly-as-13490598></label>
+          <input type="text" class="form-control" id="city" name="city" placeholder="City*" required>
+          <div class="error-box"><ly-as-13490599>City is required</ly-as-13490599></div>
+        </div>
+        <div class="tri-cell">
+          <label for="state"><ly-as-13490600>State</ly-as-13490600></label>
+          <select id="state" name="state" class="form-control" required>
+            <option value=""><ly-as-13490600>State</ly-as-13490600></option>
+            <option value="Alabama"><ly-as-13490601>Alabama</ly-as-13490601></option>
+            <option value="Alaska"><ly-as-13490602>Alaska</ly-as-13490602></option>
+            <option value="American Samoa"><ly-as-13490603>American Samoa</ly-as-13490603></option>
+            <option value="Arizona"><ly-as-13490604>Arizona</ly-as-13490604></option>
+            <option value="Arkansas"><ly-as-13490605>Arkansas</ly-as-13490605></option>
+            <option value="California"><ly-as-13490606>California</ly-as-13490606></option>
+            <option value="Colorado"><ly-as-13490607>Colorado</ly-as-13490607></option>
+            <option value="Connecticut"><ly-as-13490608>Connecticut</ly-as-13490608></option>
+            <option value="Delaware"><ly-as-13490609>Delaware</ly-as-13490609></option>
+            <option value="District of Columbia"><ly-as-13490610>District of Columbia</ly-as-13490610></option>
+            <option value="Federated States of Micronesia"><ly-as-13490611>Federated States of Micronesia</ly-as-13490611></option>
+            <option value="Florida"><ly-as-13490612>Florida</ly-as-13490612></option>
+            <option value="Georgia"><ly-as-13490613>Georgia</ly-as-13490613></option>
+            <option value="Guam"><ly-as-13490614>Guam</ly-as-13490614></option>
+            <option value="Hawaii"><ly-as-13490615>Hawaii</ly-as-13490615></option>
+            <option value="Idaho"><ly-as-13490616>Idaho</ly-as-13490616></option>
+            <option value="Illinois"><ly-as-13490617>Illinois</ly-as-13490617></option>
+            <option value="Indiana"><ly-as-13490618>Indiana</ly-as-13490618></option>
+            <option value="Iowa"><ly-as-13490619>Iowa</ly-as-13490619></option>
+            <option value="Kansas"><ly-as-13490620>Kansas</ly-as-13490620></option>
+            <option value="Kentucky"><ly-as-13490621>Kentucky</ly-as-13490621></option>
+            <option value="Louisiana"><ly-as-13490622>Louisiana</ly-as-13490622></option>
+            <option value="Maine"><ly-as-13490623>Maine</ly-as-13490623></option>
+            <option value="Marshall Islands"><ly-as-13490624>Marshall Islands</ly-as-13490624></option>
+            <option value="Maryland"><ly-as-13490625>Maryland</ly-as-13490625></option>
+            <option value="Massachusetts"><ly-as-13490626>Massachusetts</ly-as-13490626></option>
+            <option value="Michigan"><ly-as-13490627>Michigan</ly-as-13490627></option>
+            <option value="Minnesota"><ly-as-13490628>Minnesota</ly-as-13490628></option>
+            <option value="Mississippi"><ly-as-13490629>Mississippi</ly-as-13490629></option>
+            <option value="Missouri"><ly-as-13490630>Missouri</ly-as-13490630></option>
+            <option value="Montana"><ly-as-13490631>Montana</ly-as-13490631></option>
+            <option value="Nebraska"><ly-as-13490632>Nebraska</ly-as-13490632></option>
+            <option value="Nevada"><ly-as-13490633>Nevada</ly-as-13490633></option>
+            <option value="New Hampshire"><ly-as-13490634>New Hampshire</ly-as-13490634></option>
+            <option value="New Jersey"><ly-as-13490635>New Jersey</ly-as-13490635></option>
+            <option value="New Mexico"><ly-as-13490636>New Mexico</ly-as-13490636></option>
+            <option value="New York"><ly-as-13490637>New York</ly-as-13490637></option>
+            <option value="North Carolina"><ly-as-13490638>North Carolina</ly-as-13490638></option>
+            <option value="North Dakota"><ly-as-13490639>North Dakota</ly-as-13490639></option>
+            <option value="Northern Mariana Islands"><ly-as-13490640>Northern Mariana Islands</ly-as-13490640></option>
+            <option value="Ohio"><ly-as-13490641>Ohio</ly-as-13490641></option>
+            <option value="Oklahoma"><ly-as-13490642>Oklahoma</ly-as-13490642></option>
+            <option value="Oregon"><ly-as-13490643>Oregon</ly-as-13490643></option>
+            <option value="Palau"><ly-as-13490644>Palau</ly-as-13490644></option>
+            <option value="Pennsylvania"><ly-as-13490645>Pennsylvania</ly-as-13490645></option>
+            <option value="Puerto Rico"><ly-as-13490646>Puerto Rico</ly-as-13490646></option>
+            <option value="Rhode Island"><ly-as-13490647>Rhode Island</ly-as-13490647></option>
+            <option value="South Carolina"><ly-as-13490648>South Carolina</ly-as-13490648></option>
+            <option value="South Dakota"><ly-as-13490649>South Dakota</ly-as-13490649></option>
+            <option value="Tennessee"><ly-as-13490650>Tennessee</ly-as-13490650></option>
+            <option value="Texas"><ly-as-13490651>Texas</ly-as-13490651></option>
+            <option value="Utah"><ly-as-13490652>Utah</ly-as-13490652></option>
+            <option value="Vermont"><ly-as-13490653>Vermont</ly-as-13490653></option>
+            <option value="Virgin Islands"><ly-as-13490654>Virgin Islands</ly-as-13490654></option>
+            <option value="Virginia"><ly-as-13490655>Virginia</ly-as-13490655></option>
+            <option value="Washington"><ly-as-13490656>Washington</ly-as-13490656></option>
+            <option value="West Virginia"><ly-as-13490657>West Virginia</ly-as-13490657></option>
+            <option value="Wisconsin"><ly-as-13490658>Wisconsin</ly-as-13490658></option>
+            <option value="Wyoming"><ly-as-13490659>Wyoming</ly-as-13490659></option>
+            <option value="Armed Forces Americas"><ly-as-13490660>Armed Forces Americas</ly-as-13490660></option>
+            <option value="Armed Forces Europe"><ly-as-13490661>Armed Forces Europe</ly-as-13490661></option>
+            <option value="Armed Forces Pacific"><ly-as-13490662>Armed Forces Pacific</ly-as-13490662></option>
+          </select>
+          <div class="error-box"><ly-as-13490663>State is required</ly-as-13490663></div>
+        </div>
+          <div class="tri-cell">
+            <label for="country"><ly-as-13490664>Country</ly-as-13490664></label>
+            <select id="country" name="country" class="form-control" required>
+              <option value="United States" selected><ly-as-13490665>United States</ly-as-13490665></option>
+              <option value="Other"><ly-as-13490666>Other</ly-as-13490666></option>
+            </select>
+          </div>
+      </div>
+      <div class="form-group">
+        <div class="half-cell">
+          <label for="countTrainees"><ly-as-13490667>Number of Trainees</ly-as-13490667></label>
+          <input type="number" class="form-control" id="countTrainees" name="trainees" placeholder="Number of Trainees*" min="1" required>
+          <div class="error-box"><ly-as-13490668>Approximate Number of Trainees is required.</ly-as-13490668></div>
+        </div>
+        <div class="half-cell">
+          <label for="location"><ly-as-13490669>Location</ly-as-13490669></label>
+          <input type="text" class="form-control" id="location" name="location" placeholder="Location (e.g. Conference Room)*" required>
+          <div class="error-box"><ly-as-13490670>Please describe where the training would be held.</ly-as-13490670></div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="other"><ly-as-13490666>Other</ly-as-13490666></label>
+        <input type="text" class="form-control" id="other" name="other" placeholder="Are you looking for specific concepts, products, or applications?">
+      </div>
+      <div class="text-center">
+        {% include 'email-lang' %}
+        <input type="hidden" name="lang" value="{{lang}}">
+        <button type="submit" class="btn btn-default" id="reserve-action"><ly-as-13490671>Reserve Now</ly-as-13490671></button>
+      </div>
+    </form>
+  </div>
+</div>
+
+{% comment %}ly_asset_replace_for_[ 'imask.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'imask.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+<script type="text/javascript">
+  var phoneElement = document.getElementById('phone');
+  var maskOptions = {
+    mask: '+1 (000) 000-0000'
+  };
+  var phoneMask = new IMask(phoneElement, maskOptions);
+
+  jQuery(document).ready(function(){
+    $(".reserve-form").submit(function() {
+      var validationError = validateReserveForm();
+      if (validationError) {
+        return false;
+      }
+
+      reserveTraning($(this));
+      return false;
+    });
+  });
+
+  $('#country').on('change', function () {
+    if ($(this).val() == 'Other') {
+      $('.country-error').show();
+    } else {
+      $('.country-error').hide();
+    }
+  });
+
+  $('.reserve-form [required]').on('input', function () {
+    var parent  = $(this).closest('div'),
+       errorBox = parent.find('.error-box');
+    if ($(this).val() == '') {
+      errorBox.show();
+      return;
+    } else {
+      errorBox.hide();
+    }
+    
+    if ($(this).is('#emailAddress') && !validateEmail($(this).val())) {
+      parent.find('.email-invalid').show();
+    } else {
+      parent.find('.email-invalid').hide();
+    }
+
+    if ($(this).is('#phone') && phoneMask.unmaskedValue.length != 10) {
+      parent.find('.phone-invalid').show();
+    } else {
+      parent.find('.phone-invalid').hide();
+    }
+  });
+
+  function validateReserveForm () {
+    var requiredFields = $('.reserve-form [required]');
+    var validationError = false;
+    requiredFields.each(function () {
+      var parent  = $(this).closest('div'),
+        errorBox = parent.find('.error-box');
+      if ($(this).val() == '') {
+        errorBox.show()
+        validationError = true;
+      } else if ($(this).is('#emailAddress') && !validateEmail($(this).val())) {
+        parent.find('.email-invalid').show();
+        validationError = true;
+      } else if ($(this).is('#phone') && phoneMask.unmaskedValue.length != 10) {
+        parent.find('.phone-invalid').show();
+        validationError = true;
+      } else {
+        errorBox.hide();
+        parent.find('.email-invalid').hide();
+        parent.find('.phone-invalid').hide();
+      }
+    });
+
+    if ($('#country').val() == 'Other') {
+      $('.country-error').show();
+      validationError = true;
+    } else {
+      $('.country-error').hide();
+    }
+    return validationError;
+  }
+
+  function reserveTraning (that) {
+    that.find('[type="submit"]').addClass('loading');
+    handleAjax(
+      '/apps/peerless/contact/reserve_sales',
+      that.serialize(),
+      "post",
+      function (response) {
+        if (response.success) {
+          displaySuccess(response.message, '.info-box');
+          jQuery('.reserve-form')[0].reset();
+        } else {
+          displayErrors(response.message, '.info-box');
+        }
+      },
+      function () {
+        that.find('[type="submit"]').removeClass('loading');
+      },
+      function (error) {
+        displayErrors('Something went wrong, please reload page and try again', '.info-box');
+      }
+    );
+  }
+</script>

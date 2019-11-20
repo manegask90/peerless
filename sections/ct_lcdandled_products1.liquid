@@ -1,0 +1,39 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="featured-products-container">
+  <div class="featured-products-header">{{section.settings.header}}</div>
+  <div class="featured-products-border"><span></span></div>
+  <div class="featured-products-inner">
+    {% for product in collections[section.settings.product].products %}
+      {% comment %} {% assign product = all_products[section.settings.product] %}{% endcomment %}
+      {% include 'ct_loop_product_ind' %}
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "LCD and LED Products",
+    "class": "section-custom-products",
+    "settings": [
+      {
+        "type": "text",
+        "id": "header",
+        "label": "Header",
+        "default": "LED and LCD Products"
+      },
+      {
+        "type": "collection",
+        "id": "product",
+        "label": "Product"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "LED and LCD Products",
+        "settings": {
+          "header": "LED and LCD Products"
+        }
+      }
+    ]
+  }
+{% endschema %}

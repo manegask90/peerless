@@ -1,0 +1,81 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{%- include "ct_slider_content" -%}
+
+{% schema %}
+  {
+    "name": "Entertainment Slider",
+    "class": "section-custom-page-slider",
+    "settings": [
+      {
+        "type": "select",
+        "id": "slider_show",
+        "label": "Show Slider",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slider",
+        "name": "Slider",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "bg_y_postion",
+            "min": 0,
+            "max":  100,
+            "step": 1,
+            "unit": "%",
+            "label": "Background y postion",
+            "default": 50
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Entertainment Venues"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Arenas and Stadiums, Civic and Convention Centers, Stage Productions and Theatrical Lighting, Concert Venues"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Entertainment venues require a variety of audio visual solutions to properly entertain a crowd. We offer the products needed to make visitors feel close to the action, even when they are away from their seats. Our fully weatherproof displays, soundbars, kiosks, and mounting solutions are the perfect match for outdoor applications; while our award-winning video wall mounts, interactive kiosks, and display mounts are great for indoor settings. With our high-quality AV solutions, arenas and stadiums, civic and convention centers, theaters, stage productions, and concert venues can create winning AV installations that offer patrons an unforgettable experience.</p>"
+          },
+          {
+           "type": "html",
+           "id": "html_area",
+           "label": "Custom HTML"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Entertainment Slider",
+        "settings": {
+          "slider_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

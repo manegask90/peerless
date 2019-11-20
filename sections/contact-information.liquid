@@ -1,0 +1,85 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="information-wrapper">
+	<div class="top-summary">
+		<h3 class="top-title">{{ section.settings.top_title }}</h3>
+		<div class="top-description">{{ section.settings.top_description }}</div>
+	</div>
+	<div class="address-blocks">
+		<div class="row">
+			{% for block in section.blocks %}
+			<div class="col-sm-6 col-xs-12 no-padding">
+				<div class="address-block">
+					<h3 class="address-title">{{ block.settings.block_title }}</h3>
+					<div class="address-content">
+						{% if block.settings.tel_info != '' %}
+						<div class="group">
+							<label class="group-title"><ly-as-13487228>TEL</ly-as-13487228></label>
+							<div class="group-content">{{ block.settings.tel_info }}</div>
+						</div>
+						{% endif %}
+						{% if block.settings.email_info != '' %}
+						<div class="group">
+							<label class="group-title"><ly-as-13487230>EMAIL</ly-as-13487230></label>
+							<div class="group-content">{{ block.settings.email_info }}</div>
+						</div>
+						{% endif %}
+						{% if block.settings.mail_info != '' %}
+						<div class="group">
+							<label class="group-title"><ly-as-13487231></ly-as-13487231></label>
+							<div class="group-content">{{ block.settings.mail_info }}</div>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"class": "contact_info",
+	"name": "Information",
+	"settings": [
+		{
+			"type": "text",
+			"id": "top_title",
+			"label": "Top Title"
+		},
+		{
+			"type": "html",
+			"id": "top_description",
+			"label": "Top Description"
+		}
+	],
+	"blocks": [
+		{
+			"type": "stores",
+			"name": "Stores Information",
+			"settings": [
+				{
+					"type": "text",
+					"id": "block_title",
+					"label": "Address Title"
+				},
+				{
+					"type": "html",
+					"id": "tel_info",
+					"label": "Telephone Numbers"
+				},
+				{
+					"type": "html",
+					"id": "email_info",
+					"label": "Email Addresses"
+				},
+				{
+					"type": "html",
+					"id": "mail_info",
+					"label": "Address"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,56 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="faq-container container">
+    <div class="shop-loop-head">
+        <nav class="shopify-breadcrumb faq-nav">
+            <a href="/pages/faq">FAQs</a>
+            <span class="breadcrumb-last"><ly-as-13487679>Which Mount Do I Need</ly-as-13487679></span>
+        </nav>
+        <h2 class="text-center header-faq" id="which-mount-i-need"><span>{% comment %}ly_code_replace_for_[page.title]_begin{% endcomment %}{% include 'ly-title' with page %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</span>?</h2>
+    </div>
+    {% for block in section.blocks %}
+        <div class="faq-block" id="{{block.settings.title | handleize }}">
+            {% if block.settings.title == '' %}
+                <div class="faq-title hide-title" id="which-mount">
+            {% else %}
+                <div class="faq-title" id="which-mount">
+            {%- endif -%}
+              {{- block.settings.title -}}
+            </div>
+        <div class="faq-content">
+            {{block.settings.content}}
+            {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: '' }}"/>
+            {% endif %}
+        </div>
+    </div>
+  {% endfor%}
+</div>
+
+{% schema %}
+{
+  "name": "Which Mount Do I Need",
+  "blocks": [
+    {
+      "type": "which_mount_block",
+      "name": "Which Mount block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

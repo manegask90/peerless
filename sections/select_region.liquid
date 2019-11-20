@@ -1,0 +1,99 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="row">
+  <div class="col-sm-4 select_region-col">
+    <h2><ly-as-13489599>Emea</ly-as-13489599></h2>
+    {% for block in section.blocks %}
+      {% if block.type == 'emea' %}
+        {% include 'select_region_item' %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="col-sm-4 select_region-col">
+    <h2><ly-as-13489600>Latin America</ly-as-13489600></h2>
+
+    {% for block in section.blocks %}
+      {% if block.type == 'latin_america' %}
+        {% include 'select_region_item' %}
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <div class="col-sm-4 select_region-col">
+    <h2><ly-as-13489601>North America</ly-as-13489601></h2>
+    {% for block in section.blocks %}
+      {% if block.type == 'north_america' %}
+        {% include 'select_region_item' %}
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+  {
+    "blocks": [
+      {
+        "type": "emea",
+        "name": "Emea Region",
+        "settings": [
+          {
+            "id": "region_title",
+            "type": "text",
+            "label": "Region (country)"
+          },
+          {
+            "id": "url_title",
+            "type": "text",
+            "label": "Url Title"
+          },
+          {
+            "id": "url",
+            "type": "url",
+            "label": "Url Address"
+          }
+        ]
+      },
+      {
+        "type": "latin_america",
+        "name": "Latin America Region",
+        "settings": [
+          {
+            "id": "region_title",
+            "type": "text",
+            "label": "Region (country)"
+          },
+          {
+            "id": "url_title",
+            "type": "text",
+            "label": "Url Title"
+          },
+          {
+            "id": "url",
+            "type": "url",
+            "label": "Url Address"
+          }
+        ]
+      },
+      {
+        "type": "north_america",
+        "name": "North America Region",
+        "settings": [
+          {
+            "id": "region_title",
+            "type": "text",
+            "label": "Region (country)"
+          },
+          {
+            "id": "url_title",
+            "type": "text",
+            "label": "Url Title"
+          },
+          {
+            "id": "url",
+            "type": "url",
+            "label": "Url Address"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

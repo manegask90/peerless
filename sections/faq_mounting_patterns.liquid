@@ -1,0 +1,64 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="faq-container container">
+    <div class="shop-loop-head">
+        <nav class="shopify-breadcrumb faq-nav">
+            <a href="/pages/faq">FAQs</a>
+            <span class="breadcrumb-last"><ly-as-13487676>Mounting Patterns</ly-as-13487676></span>
+        </nav>
+        <h2 class="text-center header-faq">{% comment %}ly_code_replace_for_[ page.title ]_begin{% endcomment %}{% include 'ly-title' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h2>
+    </div>
+    {% for block in section.blocks %}
+        <div class="faq-block mount-patt" id="{{block.settings.title | replace: '®', '' | handleize }}">
+            {% if block.settings.title == '' %}
+                <div class="faq-title hide-title" id="mounting-patterns-title">
+            {% else %}
+                <div class="faq-title" id="mounting-patterns-title">
+            {%- endif -%}
+                {{- block.settings.title -}}
+            </div>
+        <div class="faq-content">
+            {% if block.settings.image != blank %}
+                <img src="{{ block.settings.image | img_url: '' }}" id="vesa"/>
+            {% endif %}
+            {{block.settings.content}}
+            {% if block.settings.image != blank %}
+                <img src="{{ block.settings.sec_image | img_url: '' }}" />
+            {% endif %}
+        </div>
+    </div>
+  {% endfor%}
+</div>
+
+{% schema %}
+{
+  "name": "Mounting Patterns",
+  "blocks": [
+    {
+      "type": "mounting_patterns_block",
+      "name": "Mounting Patterns block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "sec_image",
+          "label": "Image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

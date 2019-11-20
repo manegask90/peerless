@@ -1,0 +1,19 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div data-algolia-position="[[ params.productPosition ]]" data-algolia-queryid="[[ queryID ]]" data-algolia-objectid="[[ objectID ]]" class="aa-product">
+  <div class="aa-product-picture" style="background-image: url('[[# helpers.thumbImage ]][[/ helpers.thumbImage ]]')"></div>
+  <div class="aa-product-text">
+    <p class="aa-product-title">
+      <ly-as-13489631>[[# helpers.fullHTMLTitle ]][[/ helpers.fullHTMLTitle ]]</ly-as-13489631>
+    </p>
+    <p class="aa-product-info">
+      [[# product_type ]]
+        [[& _highlightResult.product_type.value ]]
+      [[/ product_type ]]
+      [[# vendor ]]
+        [[# helpers.by ]] [[& _highlightResult.vendor.value ]] [[/ helpers.by ]]
+      [[/ vendor ]]
+    </p>
+    <p class="aa-product-price">
+      <ly-as-13489633>[[# helpers.autocompletePrice ]][[/ helpers.autocompletePrice ]]</ly-as-13489633>
+    </p>
+  </div>
+</div>

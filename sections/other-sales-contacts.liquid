@@ -1,0 +1,74 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="row others-sales-contacts-row">
+  <div class="col-sm-6 others-sales-contacts-col">
+    <div class="row">
+      <div class="col-xs-12">
+        {% include 'title-with-lines', head_title: 'Latin America' %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 text-center contacts">
+        {% unless section.settings.la_team == blank %}
+          <p class="others-sales-team-name">{{ section.settings.la_team }}</p>
+        {% endunless %}
+        {% unless section.settings.la_email == blank %}
+          <p><span><ly-as-13489424>E:</ly-as-13489424> </span><a href="mailto:{{ section.settings.la_email }}">{{ section.settings.la_email }}</a></p>
+        {% endunless %}
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 others-sales-contacts-col">
+    <div class="row">
+      <div class="col-xs-12">
+        {% include 'title-with-lines', head_title: 'EMEA' %}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-12 text-center contacts">
+        {% unless section.settings.emea_team == blank %}
+          <p class="others-sales-team-name">{{ section.settings.emea_team }}</p>
+        {% endunless %}
+        {% unless section.settings.la_email == blank %}
+          <p><span><ly-as-13489424>E:</ly-as-13489424> </span><a href="mailto:{{ section.settings.emea_email }}">{{ section.settings.emea_email }}</a></p>
+        {% endunless %}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Other Sales Contacts",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Latin America Team:"
+    },
+    {
+      "type": "text",
+      "id": "la_team",
+      "label": "Team Name"
+    },
+    {
+      "type": "text",
+      "id": "la_email",
+      "label": "Email"
+    },
+    {
+      "type": "header",
+      "content": "EMEA Team:"
+    },
+    {
+      "type": "text",
+      "id": "emea_team",
+      "label": "Team Name"
+    },
+    {
+      "type": "text",
+      "id": "emea_email",
+      "label": "Email"
+    }
+  ]
+}
+{% endschema %}

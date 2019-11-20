@@ -1,0 +1,41 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="ais-page">
+  <div class="ais-facets-button">
+    <ly-as-13489637>Show filters</ly-as-13489637>
+  </div>
+  <div class="ais-facets">
+      <div class="ais-current-refined-values-container"></div>
+    <ly-as-13489638>[[# facets ]]</ly-as-13489638>
+      <div class="ais-facet-[[ type ]] ais-facet-[[ escapedName ]]"></div>
+    <ly-as-13489639>[[/ facets ]]</ly-as-13489639>
+  </div>
+  <div class="ais-block">
+    <div class="ais-input">
+      <div class="ais-input--label">
+        <ly-as-13489640>[[ translations.search ]]</ly-as-13489640>
+      </div>
+      <div class="ais-search-box-container"></div>
+      <div class="ais-input-button">
+        <div class="ais-clear-input-icon"></div>
+        <a title="Search by Algolia - Click to know more" href="https://www.algolia.com/?utm_source=shopify&utm_medium=link&utm_campaign=instantsearch-[[ storeName ]]">
+          <div class="ais-algolia-icon"></div>
+        </a>
+      </div>
+    </div>
+    <div class="ais-search-header">
+      <div class="shop-loop-head ss">
+        <nav class="shopify-breadcrumb"><a href="/">{% comment %}ly_i18n_replace_for_[ 'general.breadcrumbs.home' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.breadcrumbs.home' | t }}{% endcapture %}{% include 'ly-static-string' with '13489641' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a><span class="breadcrumb-last">{% include 'ly-title' with collection %}{{ly_translation}}</span></nav>
+      </div>
+      <div class="ais-stats-container"></div>
+      <div class="ais-change-display">
+        <span class="ais-change-display-block ais-change-display-selected"><i class="fa fa-th-large"></i></span>
+        <span class="ais-change-display-list"><i class="fa fa-th-list"></i></span>
+      </div>
+      <div class="ais-sort">
+        <span class="ais-sort-orders-container"></span>
+      </div>
+    </div>
+    <div class="ais-hits-container ais-results-as-block"></div>
+    <div class="ais-pagination-container"></div>
+  </div>
+</div>

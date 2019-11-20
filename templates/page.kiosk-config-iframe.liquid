@@ -1,0 +1,81 @@
+{% layout 'theme-no-header-and-footer' %}
+
+{% assign iframeLink = 'https://configurator.peerless-av.com' %}
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="main-page-wrapper">
+    {% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+    {% assign lang_get = 'en' %}
+
+    {% case language %}
+        {% when 'ly73951' %}
+            {% assign lang_get = 'en' %}
+        {% when 'ly73952' %}
+            {% assign lang_get = 'de' %}
+        {% when 'ly73954' %}
+            {% assign lang_get = 'sp' %}
+        {% when 'ly77552' %}
+            {% assign lang_get = 'fr' %}
+		{% endcase %}
+
+		{%- assign currentSite = settings.site -%}
+		{%-  if settings.site == 'Latin America' -%}
+			{%- assign currentSite = "LA" -%}
+		{%- endif -%}
+
+		{% assign canonicalArr = canonical_url | split: '/' %}
+
+    <div id="config-iframe-wrapper">
+        <iframe id="ledconfigurator" src="{{iframeLink}}/kiosk-configurator?lang={{lang_get}}&site={{currentSite}}{%- if canonicalArr[5] -%}&config_id={{canonicalArr[5]}}{%- endif -%}" frameborder="0"></iframe>
+    </div>
+	{% include 'configurator-login-modal' %}
+</div>
+
+<script>
+	var user = {};
+	{% if customer != blank %}
+		user['loggedIn'] = true;
+		{% assign customerMeta = customer.metafields %}
+		user['id'] 				  = {{customer.id | json}};
+		user['first_name'] 		  = {{customer.first_name | json}};
+		user['last_name']		  = {{customer.last_name | json}};
+		user['email'] 			  = {{customer.email | json}};
+		user['accepts_marketing'] = {{customer.accepts_marketing}};
+		{%- if customer.phone -%}
+		user['phone'] = {{customer.phone | json}};
+		{%- endif -%}
+		{%- if customerMeta.global.company -%}
+		user['company'] = {{customerMeta.global.company | json}};
+		{%- endif -%}
+		{%- if customerMeta.global.country -%}
+		user['country'] = {{customerMeta.global.country | json}};
+		{%- endif -%}
+		{%- if customerMeta.global.industry -%}
+		user['industry'] = {{customerMeta.global.industry | json}};
+		{%- endif -%}
+	{%- else -%}
+		user['loggedIn'] = false;
+	{% endif %}
+
+	//create iframe window
+	var domain = '{{iframeLink}}';
+	var iframeEl = document.getElementById('ledconfigurator')
+	var iframe = iframeEl.contentWindow;
+
+	// send user data to iframe
+	iframeEl.onload = function () {
+		iframe.postMessage(JSON.stringify(user),domain);
+	}
+
+	//respond to events
+	window.addEventListener('message',function(event) {
+		if(event.origin !== '{{iframeLink}}') return;
+		console.log('message received:  ' + event.data,event);
+		if (event.data.message = 'login_check') {
+			console.log(event.data.credentials);
+			model.iframeEvent = event;
+			model.openModal();
+			// loginUser(event.data.credentials, event);
+		}
+		//event.source.postMessage('holla back youngin!',event.origin);
+	},false);
+</script>

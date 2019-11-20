@@ -1,0 +1,104 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="careers-template">
+  <div class="banner-wrapper">
+    <img src="{{ section.settings.banner_image | img_url: '1000x' }}" class="pull-left" alt="" />
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-4 col-xs-12 col-xs-offset-0">
+          <div class="banner-description">
+            <p>{{ section.settings.banner_description }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="careers-content">
+    <div class="container">
+      <p class="career-summary">{{ section.settings.careers_summary }}</p>
+      <h3 class='career-title'>{{ section.settings.careers_title }}</h3>
+      <div class="row">
+        {% for block in section.blocks %}
+        <div class="col-sm-4 col-xs-12">
+          <div class="block">
+            <div class="block_icon">
+              <a href="{% if block.settings.block_link %}{{ block.settings.block_link }}{% else %}javascript:void(0){% endif %}">
+                <img src="{{ block.settings.block_icon | img_url: '100x' }}" alt="{{ block.settings.block_title }}" />
+              </a>
+            </div>
+            <div class="block-content">
+              <h3 class="block-title">
+                <a href="{% if block.settings.block_link %}{{ block.settings.block_link }}{% else %}javascript:void(0){% endif %}">{{ block.settings.block_title }}</a>
+              </h3>
+              <p class="block-summary">{{ block.settings.block_summary }}</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+	"name": "Careers Template",
+	"class": "careers_template",
+	"settings": [  
+    {
+      "type": "header",
+      "content": "Banner"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner_image",
+      "label": "Banner Image"
+    },
+    {
+      "type": "html",
+      "id": "banner_description",
+      "label": "Banner Description"
+    },
+    {
+      "type": "header",
+      "content": "Careers Content"
+    },
+    {
+      "type": "textarea",
+      "id": "careers_summary",
+      "label": "Summary"
+    },
+		{
+			"type": "text",
+			"id": "careers_title",
+			"label": "Careers Title"
+		}
+	],
+  "blocks": [
+    {
+      "type": "careers_blocks",
+      "name": "Careers Block",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "block_icon",
+          "label": "Block Icon"
+        },
+        {
+          "type": "url",
+          "id": "block_link",
+          "label": "Block URL"
+        },
+        {
+          "type": "text",
+          "id": "block_title",
+          "label": "Block Title"
+        },
+        {
+          "type": "textarea",
+          "id": "block_summary",
+          "label": "Block Summary"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

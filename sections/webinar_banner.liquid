@@ -1,0 +1,44 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="webinar-banner-wrapper">
+	<div class="banner-img" style="background-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 250%), url({{ section.settings.banner_background | img_url: '2500x' }});">
+	{% if section.settings.banner_title %}
+	<div class="webinar-title-wrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<h2 class="webinar-title">{{ section.settings.banner_title }}</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	</div>
+</div>
+
+{% schema %}
+	{
+      	"name": "Webinar Banner",
+      	"settings": [
+     		{
+       			"type": "header",
+           		"content": "Banner"
+         	},
+         	{
+	            "type": "image_picker",
+	            "id": "banner_background",
+	            "label": "Banner Background"
+         	},
+         	{
+	            "type": "text",
+	            "id": "banner_title",
+	            "label": "Banner Title",
+                "default": "Webinar Calendar"
+         	}
+        ],
+        "presets": [
+         	{
+            	"name": "Webinar Banner",
+            	"category": "Banner"
+         	}
+      	]
+    }
+{% endschema %}

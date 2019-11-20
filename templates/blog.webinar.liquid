@@ -1,0 +1,406 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="main-page-wrapper webinar_calendar">
+
+	{% if blog.metafields.accentuate.featured_image %}
+	<div class="featured_image">
+		<img src="{% comment %}ly_code_replace_for_[ blog.metafields.accentuate.featured_image ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'accentuate' %}{% assign key = 'featured_image' %}{% if blog.metafields[ns][key] %}{% assign ly_translation = blog.metafields[ns][key] %}{% else %}{% assign ly_translation =  blog.metafields.accentuate.featured_image  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}" alt="{% comment %}ly_code_replace_for_[ blog.title ]_begin{% endcomment %}{% include 'ly-title' with blog %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}" />
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
+					<h1 class="blog_title">{% comment %}ly_code_replace_for_[ blog.title ]_begin{% endcomment %}{% include 'ly-title' with blog %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+
+	<div class="main-content">
+		<div class="posts-wrapper">
+			<div class="tabs-wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 text-center">
+							<a href="javascript:void(0)" id="mobile-tag-toggler"><span class="tab-text"><ly-as-13491239>Upcoming</ly-as-13491239></span><span class="arrow"></span></a>
+							<ul>
+								<li class="active"><a href="javascript:void(0)" data-target="upcoming"><ly-as-13491239>Upcoming</ly-as-13491239></a></li>
+								<li><a href="javascript:void(0)" data-target="registered"><ly-as-13491240>Registered</ly-as-13491240></a></li>
+								<li><a href="javascript:void(0)" data-target="attended"><ly-as-13491241>Attended</ly-as-13491241></a></li>
+								<li><a href="javascript:void(0)" data-target="past"><ly-as-13491242>Past</ly-as-13491242></a></li>
+							</ul>
+							<div class="search-wrapper">
+								<input type="text" id="search-input" name="search-key" placeholder="Search webinars" />
+								<a href="javascript:void(0)" id="search-webinar"><ly-as-13491243>Search</ly-as-13491243></a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="posts-list"></div>
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	
+
+	// Filter blog json 
+	/*
+	** parameters: current_date, type, filter_key, items_per_page, page_num
+	**** type: upcoming, registered, attended, past, title
+	**** filter_key: using for only title
+	**** items_per_page: Items count per page
+	**** page_num: page number if blog has 1 more page
+	*/
+	var filterWebinar = function(articles, type, page_num, filter_key, items_per_page) {
+		var today = new Date();
+		var inspected = inspectArticles(articles);
+		var result;
+		var filtered_articles = [];
+
+		if (filter_key === undefined) {
+	        filter_key = '';
+	    }
+	    if (items_per_page === undefined) {
+	        items_per_page = 10;
+	    }
+		if (page_num === undefined) {
+	        page_num = 1;
+	    }
+	    if (type === undefined) {
+	        type = 'upcoming';
+	    }
+
+	    switch(type) {
+	        case 'past':
+	            var article_group = inspected.past;
+	            break;
+	        case 'registered':
+	            var article_group = inspected.registered;
+	            break;
+	        case 'attended':
+	            var article_group = inspected.attended;
+	            break;
+	        default:
+	            var article_group = inspected.upcoming;
+	    }
+
+	    var searched_article_group = [];
+	    if(filter_key != '') {
+	    	var expr = new RegExp(filter_key.toLowerCase());
+	    	for (var i = 0; i < article_group.length; i++) {
+	    		if(expr.test(article_group[i].title.toLowerCase())){
+	    			searched_article_group.push(article_group[i]);
+	    		}
+	    	}
+	    	if(searched_article_group.length % items_per_page != 0) {
+	    		var total_page_count = Math.floor(searched_article_group.length / items_per_page) + 1;
+	    	} else {
+	    		var total_page_count = Math.floor(searched_article_group.length / items_per_page);
+	    	}
+	    } else {
+	    	if(article_group.length % items_per_page != 0) {
+	    		var total_page_count = Math.floor(article_group.length / items_per_page) + 1;
+	    	} else {
+	    		var total_page_count = Math.floor(article_group.length / items_per_page);
+	    	}
+	    }
+
+    	var array_index = 0;
+    	for (var i = 0; i < items_per_page; i++) {
+    		array_index = ( page_num - 1 ) * items_per_page + i;
+    		if (array_index < article_group.length) {
+    			if(filter_key != '') {
+    				filtered_articles = searched_article_group;
+    			} else {
+    				filtered_articles.push(article_group[array_index]);
+    			}
+    		} else {
+    			break;
+    		}
+    	}
+
+    	result = {
+    		"page_count": total_page_count,
+    		"filtered_articles": filtered_articles
+    	}
+
+ 		return result;
+ 	}
+
+	var sortArticles = function(articles) {
+		var temp = articles;
+		if (temp && temp.constructor===Array){
+	        temp.sort(function(a,b){	            
+	            var a_date = new Date(a.article.webinar_date);
+	            var b_date = new Date(b.article.webinar_date);
+	            return a_date - b_date;
+	        });
+	    }
+	    return temp;
+	}
+
+	var inspectArticles = function(articles) {
+		var temp;
+		var article_upcoming = [];
+		var article_registered = [];
+		var article_attended = [];
+		var article_past = [];
+		var today = new Date();
+
+		for (var i = 0; i < articles.length; i++) { 
+ 	    	var article_date = new Date(articles[i].article.webinar_date);
+ 	    	if(article_date >= today) {
+ 	    		article_upcoming.push(articles[i].article);
+ 	    	}
+ 	    	if(article_date < today) {
+ 	    		article_past.push(articles[i].article);
+ 	    	}
+ 	    	// if(article_date >= today) {
+ 	    	// 	article_upcoming.push(articles[i].article);
+ 	    	// }
+ 	    	// if(article_date >= today) {
+ 	    	// 	article_upcoming.push(articles[i].article);
+ 	    	// }
+		}
+		temp = {
+			"upcoming": article_upcoming,
+			"past": article_past,
+			"registered": article_registered,
+			"attended": article_attended
+		}
+		return temp;
+	}
+
+	var getMonthTitle = function(article) {
+		var article_title_date = new Date(article.webinar_date);
+		var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"];
+		var article_month = monthNames[article_title_date.getMonth()];
+		var article_year = article_title_date.getFullYear();
+		var article_date_string = article_month + ' ' + article_year;
+		return article_date_string;
+	}
+
+	var generateContent = function(articles, type, page_num, filter_key, items_per_page) {
+		var temp = filterWebinar(articles, type, page_num, filter_key, items_per_page);
+		var webinar_group = temp.filtered_articles;
+		var page_count = temp.page_count;
+		var html = '';
+		var previous_title = '';
+
+		if (filter_key === undefined) {
+	        filter_key = '';
+	    }
+	    if (items_per_page === undefined) {
+	        items_per_page = 10;
+	    }
+		if (page_num === undefined) {
+	        page_num = 1;
+	    }
+	    if (type === undefined) {
+	        type = 'upcoming';
+	    }
+
+		if(webinar_group.length > 0) {
+			html += "<div class='container'>";
+				html += "<div class='row'>";
+				for (var i = 0; i < webinar_group.length; i++) {
+					html += "<div class='col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0'>";
+						if( previous_title != getMonthTitle(webinar_group[i]) ) {
+							html += "<h2 class='month-title'>" + getMonthTitle(webinar_group[i]) + "</h2>";
+							previous_title = getMonthTitle(webinar_group[i]);
+						}
+						html += "<div class='article-item' data-id='" + webinar_group[i].id + "'>";
+							html += "<div class='article-image'>";
+								html += "<img src='" + webinar_group[i].image + "' alt='" + webinar_group[i].title + "' />";
+							html += "</div>";
+							html += "<div class='article-wrapper'>";
+								html += "<h2 class='article-title'>" + webinar_group[i].title + "</h2>";
+								html += "<div class='webinar-plan'>";
+									html += "<span class='date-wrapper'>" + webinar_group[i].webinar_date + "</span>";
+									html += "<span class='split-data-time'> | </span>";
+									html += "<span class='time-wrapper'>" + webinar_group[i].webinar_time + "</span>";
+								html += "</div>";
+								if(type != 'past') {
+									html += "<div class='tags-wrapper'>";
+									var tags = webinar_group[i].tags.split(',');
+									for (var j = 0; j < tags.length; j++) {
+										var tag_class = '';
+										switch(tags[j].trim()) {
+											case "Class Full":
+										    	tag_class = 'class_full';
+										    	break;
+										    case 'Registered':
+										  		tag_class = 'registered';
+										  		break;
+										  	case 'Spots Available':
+										    	tag_class = 'spots_available';
+										    	break;
+										}
+									    html += "<span class='tag-item " + tag_class + "'>" + tags[j] + "</span>";
+									}
+									html += "</div>";
+								}
+								if(webinar_group[i].body_html.length > 500) {
+									html += "<p class='article-content'>" + webinar_group[i].body_html.slice(0, 500) + '<span class="dots-wrapper">... <a href="javascript:void(0)" class="see-more">see more</a></span><span class="less-wrapper">' + webinar_group[i].body_html.slice(500) + ' <a href="javascript:void(0)" class="see-less">see less</a></span>' + "</p>";
+								} else {
+									html += "<p class='article-content'>" + webinar_group[i].body_html + "</p>";
+								}
+							html += "</div>";
+							html += "<div class='article-actions'>";
+							if(type != 'past') {
+								html += "<a href='javascript:void(0)'>View Details</a>";
+							}
+							html += "</div>";
+						html += "</div>";
+					html += "</div>";
+				}
+				if(page_count > 1) {
+					html += "<div class='col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0'>";
+						html += "<nav aria-label='Page navigation'>";
+						  	html += "<ul class='pagination' data-current='" + page_num + "' data-total='" + page_count + "'>";
+						  		if(page_num == 1) {
+						  			html += "<li class='disable'><a href='javascript:void(0)' aria-label='Previous'>prev</a></li>";
+						  		} else {
+						  			html += "<li><a href='javascript:void(0)' aria-label='Previous'>prev</a></li>";
+						  		}
+							    for (var i = 1; i <= page_count; i++) {
+							    	if(i == page_num) {
+							    		html += "<li class='active'><a href='javascript:void(0)'>" + i + "</a></li>";
+							    	} else {
+							    		html += "<li><a href='javascript:void(0)'>" + i + "</a></li>";
+							    	}
+							    }
+							    if(page_num == page_count) { 
+							    	html += "<li class='disable'><a href='javascript:void(0)' aria-label='Next'>next</a></li>";
+							    } else {
+							    	html += "<li><a href='javascript:void(0)' aria-label='Next'>next</a></li>";
+							    }
+						  	html += "</ul>";
+						html += "</nav>";
+					html += "</div>";
+				}
+				html += "</div>";
+			html += "</div>";
+		} else {
+			html += "<div class='container'>";
+				html += "<div class='row'>";
+					html += "<div class='col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0'>";
+						if(filter_key == '') {
+							if(type == 'registered') {
+								html += "<p class='no-post'>Looks like you're not registered for any upcoming webinars.</p>";
+							} else if(type == "attended") {
+								html += "<p class='no-post'>Looks like you haven't attended any past webinars.</p>";
+							} else {
+								html += "<p class='no-post'>We are sorry, we don’t have any " + type + " webinars. Check back again soon!</p>";
+							}
+						} else {
+							html += "<p class='no-post'>Whoops! Looks like we don’t have any webinars matching that search term.</p>";
+
+						}
+					html += "</div>";
+				html += "</div>";
+			html += "</div>";
+		}
+		return html;
+	}
+
+	jQuery(document).ready(function($){
+		// Initialize Blog JSON
+		var url = "/blogs/webinar_json";
+		var articles;
+		var upcoming_articles, registered_articles, attended_articles, past_articles;
+		var type = 'upcoming';
+
+		$.ajax({
+            url: "/blogs/webinar_json",
+            method: 'get',
+            async: false,
+            success: function (data) {
+                articles = JSON.parse(data);
+            },
+            error: function (ex) {
+                alert(ex.responseText);
+            }
+        });
+
+        articles = sortArticles(articles);
+
+        $(".posts-list").html(generateContent(articles));
+        
+        $(".tabs-wrapper li").click(function(){
+        	$(".tabs-wrapper li").removeClass('active');
+        	$(this).addClass('active');
+        	type = $(this).find('a').data('target');
+        	$("#mobile-tag-toggler .tab-text").text($(this).find('a').text());
+        	$(".posts-list").html(generateContent(articles, type));
+        	if($(window).width() <= 480) {
+        		$(".tabs-wrapper ul").slideUp("slow");
+        	}
+        });
+
+        $(".posts-list").on('click', '.pagination a', function(){
+        	if($(this).text() != $(".pagination").attr("data-current")) {
+        		var page_current = parseInt($(".pagination").attr("data-current"));
+        		var page_count = parseInt($(".pagination").attr("data-total"));
+        		var target_page;
+        		$(".pagination li").removeClass('active');
+
+        		if($(this).text() == 'next') {
+        			$(".pagination li:eq(" + (page_current + 1) + ")").addClass('active');
+        			$(".pagination").attr("data-current", page_current + 1);
+        			$(".pagination li:eq(0)").removeClass('disable');
+		        	if(page_current == (page_count - 1)) {
+		        		$(".pagination li:eq(-1)").addClass('disable');
+		        	} else {
+		        		$(".pagination li:eq(-1)").removeClass('disable');
+		        	}
+		        	target_page = page_current + 1;
+	        	} else if($(this).text() == 'prev') {
+	        		$(".pagination li:eq(" + (page_current - 1) + ")").addClass('active');
+	        		$(".pagination").attr("data-current", page_current - 1);
+	        		$(".pagination li:eq(-1)").removeClass('disable');
+	        		if(page_current == 2) {
+		        		$(".pagination li:eq(0)").addClass('disable');
+		        	} else {
+		        		$(".pagination li:eq(0)").removeClass('disable');
+		        	}
+		        	target_page = page_current - 1;
+	        	} else {
+	        		$(this).parent().addClass('active');
+	        		$(".pagination").attr("data-current", $(this).text());
+	        		if($(this).text() == 1) {
+		        		$(".pagination li:eq(0)").addClass('disable');
+		        	} else {
+		        		$(".pagination li:eq(0)").removeClass('disable');
+		        	}
+		        	if($(this).text() == page_count) {
+		        		$(".pagination li:eq(-1)").addClass('disable');
+		        	} else {
+		        		$(".pagination li:eq(-1)").removeClass('disable');
+		        	}
+		        	target_page = parseInt($(this).text());
+	        	}
+	        	$(".posts-list").html(generateContent(articles, type, target_page));
+        	} 
+        });
+
+        $('#search-input').on('input',function(e){
+        	if($(this).val != '') {
+        		$(".posts-list").html(generateContent(articles, type, 1, $(this).val()));
+        	}
+		});
+
+		$("#mobile-tag-toggler").click(function(){
+			$(this).next().slideToggle("slow");
+		});
+
+		$("body").on('click', '.see-more', function(){
+			$(this).parent().next().show();
+			$(this).parent().hide();
+		});
+
+		$("body").on('click', '.see-less', function(){
+			$(this).parent().prev().show();
+			$(this).parent().hide();
+		});
+	});
+</script>

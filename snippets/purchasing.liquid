@@ -1,0 +1,31 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- include 'account_type' -%}
+
+{%- assign purchasing = true -%}
+
+{%  comment %} customer.metafields.global.purchasing == '0' == User do not have access to purchase project {% endcomment %}
+{%- if account_type == "business_join" and customer.metafields.global.purchasing == '0' -%}
+  {%- assign purchasing = false -%}
+{%- endif -%}
+
+{%- assign prod_dsled = false -%}
+{% for tag in product.tags %}
+  {% if tag contains 'LEDConfigurator: Button' %}
+    {%- assign prod_dsled = true -%}    
+  {% endif %}
+
+{% endfor %}
+
+{% capture purchaseRestirct %}
+  {% if prod_dsled %}
+  <div class="purchase-restict">
+    <div><ly-as-13490566>Get your LED project started with a quick turnaround quote using our LED Video Wall Configurator.</ly-as-13490566></div>
+    <a href="https://ledconfigurator.peerless-av.com/" target="_blank" title="Peerless-AV LED Configurator " rel="noopener noreferrer"><ly-as-13490567>Start Project</ly-as-13490567></a>
+  </div>
+  {% else %}
+  <div class="purchase-restict">
+    <div><ly-as-13490566>Please contact Customer Care for a quote</ly-as-13490566></div>
+    <a href="/pages/customer-care-contact"><ly-as-13490567>Contact Us</ly-as-13490567></a>
+  </div>
+  {% endif %}
+{% endcapture %}

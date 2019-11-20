@@ -1,0 +1,118 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="latest-news-wrap">
+  <div class="liner-continer"> 
+    <h4 class="title">
+      {{- section.settings.title_section -}}
+    </h4> 
+  </div>
+  <div class="container">
+    <div class="row">
+    {% for block in section.blocks %}
+    <div class="col-md-4 block">
+      <a href="{{ block.settings.link }}">
+        <div class="img-box">
+          <img class="lazyload" src="{{ block.settings.image.src | img_url: '50x' }}" data-src="{{ block.settings.image.src | img_url: '720x' }}">
+          <div class="date-box">
+            <span class="date">{{ block.settings.date }}</span>
+            <span class="month">
+              {{ block.settings.month }}
+            </span>
+          </div>
+          <div class="category">
+            <span>
+              {{ block.settings.category }}
+            </span>
+          </div>
+        </div>
+        <div class="info-box">
+          <div class="block-title">
+            {{ block.settings.title }}
+          </div>
+          <div class="block-subtitle"><ly-as-13487255>By</ly-as-13487255> <span>{{ block.settings.subtitle }}</span></div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+    </div>
+    <div class="row">
+        <div class="block-footer">
+          <a href="/blogs/news/" class="btn"><ly-as-13487256>View all news</ly-as-13487256></a>
+          <a href="https://blog.peerless-av.com/" class="btn" target="_blank"><ly-as-13487257>View blog</ly-as-13487257></a>
+        </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Home Latest News",
+    "class": "section-latest-news",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title_section",
+        "label": "Heading",
+        "default": "Latest News"
+      },
+      {
+        "type": "url",
+        "id": "blog_url",
+        "label": "Blog Button Url"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Article",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "News"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Author"
+          },
+          {
+            "type": "text",
+            "id": "category",
+            "label": "Category Title",
+            "default": "Category"
+          },
+          {
+            "type": "text",
+            "id": "date",
+            "label": "Date",
+            "default": "01"
+          },
+          {
+            "type": "text",
+            "id": "month",
+            "label": "Month",
+            "default": "Aug"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Latest News"
+      }
+    ]
+  }
+{% endschema %}

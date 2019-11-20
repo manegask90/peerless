@@ -1,0 +1,91 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<a href="{% if section.settings.back_url %}{{ section.settings.back_url }}{% else %}javascript:void(0){% endif %}" class="back_url">< Back</a>
+<div class="title-wrapper">
+	<h1 class="title">{{ section.settings.career_title }}</h1>
+	<a href="{% if section.settings.apply_url %}{{ section.settings.apply_url }}{% else %}javascript:void(0){% endif %}" class="apply-btn"><ly-as-13489605>Apply Now</ly-as-13489605></a>
+</div>
+<div class="row">
+	<div class="col-sm-4 col-sm-offset-1 col-xs-12 col-xs-offset-0">
+		<div class="block">
+			<h3 class="block-title">{{ section.settings.position_title }}</h3>
+			<div class="block-content">{{ section.settings.position_content }}</div>
+		</div>
+	</div>
+	<div class="col-sm-3 col-xs-12">
+		<div class="block">
+			<h3 class="block-title">{{ section.settings.qualification_title }}</h3>
+			<div class="block-content">{{ section.settings.qualification_content }}</div>
+		</div>
+	</div>
+	<div class="col-sm-3 col-xs-12">
+		<div class="block">
+			<h3 class="block-title">{{ section.settings.skill_title }}</h3>
+			<div class="block-content">{{ section.settings.skill_content }}</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "Careers Top Area",
+	"class": "careers_top_area",
+	"settings": [  
+	    {
+	      "type": "header",
+	      "content": "Back URL"
+	    },
+	    {
+	      "type": "url",
+	      "id": "back_url",
+	      "label": "Back URL"
+	    },
+	    {
+	    	"type": "header",
+	    	"content": "Title Area"
+	    },
+	    {
+	    	"type": "text",
+	    	"id": "career_title",
+	    	"label": "Career Title"
+	    },
+	    {
+	    	"type": "url",
+	    	"id": "apply_url",
+	    	"label": "Apply Button URL"
+	    },
+	    {
+	    	"type": "header",
+	    	"content": "Top Area Content"
+	    },
+	    {
+	    	"type": "text",
+	    	"id": "position_title",
+	    	"label": "Position Title"
+	    },
+	    {
+	    	"type": "html",
+	    	"id": "position_content",
+	    	"label": "Position Content"
+	    },
+	    {
+	    	"type": "text",
+	    	"id": "qualification_title",
+	    	"label": "Qualification Title"
+	    },
+	    {
+	    	"type": "html",
+	    	"id": "qualification_content",
+	    	"label": "Qualification Content"
+	    },
+	    {
+	    	"type": "text",
+	    	"id": "skill_title",
+	    	"label": "Skill Title"
+	    },
+	    {
+	    	"type": "html",
+	    	"id": "skill_content",
+	    	"label": "Skill Content"
+	    }
+	]
+}
+{% endschema %}

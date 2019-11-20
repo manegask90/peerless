@@ -1,0 +1,19 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="career-bottom-contact">
+	<div class="contact-info">
+		{{ section.settings.contact_content }}
+	</div>
+</div>
+
+{% schema %}
+{
+	"name": "Career Bottom Contact",
+	"class": "career_bottom_contact",
+	"settings": [
+		{
+			"type": "html",
+			"id": "contact_content",
+			"label": "Contact Content"
+		}
+	]
+}
+{% endschema %}

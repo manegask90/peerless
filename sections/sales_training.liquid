@@ -1,0 +1,250 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="banner-area">
+   <img src="{{ section.settings.banner_background | img_url: '' }}" style="width: 100%" />
+   <div class="certified_logo sales-logo">
+      <img src="{{ section.settings.banner_logo | img_url: '' }}" />
+   </div>
+   <div class="sales-banner-title">
+      <span><ly-as-13489588>Sales Training Program</ly-as-13489588></span>
+   </div>
+</div>
+<div class="certified-content">
+    <div class="top-info-wrapper sales-info-wrapper">
+      <div class="left">
+         <h2 class="border-title top-title sales-title">{{ section.settings.top_info_title }}</h2>
+         <p>{{ section.settings.top_info_content }}</p>
+      </div>
+      <div class="right" style="background-image: url({{ section.settings.top_info_content_right_bg | img_url: '' }}); ">
+         <img src="{{ section.settings.top_info_logo | img_url: '' }}" alt="" />
+         <div class="cont">
+            {{- section.settings.top_info_content_right -}}
+         </div>
+         <div class="btn-wrap">
+            <a href="{{ section.settings.top_info_content_right_url }}" class="btn"><ly-as-13489589>Visit Now</ly-as-13489589></a>
+         </div>
+      </div>
+	</div>
+    <div class="certified-items-wrapper">
+      <div class="top-content" id="sales-top-content">
+         <h2 class="certified-info-title">{{ section.settings.sales_info_title }}</h2>
+      </div>
+      <div class="certified-items">
+         <div class="container">
+            <div class="row">
+            {% for item in section.blocks %}
+               <div class="col-md-4 main-sales-item-block">
+                  <div class="sales-item">
+                     <div class="item-medal sales-medal"><img src="{{ item.settings.sales_medal | img_url: '500x' }}" />
+                     <p>{{ item.settings.sales_description }}</p>
+                     </div>
+                  </div>
+               </div>
+            {% endfor %}
+            </div>
+         </div>
+      </div>
+	</div>
+</div>
+<div class="container-fluid six-ways">
+   <div class="row main-bott-wrap">
+      <div class="col-md-7 img-wrap">
+         <img src="{{ section.settings.bottom_omage | img_url: '' }}" style="width: 100%"/>
+         <p class="text-in-img"><ly-as-13489590>6 ways your sales</ly-as-13489590><br/><ly-as-13489591>organization will improve</ly-as-13489591><span id="by-using-sales"><ly-as-13489592>By using the sales training program</ly-as-13489592></span></p>
+      </div>
+      <div class="col-md-5 no_padding">
+         <div class="main-bott">
+            <div class="bottom-item"><span class="number-bottom-item">1</span></div>
+            <div class="desc-bottom-item"><span><ly-as-13489593>Increase success in meeting and exceeding sales quotas</ly-as-13489593></span></div>
+         </div>
+         <div class="main-bott">
+            <div class="bottom-item"><span class="number-bottom-item">2</span></div>
+            <div class="desc-bottom-item"><span><ly-as-13489594>Achieve higher win rates</ly-as-13489594></span></div>
+         </div>
+         <div class="main-bott">
+            <div class="bottom-item"><span class="number-bottom-item">3</span></div>
+            <div class="desc-bottom-item"><span><ly-as-13489595>Better align solutions to customer needs</ly-as-13489595></span></div>
+         </div>
+         <div class="main-bott">
+            <div class="bottom-item"><span class="number-bottom-item">4</span></div>
+            <div class="desc-bottom-item"><span><ly-as-13489596>Decrease sales force turnover</ly-as-13489596></span></div>
+         </div>
+         <div class="main-bott">
+            <div class="bottom-item"><span class="number-bottom-item">5</span></div>
+            <div class="desc-bottom-item"><span><ly-as-13489597>Gain greater understanding for what makes a customer buy</ly-as-13489597></span></div>
+         </div>
+         <div class="main-bott">
+            <div class="bottom-item"><span class="number-bottom-item">6</span></div>
+            <div class="desc-bottom-item"><span><ly-as-13489598>Increase up-selling, cross-selling and on-selling to other products</ly-as-13489598></span></div>
+         </div>
+      </div>
+   </div>
+</div>
+{% include 'sales_training_contact_form' %}
+<div class="instructor-info-area">
+   <div class="container">
+      <div class="row">
+         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-xs-offset-0">
+            <div class="wrapper">
+               <div class="instructor-logo">
+                  <img src="{{ section.settings.instructor_logo | img_url: '800x' }}" alt="{{ section.settings.instructor_title }}" />
+               </div>
+               <div class="instructor-content">
+                  <h2 class="instructor-title border-title left-border">{{ section.settings.instructor_title }}</h2>
+                  <div class="instructor-summary">
+                     <div class="instructor-logo-mob">
+                        <img src="{{ section.settings.instructor_logo | img_url: '800x' }}" alt="{{ section.settings.instructor_title }}" />
+                     </div>
+                     <div class="instructor-summary-info">
+                        {{ section.settings.instructor_summary }}
+                     </div>
+                  </div>
+                  <div class="instructor-description">{{ section.settings.instructor_description }}</div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+
+{% schema %}
+   {
+      "name": "Sales Training",
+      "settings": [
+         {
+           "type": "header",
+           "content": "Banner"
+         },
+         {
+            "type": "image_picker",
+            "id": "banner_background",
+            "label": "Banner Background"
+         },
+         {
+            "type": "image_picker",
+            "id": "banner_logo",
+            "label": "Banner Logo"
+         },
+         {
+           "type": "header",
+           "content": "Top Info"
+         },
+         {
+            "type": "html",
+            "id": "top_info_title",
+            "label": "Top Info Title"
+         },
+         {
+            "type": "html",
+            "id": "top_info_content",
+            "label": "Top Info Content"
+         },
+         {
+            "type": "image_picker",
+            "id": "top_info_logo",
+            "label": "Top Logo"
+         },
+         {
+            "type": "html",
+            "id": "top_info_content_right",
+            "label": "Top Info Content Right"
+         },
+         {
+            "type": "url",
+            "id": "top_info_content_right_url",
+            "label": "Top Info Content Right Url"
+         },
+         {
+            "type": "image_picker",
+            "id": "top_info_content_right_bg",
+            "label": "Top Info Content Right BG"
+         },
+         {
+           "type": "header",
+           "content": "Sales Items"
+         },
+         {
+            "type": "text",
+            "id": "sales_info_title",
+            "label": "Info Title"
+         },
+         {
+           "type": "header",
+           "content": "Reserve Section"
+         },
+         {
+            "type": "text",
+            "id": "reserve_title",
+            "label": "Reserve Title"
+         },
+         {
+            "type": "richtext",
+            "id": "reserve_description",
+            "label": "Reserve Description"
+         },
+         {
+           "type": "header",
+           "content": "Instructor Section"
+         },
+         {
+            "type": "image_picker",
+            "id": "instructor_logo",
+            "label": "Instructor Logo"
+         },
+         {
+            "type": "text",
+            "id": "instructor_title",
+            "label": "Instructor Title"
+         },
+         {
+            "type": "richtext",
+            "id": "instructor_summary",
+            "label": "Instructor Summary"
+         },
+         {
+            "type": "text",
+            "id": "instructor_description",
+            "label": "Instructor Description"
+         },
+         {
+            "type": "image_picker",
+            "id": "bottom_omage",
+            "label": "Bottom image"
+         }
+      ],
+      "blocks": [
+         {
+            "type": "sales_item",
+            "name": "Sales Item",
+            "settings": [
+               {
+                  "type": "image_picker",
+                  "id": "sales_medal",
+                  "label": "Sales Logo"
+               },
+               {
+                  "type": "textarea",
+                  "id": "sales_description",
+                  "label": "Description"
+               },
+               {
+                  "type": "url",
+                  "id": "sales_url",
+                  "label": "Button URL"
+               }
+            ]
+         }
+      ],
+      "presets": [
+         {
+            "name": "Sales Training Page",
+            "category": "Banner",
+            "blocks": [
+               { 
+                  "type": "sales_item"
+               }
+            ]
+         }
+      ]
+   }
+{% endschema %}

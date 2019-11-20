@@ -1,0 +1,50 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="xtreme-high-desc">
+  <div class="container">
+    <div class="row xtreme-high-inner">
+      <div class="col-md-5 col-xs-12">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">
+          {{- section.settings.desc -}}
+        </div>
+      </div>
+      <div class="col-md-7 col-xs-12 img-wrap">
+        <img src="{{ section.settings.img.src | img_url: '700x' }}">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Xtreme High Description",
+    "class": "section-xtreme-high-desc",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Xtreme™ High Bright Outdoor Displays"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Xtreme High Description Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,28 @@
+<div class="col-md-8 top-info">
+    <div class="content">
+        {% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+    </div>
+    <div class="btn-block">
+        <a href="{{ section.settings.all_lit }}" class="btn"><ly-as-13491884>View All Literature</ly-as-13491884></a>
+    </div>
+</div>
+
+
+{% schema %}
+{
+	"class": "literature_description",
+	"name": "Literature Description",
+	"settings": [
+		{
+			"type": "text",
+			"id": "top_desc",
+			"label": "Description"
+		},
+		{
+			"type": "url",
+			"id": "all_lit",
+			"label": "View All Literature"
+		}
+	]
+}
+{% endschema %}

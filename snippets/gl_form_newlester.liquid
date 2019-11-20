@@ -1,0 +1,67 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- if use_mailchimp == blank -%}{%- assign use_mailchimp = false -%}{%- endif -%}
+{%- if section.settings.use_mailchimp or block.settings.use_mailchimp or use_mailchimp -%}
+   {%- if settings.newsletter_form_action != "" -%}
+   <form id="mc4wp-form-{{block.id}}" class="mc4wp-form mc4wp-form-{{block.id}} mc4wp-form-basic" method="post" action="{{ settings.newsletter_form_action }}" target="_blank" data-id="{{block.id}}">
+    <div class="mc4wp-form-fields">
+      <p class="mailchimp-input-icon">
+        <label><ly-as-13490114>Email address:</ly-as-13490114> </label>
+        <input type="email" name="EMAIL" placeholder="{% comment %}ly_i18n_replace_for_[ 'general.newsletter_form.email_placeholder' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.newsletter_form.email_placeholder' | t }}{% endcapture %}{% include 'ly-static-string' with '13490117' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" value="{%- if customer -%}{{ customer.email }}{%- endif -%}" required="">
+      </p>
+      <p>
+        <input type="submit" value="{% comment %}ly_i18n_replace_for_[ 'general.newsletter_form.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.newsletter_form.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13490118' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+      </p>
+      {%- if bottom -%}<div class="hidden hide"></div>{%- endif -%}
+    </div>
+   </form>
+   {%- else -%}
+   <div style="text-align: center;"><strong><em><ly-as-13490115>Add newsletter redirect link in General / MailChimp form action URL</ly-as-13490115></em></strong></div>
+   {%- endif -%}
+   {%- else -%}
+   {%- form 'customer', class:'mc4wp-form' -%}
+   <div class="mc4wp-form-fields">
+    <p class="mailchimp-input-icon">
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <label><ly-as-13490114>Email address:</ly-as-13490114> </label>
+      <input type="email" name="contact[email]" placeholder="{% comment %}ly_i18n_replace_for_[ 'general.newsletter_form.email_placeholder' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.newsletter_form.email_placeholder' | t }}{% endcapture %}{% include 'ly-static-string' with '13490117' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" value="{%- if customer -%}{{ customer.email }}{%- endif -%}" required="">
+    </p>
+    <p>
+      <input type="submit" value="{% comment %}ly_i18n_replace_for_[ 'general.newsletter_form.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.newsletter_form.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13490118' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+    </p>
+    <div class="error-box"><i class="fa fa-exclamation-circle"></i><span><ly-as-13490116>Sorry, looks like you entered an invalid email address</ly-as-13490116></span></div>
+    {%- if bottom -%}<div class="hidden hide"></div>{%- endif -%}
+   </div>
+   {%- if form.posted_successfully? -%}
+   <div class="mc4wp-response"><div class="mc4wp-alert mc4wp-success succes-box" style="display:block;"><i class="fa fa-exclamation-circle"></i><span>{% comment %}ly_i18n_replace_for_[ 'sign_up.post_success' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'sign_up.post_success' | t }}{% endcapture %}{% include 'ly-static-string' with '13490119' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span></div></div>
+   {%- elsif form.errors -%}
+   <div class="mc4wp-response"><div class="mc4wp-alert mc4wp-error error-box" style="display:block;"><i class="fa fa-exclamation-circle"></i> <span>{{ form.errors | default_errors }}</span></div></div>
+   {%- endif -%}
+   {%- endform -%}
+{%- endif -%}
+
+
+<script>
+   function validateForm() {
+     var requiredFields = $('.footer-column .mc4wp-form [required]');
+      var validationError = false;
+      requiredFields.each(function(key, item) {
+         var $parent = $(item).closest('.mc4wp-form'),
+            $errorBox = $parent.find('.error-box');
+            $parent.css('display', 'block');
+         if ($(item).val() == '') {
+            $errorBox.css('display', 'block');
+            validationError = true;
+         }
+      });
+      return validationError;
+   }
+
+    jQuery(document).ready(function(){
+      $(".footer-column .mc4wp-form").submit(function(){
+         var validationError = validateForm();
+         if (validationError) {
+            return false;
+         }
+      });
+   })
+</script>

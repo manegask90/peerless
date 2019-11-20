@@ -1,0 +1,8 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<!-- /snippets/comment.liquid -->
+<div class="comment__content rte">
+  {% comment %}ly_code_replace_for_[ comment.content ]_begin{% endcomment %}{% include 'ly-content' with comment %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+</div>
+<div class="comment__meta">
+  <span class="comment__meta-item">{{ comment.author }}</span>
+  <span class="comment__meta-item">{{ comment.created_at | time_tag: format: 'month_day_year' }}</span>
+</div>

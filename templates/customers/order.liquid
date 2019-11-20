@@ -1,0 +1,161 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{%- assign title = 'customer.account.title' | t -%}
+<div class="main-page-wrapper">
+  {%- include 'page_heading', langify_title:title -%}
+  <!-- MAIN CONTENT AREA -->
+  <div class="container">
+    <div class="row">
+      <div class="site-content col-sm-12" role="main">
+        <article id="post-9" class="post-9 page type-page status-publish hentry">
+          <div class="entry-content">
+            <div class="shopify">
+              <div class="basel-my-account-sidebar">
+                <h3 class="shopify-MyAccount-title entry-title">{{title}}</h3>
+                <nav class="shopify-MyAccount-navigation">
+                  <ul>
+                    <li class="shopify-MyAccount-navigation-link shopify-MyAccount-navigation-link--dashboard">
+                      <a href="/account">{% comment %}ly_i18n_replace_for_[ 'customer.account.dashboard' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.dashboard' | t }}{% endcapture %}{% include 'ly-static-string' with '13491669' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                    </li>
+                    <li class="shopify-MyAccount-navigation-link shopify-MyAccount-navigation-link--orders is-active" style="pointer-events: none">
+                      <a href="/my-account/orders/">{% comment %}ly_i18n_replace_for_[ 'customer.orders.title_orders' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.orders.title_orders' | t }}{% endcapture %}{% include 'ly-static-string' with '13491670' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                    </li>
+                    <li class="shopify-MyAccount-navigation-link shopify-MyAccount-navigation-link--edit-address">
+                      <a href="/account/addresses">{% comment %}ly_i18n_replace_for_[ 'customer.addresses.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.addresses.title' | t }}{% endcapture %}{% include 'ly-static-string' with '13491671' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} ({{ customer.addresses_count }})</a>
+                    </li>
+                    {%- if settings.use_wishlist and pages['wishlist'].empty? != true -%}
+                    {%- include 'nitro-wishlist' -%}
+                    <li class="shopify-MyAccount-navigation-link shopify-MyAccount-navigation-link--wishlist">
+                      <a href="/pages/wishlist">{% comment %}ly_i18n_replace_for_[ 'customer.account.wishlist' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.wishlist' | t }}{% endcapture %}{% include 'ly-static-string' with '13491672' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} ({{ NITRO_WISHLIST_COUNT }})</a>
+                    </li>
+                    {%- endif -%}
+                    <li class="shopify-MyAccount-navigation-link shopify-MyAccount-navigation-link--customer-logout">
+                      {% comment %}ly_i18n_replace_for_[ 'layout.customer.log_out' | t | customer_logout_link ]_begin{% endcomment %}{% capture ly_template %}{{ 'layout.customer.log_out' | t | customer_logout_link }}{% endcapture %}{% include 'ly-static-string' with '13491673' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape | customer_logout_link }}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+              <!-- .basel-my-account-sidebar -->
+              <div class="shopify-MyAccount-content">
+                {%- assign order_date = order.created_at | date: "%B %d, %Y %I:%M%p" -%}
+                  <p>{% comment %}ly_i18n_replace_for_[ 'customer.order.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.title' | t }}{% endcapture %}{% include 'ly-static-string' with '13491674' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} <mark class="order-number">{{order.name}}</mark> {% comment %}ly_i18n_replace_for_[ 'customer.order.date' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.date' | t }}{% endcapture %}{% include 'ly-static-string' with '13491675' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} <mark class="order-date">{{order_date}}</mark> {% comment %}ly_i18n_replace_for_[ 'customer.order.and_currently' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.and_currently' | t }}{% endcapture %}{% include 'ly-static-string' with '13491676' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} <mark class="order-status">{{ order.fulfillment_status_label }}</mark>.</p>
+                {%- if order.cancelled -%}
+                  {%- assign cancelled_at = order.cancelled_at | date: "%B %d, %Y %I:%M%p" -%}
+                  <p>{% comment %}ly_i18n_replace_for_[ 'customer.order.cancelled' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.cancelled' | t }}{% endcapture %}{% include 'ly-static-string' with '13491677' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} <mark class="order-cancelled">{{cancelled_at}}</mark></p>
+                  <p>{% comment %}ly_i18n_replace_for_[ 'customer.order.cancelled_reason' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.cancelled_reason' | t }}{% endcapture %}{% include 'ly-static-string' with '13491678' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} <mark class="order-cancelled_reason">{{order.cancel_reason}}</mark></p>
+                {%- endif -%}
+                <section class="shopify-order-details">
+                  <h2 class="shopify-order-details__title">{% comment %}ly_i18n_replace_for_[ 'customer.order.order_details' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.order_details' | t }}{% endcapture %}{% include 'ly-static-string' with '13491679' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h2>
+                  <div class="responsive-table">
+                    <div>
+                      {% if order.metafields.IFS_data.IFSOrderId %}
+                        <span class="custom_metafields"><label><ly-as-13491666>Peerless Order ID:</ly-as-13491666></label> {% comment %}ly_code_replace_for_[order.metafields.IFS_data.IFSOrderId]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'IFS_data' %}{% assign key = 'IFSOrderId' %}{% if order.metafields[ns][key] %}{% assign ly_translation = order.metafields[ns][key] %}{% else %}{% assign ly_translation = order.metafields.IFS_data.IFSOrderId %}{% endif %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</span>
+                      {% endif %}
+
+                      {% if order.metafields.IFS_data.IFSOrderId %}
+                        <span class="custom_metafields custom_metafields_right_span"><label><ly-as-13491667>Expected Ship To Date:</ly-as-13491667></label> {% comment %}ly_code_replace_for_[order.metafields.IFS_data.EXPECTEDSHIPTODATE]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'IFS_data' %}{% assign key = 'EXPECTEDSHIPTODATE' %}{% if order.metafields[ns][key] %}{% assign ly_translation = order.metafields[ns][key] %}{% else %}{% assign ly_translation = order.metafields.IFS_data.EXPECTEDSHIPTODATE %}{% endif %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</span>
+                      {% endif %}
+                    </div>
+                    <table class="shopify-table shopify-table--order-details shop_table order_details">
+                      <thead>
+                        <tr>
+                          <th class="shopify-table__product-name product-name">{% comment %}ly_i18n_replace_for_[ 'customer.order.product' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.product' | t }}{% endcapture %}{% include 'ly-static-string' with '13491680' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</th>
+                          <th class="shopify-table__product-table product-total">{% comment %}ly_i18n_replace_for_[ 'customer.order.total' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.total' | t }}{% endcapture %}{% include 'ly-static-string' with '13491681' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {%- for line_item in order.line_items -%}
+                          <tr id="{{ line_item.key }}" class="shopify-table__line-item order_item">
+                            <td class="shopify-table__product-name product-name">
+                              <a href="{{ line_item.url | within: collections.all }}">{% comment %}ly_code_replace_for_[line_item.product.title]_begin{% endcomment %}{% include 'ly-title' with line_item.product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}{%- if line_item.product.has_only_default_variant == false %} – {% for option in line_item.product.options -%}{{ option | capitalize }}: {{ line_item.variant.options[forloop.index0] }}{%- if forloop.last == false-%}, {% endif -%}{%- endfor -%}{%- endif -%}</a> <strong class="product-quantity">× {{ line_item.quantity }}</strong>
+                              {% if line_item.fulfillment %}
+                                <div class="note">
+                                  {%- assign created_at = line_item.fulfillment.created_at | date: format: 'month_day_year' -%}
+                                  {% comment %}ly_i18n_replace_for_[ 'customer.order.fulfilled_at' | t: date: created_at ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.fulfilled_at' | t: date: created_at }}{% endcapture %}{% include 'ly-static-string' with '13491683' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = created_at  %}{% assign ly_template = ly_template | replace: '[[date]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+                                  {%- if line_item.fulfillment.tracking_number -%}
+                                    <a href="{{ line_item.fulfillment.tracking_url }}">{{ line_item.fulfillment.tracking_company }} #{{ line_item.fulfillment.tracking_number}}</a>
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}  
+                            </td>
+                            <td class="shopify-table__product-total product-total">
+                              <span class="shopify-Price-amount amount">{{ line_item.quantity | times: line_item.price | money }}</span> 
+                            </td>
+                          </tr>
+                        {%- endfor -%}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th scope="row">{% comment %}ly_i18n_replace_for_[ 'customer.order.subtotal' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.subtotal' | t }}{% endcapture %}{% include 'ly-static-string' with '13491684' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}:</th>
+                            <td data-label="{% comment %}ly_i18n_replace_for_[ 'customer.order.subtotal' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.subtotal' | t }}{% endcapture %}{% include 'ly-static-string' with '13491684' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}"><span class="shopify-Price-amount amount">{{ order.subtotal_price | money }}</span></td>
+                          </tr>
+                          {%- for discount in order.discounts -%}
+                          <tr class="order_summary discount">
+                            <th scope="row">{{ discount.code }} {% comment %}ly_i18n_replace_for_[ 'customer.order.discount' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.discount' | t }}{% endcapture %}{% include 'ly-static-string' with '13491685' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</th>
+                            <td data-label="{% comment %}ly_i18n_replace_for_[ 'customer.order.discount' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.discount' | t }}{% endcapture %}{% include 'ly-static-string' with '13491685' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">{{ discount.savings | money }}</td>
+                          </tr>
+                          {%- endfor -%}
+                          {%- for shipping_method in order.shipping_methods -%}
+                          <tr>
+                            <th scope="row">{% comment %}ly_i18n_replace_for_[ 'customer.order.shipping' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.shipping' | t }}{% endcapture %}{% include 'ly-static-string' with '13491686' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} ({% comment %}ly_code_replace_for_[ shipping_method.title ]_begin{% endcomment %}{% include 'ly-title' with shipping_method %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}):</th>
+                            <td data-label="{% comment %}ly_i18n_replace_for_[ 'customer.order.shipping' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.shipping' | t }}{% endcapture %}{% include 'ly-static-string' with '13491686' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} ({% comment %}ly_code_replace_for_[ shipping_method.title ]_begin{% endcomment %}{% include 'ly-title' with shipping_method %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %})"><span class="shopify-Price-amount amount">{{ shipping_method.price | money }}</span></td>
+                          </tr>
+                          {%- endfor -%}
+                          {%- for tax_line in order.tax_lines -%}
+                            <tr>
+                              <th scope="row">{% comment %}ly_i18n_replace_for_[ 'customer.order.tax' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.tax' | t }}{% endcapture %}{% include 'ly-static-string' with '13491687' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} ({% comment %}ly_code_replace_for_[ tax_line.title ]_begin{% endcomment %}{% include 'ly-title' with tax_line %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %} {{ tax_line.rate | times: 100 }}%)</th>
+                              <td data-label="{% comment %}ly_i18n_replace_for_[ 'customer.order.tax' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.tax' | t }}{% endcapture %}{% include 'ly-static-string' with '13491687' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} ({% comment %}ly_code_replace_for_[ tax_line.title ]_begin{% endcomment %}{% include 'ly-title' with tax_line %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %} {{ tax_line.rate | times: 100 }}%)">{{ tax_line.price | money }}</td>
+                            </tr>
+                          {%- endfor -%}
+                          <tr>
+                            <th scope="row">{% comment %}ly_i18n_replace_for_[ 'customer.order.total' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.total' | t }}{% endcapture %}{% include 'ly-static-string' with '13491681' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}:</th>
+                            <td data-label="{% comment %}ly_i18n_replace_for_[ 'customer.order.total' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.total' | t }}{% endcapture %}{% include 'ly-static-string' with '13491681' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}"><span class="shopify-Price-amount amount">{{ order.total_price | money }} {{ order.currency }}</span></td>
+                          </tr>
+                       </tfoot>
+                    </table>
+                  </div>
+                  <section class="shopify-customer-details">
+                    <h2>{% comment %}ly_i18n_replace_for_[ 'customer.order.customer_details' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.customer_details' | t }}{% endcapture %}{% include 'ly-static-string' with '13491688' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h2>
+                    <div class="responsive-table">
+                      <table class="shopify-table shopify-table--customer-details shop_table customer_details">
+                        <tbody>
+                          <tr>
+                            <th>{% comment %}ly_i18n_replace_for_[ 'customer.order.email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.email' | t }}{% endcapture %}{% include 'ly-static-string' with '13491689' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}:</th>
+                            <td>{{order.email}}</td>
+                          </tr>
+                          {%- if order.note != blank -%}
+                            <tr>
+                              <th>{% comment %}ly_i18n_replace_for_[ 'customer.order.note' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.note' | t }}{% endcapture %}{% include 'ly-static-string' with '13491690' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}:</th>
+                              <td>{{ order.note }}</td>
+                            </tr>
+                          {%- endif -%}
+                        </tbody>
+                      </table>
+                    </div>
+                    <section class="shopify-columns shopify-columns--2 shopify-columns--addresses col2-set addresses">
+                      <div class="shopify-column shopify-column--1 shopify-column--billing-address col-1">
+                        <h3 class="shopify-column__title">{% comment %}ly_i18n_replace_for_[ 'customer.order.billing_address' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.billing_address' | t }}{% endcapture %}{% include 'ly-static-string' with '13491691' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h3>
+                        <p><strong>{% comment %}ly_i18n_replace_for_[ 'customer.order.payment_status' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.payment_status' | t }}{% endcapture %}{% include 'ly-static-string' with '13491692' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}:</strong> {{ order.financial_status_label }}</p>
+                        {%- assign order_billing =  order.billing_address | format_address -%}
+                        {{order_billing | replace: '<p>', '<address><ly-as-13491668>' | replace: '</ly-as-13491668></p>', '</address>' }}
+                      </div>
+                      <!-- /.col-1 -->
+                      <div class="shopify-column shopify-column--2 shopify-column--shipping-address col-2">
+                        <h3 class="shopify-column__title">{% comment %}ly_i18n_replace_for_[ 'customer.order.shipping_address' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.shipping_address' | t }}{% endcapture %}{% include 'ly-static-string' with '13491693' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h3>
+                        <p><strong>{% comment %}ly_i18n_replace_for_[ 'customer.order.fulfillment_status' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.order.fulfillment_status' | t }}{% endcapture %}{% include 'ly-static-string' with '13491694' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}:</strong> {{ order.fulfillment_status_label }}</p>
+                        {%- assign order_shipping =  order.shipping_address | format_address -%}
+                        {{order_shipping | replace: '<p>', '<address><ly-as-13491668>' | replace: '</ly-as-13491668></p>', '</address>' }}
+                      </div>
+                      <!-- /.col-2 -->
+                    </section>
+                    <!-- /.col2-set -->
+                  </section>
+                </section>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div><!-- end container -->
+</div><!-- .main-page-wrapper -->
+
+{% comment %}ly_asset_replace_for_[ 'account-scripts.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'account-scripts.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}

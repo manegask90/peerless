@@ -1,0 +1,43 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="join-wrap">
+	<div class="container">
+		<div class="join-inner">
+			<span class="loading"></span>
+			<div class="message">
+				<div class="info-box"></div>
+			</div>
+		</div>
+		<a href="/" class="btn"><ly-as-13491836>Home</ly-as-13491836></a>
+	</div>
+</div>
+<script>
+	joinUserActivation();
+
+	function joinUserActivation() {
+		var searchParams = new URLSearchParams(window.location.search.slice(1));
+
+		if (!searchParams.get('token')) return;
+
+		$.ajax({
+			url: "/apps/peerless-4/customers/join-user-activate",
+			data: {
+				token: searchParams.get('token')
+			},
+	        type: 'POST',
+	        dataType: 'json',
+	        success: function (response) {
+				if (response.success) {
+					$('.info-box').text(response.message);
+				} else {
+					$('.info-box').text(response.message);
+				}
+	        },
+	        error: function (error) {
+	        	console.log(error);
+	        },
+	        complete: function () {
+	        	$('.loading').hide();
+	        }
+		});
+	}
+</script>

@@ -1,0 +1,51 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="block-wrapper">
+{% for item in section.blocks %}
+	<div class="block">
+		<div class="association-logo">
+			<img src="{{ item.settings.logo_img | img_url: '500x' }}" alt="{{ item.settings.block_title }}" />
+		</div>
+		<div class="association-content">
+			<h3 class="association-title">{{ item.settings.block_title }}</h3>
+			<p>{{ item.settings.block_description }}</p>
+		</div>
+		<a href="{% if item.settings.association-url %}{{ item.settings.association-url }}{% else %}javascript:void(0){% endif %}" target="_blank"><ly-as-13487125>Visit Website</ly-as-13487125></a>
+	</div>	
+{% endfor %}
+</div>
+{% schema %}
+{
+  	"name": "Association",
+  	"settings": [   
+  	],
+  	"blocks": [    
+	    {
+	        "type": "association_item",
+	        "name": "Association Block",
+	        "settings": [
+	            {
+	                "type": "image_picker",
+	                "id": "logo_img",
+	                "label": "Logo"
+	            },
+	            {
+	                "type": "text",
+	                "id": "block_title",
+	                "label": "Association Name",
+	                "default": "Association Name"
+	            },
+	            {
+	                "type": "textarea",
+	                "id": "block_description",
+	                "label": "Association Description",
+	                "default": "Association Description"
+	            },
+	            {
+	                "type": "url",
+	                "id": "association-url",
+	                "label": "URL"
+	            }
+	        ]
+	    }
+  	]
+}
+{% endschema %}

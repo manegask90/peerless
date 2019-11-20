@@ -1,0 +1,11 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="main-page-wrapper">
+   <!-- MAIN CONTENT AREA -->
+   {%- include 'page_heading', langify_title:page.title -%}
+   <div class="container">
+      <div class="row">
+         <div class="site-content col-sm-12" role="main">
+            {% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+         </div>
+      </div>
+   </div>
+</div>

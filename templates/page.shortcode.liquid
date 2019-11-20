@@ -1,0 +1,245 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% layout none %} 
+<!DOCTYPE html>
+<html> 
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+      {{ langify_title }}{% if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} &ndash; {% comment %}ly_i18n_replace_for_[ 'general.meta.tags' | t: tags: meta_tags ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.meta.tags' | t: tags: meta_tags }}{% endcapture %}{% include 'ly-static-string' with '13492478' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = meta_tags  %}{% assign ly_template = ly_template | replace: '[[tags]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% endif %}{% if current_page != 1 %} &ndash; {% comment %}ly_i18n_replace_for_[ 'general.meta.page' | t: page: current_page ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.meta.page' | t: page: current_page }}{% endcapture %}{% include 'ly-static-string' with '13492480' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = current_page  %}{% assign ly_template = ly_template | replace: '[[page]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}{% endif %}{% unless langify_title contains langify_shop_name %} &ndash; {{ langify_shop_name }}{% endunless %}
+    </title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="//cdn.shopify.com/s/files/1/1195/7350/t/1/assets/fontawesome-iconpicker.min.css?14776044435245576982" rel="stylesheet" type="text/css" media="all" />
+    <link href="//demo-rubbez.myshopify.com/services/assets/92857350/editor_asset/shortcode-helper.scss.css" rel="stylesheet" type="text/css" media="all" />
+  </head>
+  <body>
+    <div class="main-container page-wrapper page-shortcode">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12"> 
+          </div>
+          <div class="col-md-12">
+            <button type="button" class="btn btn-info ribbon header-button"><h4><strong> <i class="glyphicon glyphicon-star-empty"></i> <ly-as-13492430>Shortcode generate tool Support for Shopify theme</ly-as-13492430> <i class="glyphicon glyphicon-star-empty"></i></strong></h4></button>
+          </div>
+          <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab-container">
+            <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu hide hidden">
+              <div class="list-group">
+
+                <a href="#" class="list-group-item  text-center active">
+                  <h4 class="glyphicon glyphicon-shopping-cart"></h4><br/><ly-as-13492431>Product</ly-as-13492431>
+                </a>
+                <a href="#" class="list-group-item text-center">
+                  <h4 class="glyphicon glyphicon-picture"></h4><br/><ly-as-13492432>Collections, Portfolio</ly-as-13492432>
+                </a>
+              </div>
+            </div>
+            <div class="col-xs-12 bhoechie-tab">
+              <!-- flight section -->
+              <div class="bhoechie-tab-content active">
+                <form class="form-horizontal" id="form-product">
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label"><ly-as-13492433>Title:</ly-as-13492433></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="inputTitle" placeholder="SHOP THE LOOK" name="title">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label" ><ly-as-13492434>Title align:</ly-as-13492434> <span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="align">
+                        <option value="left" selected="selected"><ly-as-13492435>left</ly-as-13492435></option>
+                         <option value="right"><ly-as-13492436>right</ly-as-13492436></option>
+                         <option value="center"><ly-as-13492437>center</ly-as-13492437></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label"><ly-as-13492438>Total Number of products to show:</ly-as-13492438> <span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                     <input type="number" step="1" min="1" name="limit" value="8" class="form-control" size="1" pattern="[0-9]*" inputmode="numeric" max="999">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label" ><ly-as-13492439>Slides per view:</ly-as-13492439> <span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="cols" >
+                        <option value="1">1</option>
+                        <option value="2"> 2</option>
+                        <option value="3">3</option>
+                         <option value="4" selected="selected">4</option>
+                         <option value="5">5</option>
+                        <option value="6"> 6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label" required ><ly-as-13492440>Collection to use :</ly-as-13492440><span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="handle_collection" required>
+                        <option value=""><ly-as-13492441>Select your collection</ly-as-13492441></option>
+                        {%- for collection in collections -%}
+                        {%- if collection.products.size > 2 -%}
+                        <option  value="{{collection.handle}}">{% comment %}ly_code_replace_for_[collection.title]_begin{% endcomment %}{% include 'ly-title' with collection %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</option>
+                        {%- endif -%}
+                        {%- endfor -%}
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="inputTitle" class="col-sm-4 control-label" ><ly-as-13492442>Choose one of those hover effects for products:</ly-as-13492442> <span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="hover" >
+                           <option value="base" selected="selected"><ly-as-13492443>Base</ly-as-13492443></option>
+                           <option value="alt"><ly-as-13492444>Alternative</ly-as-13492444></option>
+                           <option value="button"><ly-as-13492445>Show button on hover on image</ly-as-13492445></option>
+                           <option value="info"><ly-as-13492446>Full info on hover</ly-as-13492446></option>
+                           <option value="link"><ly-as-13492447>Button on hover</ly-as-13492447></option>
+                           <option value="standard"><ly-as-13492448>Standard button</ly-as-13492448></option>
+                           <option value="excerpt"><ly-as-13492449>With excerpt</ly-as-13492449></option>
+                            <option value="quick"><ly-as-13492450>Quick shop</ly-as-13492450></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label"><ly-as-13492451>Hide pagination control?</ly-as-13492451> <span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="hide_pagination">
+                        <option value="false"> <ly-as-13492452>false</ly-as-13492452></option>
+                         <option value="true" selected="selected"><ly-as-13492453>True</ly-as-13492453></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label"><ly-as-13492454>Hide prev/next buttons?</ly-as-13492454> <span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="hide_buttons">
+                        <option value="false"> <ly-as-13492452>false</ly-as-13492452></option>
+                         <option value="true" selected="selected"><ly-as-13492453>True</ly-as-13492453></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label"><ly-as-13492455>Use Sale countdown:</ly-as-13492455> <span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="use_countdown">
+                        <option value="false" selected="selected"> <ly-as-13492452>false</ly-as-13492452></option>
+                         <option value="true"><ly-as-13492453>True</ly-as-13492453></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label"><ly-as-13492456>Use Auto Loop countdown:</ly-as-13492456> <span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="loop_countdown">
+                        <option value="false" selected="selected"> <ly-as-13492452>false</ly-as-13492452></option>
+                         <option value="true"><ly-as-13492453>True</ly-as-13492453></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="inputTitle" class="col-sm-4 control-label" ><ly-as-13492457>Countdown style:</ly-as-13492457> <span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <select class="form-control" name="collection_countdown_style">
+                           <option value="light"><ly-as-13492458>Countdown timer light</ly-as-13492458></option>
+                           <option value="dark" selected="selected"><ly-as-13492459>Countdown timer dark</ly-as-13492459></option>
+                           <option value="transparent_1"><ly-as-13492460>Countdown timer transparent 1</ly-as-13492460></option>
+                           <option value="transparent_2"><ly-as-13492461>Countdown timer transparent 2</ly-as-13492461></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label"><ly-as-13492462>View more button:</ly-as-13492462></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="inputTitle" placeholder="if not use you can blank" name="btn_title">
+                    </div>
+                  </div>
+                  <div class="form-group text-center">  
+                    <h3><ly-as-13492463>Demo layout:</ly-as-13492463></h3> <hr>
+                    <img class="preview-product" src="//cdn.shopify.com/s/files/1/1933/6253/files/lmFKb0v5R2WuAOdBM9N-Jg.jpg" class="img-thumbnail">
+                  </div>
+                  <div class="form-group">
+                    <label for=""><ly-as-13492464>Result:</ly-as-13492464></label>
+                    <textarea class="form-control" rows="5" id="result-product"></textarea>
+                    <div class="alert alert-success alert-dismissible fade in hidden-alert" role="alert"><ly-as-13492465>Now Copied to clipboard. Please paste to box shortcode to Blog post or Page content.</ly-as-13492465></div>
+                  </div>
+                  <button type="button" class="btn btn-success btn-lg btn3d" id="generate-product"><span class="glyphicon glyphicon-send"></span> <ly-as-13492466>Generate</ly-as-13492466> </button>
+                  <input type="reset" class="btn-lg btn3d btn btn-warning" value="Reset" style="width: 100%">
+                </form>
+
+              </div>
+              <div class="bhoechie-tab-content">
+                <h3><ly-as-13492467>Shortcode Collections, Portfolio generate</ly-as-13492467></h3>
+                <form class="form-horizontal" id="form-collections">
+                  <div class="form-group">
+                    <label for="inputTitle" class="col-sm-4 control-label"><ly-as-13492468>Title (optional):</ly-as-13492468><span class="red required">*</span></label>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" id="inputTitle" placeholder="collection product" name="title" required>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="inputTitle" class="col-sm-4 control-label" ><ly-as-13492469>Padding:</ly-as-13492469></label>
+                    <div class="col-sm-8">
+                      <select class="form-control select-layout" name="padding">
+                        <option value="10" selected="selected"><ly-as-13492470>10px</ly-as-13492470></option>
+                        <option value="15"><ly-as-13492471>15px</ly-as-13492471></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="inputTitle" class="col-sm-4 control-label" ><ly-as-13492472>Style:</ly-as-13492472></label>
+                    <div class="col-sm-8">
+                      <select class="form-control select-layout" id="collection-preview" name="style">
+                        <option value="style1" data-src="https://cdn.shopify.com/s/files/1/1674/8789/files/shortcode_3.jpg?9909620816668118006"><ly-as-13492473>Use Title</ly-as-13492473></option>
+                        <option  value="style2" data-src="https://cdn.shopify.com/s/files/1/1674/8789/files/Screenshot_4.jpg?2780926619585735727"><ly-as-13492474>No Title</ly-as-13492474></option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-6">
+                      <label for="inputTitle" class="control-label"><ly-as-13492475>Link Image File Upload</ly-as-13492475></label>
+                    </div>
+                    <div class="col-sm-6">
+                      <label for="inputTitle" class="control-label"><ly-as-13492476>Image Title:</ly-as-13492476></label>
+                    </div>
+                  </div> <hr>
+                  {% for index  in (1..15) %}
+                  <div class="form-group">
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control"  placeholder="Link Image File Upload {{index}}" name="src{{index}}" >
+                    </div>
+                    <div class="col-sm-6">
+                      <input type="text" class="form-control"  placeholder="Image Title {{index}}" name="link{{index}}" >
+                    </div>
+                  </div><hr>
+                  {% endfor %}
+
+                  <div class="form-group">  
+                    <h3><ly-as-13492463>Demo layout:</ly-as-13492463></h3> <hr>
+                    <img class="preview-collection" src="https://cdn.shopify.com/s/files/1/1674/8789/files/shortcode_3.jpg?9909620816668118006" class="img-thumbnail">
+                  </div>
+                  <div class="form-group">
+                    <label for=""><ly-as-13492464>Result:</ly-as-13492464></label>
+                    <textarea class="form-control" rows="5" id="result-collections"></textarea>
+                     <div class="alert alert-success alert-dismissible fade in hidden-alert" role="alert"><ly-as-13492465>Now Copied to clipboard. Please paste to box shortcode to Blog post or Page content.</ly-as-13492465></div>
+                  </div>
+                  <button type="button" class="btn btn-success btn-lg btn3d" id="generate-collections"><span class="glyphicon glyphicon-send"></span> <ly-as-13492466>Generate</ly-as-13492466> </button>
+                  <input type="reset" class="btn-lg btn3d btn btn-warning" value="Reset" style="width: 100%">
+                </form>
+              </div>
+            </div>
+          </div>
+        </div> 
+      </div>
+    </div>
+    <script src="//cdn.shopify.com/s/files/1/1195/7350/t/1/assets/jquery-1.11.3.min.js?14776044435245576982" type="text/javascript"></script>
+    <script src="//cdn.shopify.com/s/files/1/1195/7350/t/1/assets/bootstrap.min.js?14776044435245576982" type="text/javascript"></script>
+    <script src="//cdn.shopify.com/s/files/1/1195/7350/t/1/assets/fontawesome-iconpicker.min.js?14776044435245576982" type="text/javascript"></script>
+    <script src="//cdn.shopify.com/s/files/1/1195/7350/t/1/assets/jquery-ui.js?14776044435245576982" type="text/javascript"></script>
+
+    {% comment %}ly_asset_replace_for_['shortcode-helper.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'shortcode-helper.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+  </body>
+</html>

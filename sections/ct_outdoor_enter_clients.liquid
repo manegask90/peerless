@@ -1,0 +1,61 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="outdoor-enter-clients">
+  <div class="container">
+    <div class="outdoor-enter-clients-inner">
+      <div class="outdoor-enter-clients-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{section.settings.desc}}</div>
+      </div>
+        <ul class="outdoor-enter-clients-list">
+          {%- for block in section.blocks -%}
+            <li class="list-item">
+                <div class="img-wrap">
+                    <img src="{{block.settings.image  | img_url: 'master' }}" alt="{{block.settings.image.alt}}" />
+                </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Outdoor Clients",
+    "class": "section-outdoor-enter-clients",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Our Clients"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "Clients image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Outdoor Clients Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

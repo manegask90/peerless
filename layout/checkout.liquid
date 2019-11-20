@@ -1,0 +1,219 @@
+<!-- Purchasing permissions -->
+{%- include 'purchasing' -%}
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+    <script>window.customerTags = {{ customer.tags | json }}</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KRH6GZ');</script>
+<!-- End Google Tag Manager -->
+    <title>{{ shop.name }} - {{ page_title }}</title>
+    <script type="text/javascript">
+      function restrictAccess () {
+        {% if customer == blank %}
+          window.location = '/account/login';
+        {% else %}
+          window.location = '/pages/error';
+        {% endif %}
+      }
+      {%- if purchasing == false -%}
+        restrictAccess();
+      {%- endif -%}
+    </script>
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+    {{ 'checkout.scss.css' | asset_url | stylesheet_tag }}
+    {{ '//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js' | script_tag }}
+    {{ 'checkout_custom.js' | asset_url | script_tag }}
+  
+  {% include 'shogun-head' %}
+
+  <style>
+    {% if customer.tags contains 'B2B Admin' or customer.tags contains 'B2B Join' and customer.metafields.global.company_id  %}
+      [data-select-gateway="16970645619"],
+      [data-step="payment_method"] .section__content [data-payment-subform="required"] .content-box__row.content-box__row--secondary {
+        display: none !important;
+      }
+    {% endif%}
+  </style>
+    
+</head>
+  <body>
+    <div class="banner" data-header>
+      <div class="wrap">
+        {{ content_for_logo }}
+      </div>
+    </div>
+
+    {{ order_summary_toggle }}
+
+    <div class="content" data-content>
+      <div class="wrap">
+        <div class="sidebar" role="complementary">
+          <div class="sidebar__header">
+            {{ content_for_logo }}
+          </div>
+          <div class="sidebar__content">
+            {{ content_for_order_summary }}
+          </div>
+        </div>
+        <div class="main" role="main">
+          <div class="main__header">
+            {{ breadcrumb }}
+          </div>
+          <div class="main__content">
+            {{ content_for_layout }}
+          </div>
+          <div class="main__footer">
+            {{ content_for_footer }}
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KRH6GZ"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+    {{ tracking_code }}
+    <div id="usa-reg-popup">
+      <div class="usa-reg-wrapper">
+        <h3 class="title"><ly-as-13491574>Warning</ly-as-13491574></h3>
+        <p><ly-as-13491575>Because shipping rates to these locations can vary, we cannot ship to Alaska, Hawaii, or Puerto Rico. Please contact Peerless or submit a Purchase Order if you want to make a purchase.</ly-as-13491575></p>
+        <a href="javascript:void(0)" class="btn btn-confirm"><ly-as-13491576>OK</ly-as-13491576></a>
+        <a href="javascript:void(0)" class="btn btn-close"><ly-as-13491570>Close</ly-as-13491570></a>
+      </div>
+    </div>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded",function(){
+      $('#checkout_shipping_address_country').val('United States').hide();
+      $('.field--show-floating-label[data-address-field = "country"]').hide();
+
+      $('#checkout_shipping_address_province').on('change', function () {
+        validateState($(this).val());
+      });
+
+      validateState($('#checkout_shipping_address_province').val());
+
+      $("body").on("click", "#usa-reg-popup .btn", function(){
+        $("#usa-reg-popup").hide();
+      });
+    });
+
+    function validateState(select_reg) {
+      if(select_reg == 'AK' || select_reg == 'HI' || select_reg == 'PR'){
+        $('#usa-reg-popup').show();
+        $('.step__footer__continue-btn').attr('disabled', 'disabled');
+      } else {
+        $('.step__footer__continue-btn').removeAttr('disabled');
+      }
+    }
+    
+    {% if customer.tags contains 'B2B Admin' or customer.tags contains 'B2B Join' and customer.metafields.global.company_id %}
+      setTimeout(function () {
+        var po_number_value = localStorage.getItem('po_number_value') ? localStorage.getItem('po_number_value') : '';
+        $('<div \
+          data-address-field="po_number" \
+          data-autocomplete-field-container="true" \
+          class="field field--show-floating-label"> \
+          <div class="field__input-wrapper"> \
+            <label class="field__label field__label--visible" \
+              for="checkout_shipping_address_po_number">Purchase Order Number</label> \
+            <input placeholder="City" \
+              autocorrect="off" \
+              data-trekkie-id="shipping_po_number_field" \
+              data-backup="po_number" class="field__input" \
+              aria-required="true" \
+              size="30" \
+              value="'+po_number_value+'" \
+              type="text" name="checkout[attributes][po_number]" id="checkout_shipping_address_po_number"> \
+          </div> \
+        </div>').insertAfter('.section--shipping-address [data-address-field="city"]');
+
+        $('[name="checkout[attributes][po_number]"]').on('input', function () {
+          localStorage.setItem('po_number_value', this.value);
+        });
+        $('[data-trekkie-id="complete_order_button"]').on('click', function () {
+          localStorage.removeItem('po_number_value');
+        });
+      });
+
+      // $('[for="checkout_shipping_rate_id_shopify-expedited-0_00"] .radio__label__primary')
+      //   .append('<span class="shipping-tooltip"><span class="tooltip-content">Expedited shipping rates vary, depending on the contents of your order, your location, and more. If you want expedited shipping, place your order, and Customer Care will contact you to assess your freight cost</span></span>');
+      $('[for="checkout_shipping_rate_id_shopify-request20expidited20--20shipping20costs20updated20after20order20review-900_00"] .radio__label__primary')
+        .append('<span class="shipping-tooltip"><span class="tooltip-content">Expedited shipping rates vary, depending on the contents of your order, your location, and more. If you want expedited shipping, place your order, and Customer Care will contact you to assess your freight cost</span></span>');
+    {% endif %}
+
+    var shippingRemoved = setInterval(removeShippingMettods, 100);
+    
+    function removeShippingMettods () {
+      console.log('checking');
+      if ($('[data-step="shipping_method"]').length == 0) {
+        clearInterval(shippingRemoved);
+      }
+      if ($('[data-step="shipping_method"] .section__content .content-box__row').length) {
+        clearInterval(shippingRemoved);
+      }
+      $('[data-step="shipping_method"] .section__content .content-box__row').each(function () {
+        var labelText = $(this).find('.radio__label__primary').attr('data-shipping-method-label-title').trim();
+        {% if customer.tags contains 'B2B Admin' or customer.tags contains 'B2B Join' and customer.metafields.global.company_id %}
+          if (labelText != 'Expedited' && labelText != 'Dealer Freight Program') {
+            $(this).remove();
+          }
+        {% else %}
+        if (labelText == 'Expedited' || labelText == 'Dealer Freight Program') {
+            $(this).remove();
+          }
+        {% endif %}
+      });
+      if (document.querySelector('[data-step="shipping_method"] .section__content .content-box__row input')) {
+        document.querySelector('[data-step="shipping_method"] .section__content .content-box__row input').checked = true;
+      }
+    }
+
+    var paymentRemoved = setInterval(removePaymentMethod, 100);
+
+    function removePaymentMethod () {
+      console.log('checking payment');
+      if ($('[data-step="payment_method"] .section__content .content-box__row[data-select-gateway]').length) {
+        clearInterval(paymentRemoved);
+      }
+      $('[data-step="payment_method"] .section__content .content-box__row[data-select-gateway]').each(function () {
+        var labelText = $(this).find('.radio__label label').text().trim();
+        {% if customer.tags contains 'B2B Admin' or customer.tags contains 'B2B Join' and customer.metafields.global.company_id %}
+          if (labelText != 'Pay by Invoice') {
+            $(this).remove();
+            $('[data-step="payment_method"] .section__content [data-payment-subform="required"] .content-box__row.content-box__row--secondary').remove()
+          }
+        {% else %}
+        if (labelText == 'Pay by Invoice') {
+            $(this).remove();
+          }
+        {% endif %}
+      });
+      if (document.querySelector('[data-step="payment_method"] .section__content .content-box__row[data-select-gateway] input')) {
+        document.querySelector('[data-step="payment_method"] .section__content .content-box__row[data-select-gateway] input').checked = true;
+      }
+    }
+
+    if ($('html').hasClass('page--thank-you')) {
+      //localStorage.removeItem('userCart');
+      if (localStorage.getItem('usersCart')) {
+        var usersCart = JSON.parse(localStorage.getItem('usersCart'));
+        var curentEmail = {{ customer.email | json }};
+        delete usersCart[curentEmail];
+        localStorage.setItem('usersCart', JSON.stringify(usersCart));
+      }
+    }
+  </script>
+</html>

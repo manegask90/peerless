@@ -1,0 +1,46 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- if settings.basel_search_widget != 'disable' -%}
+<div class="search-button basel-search-{{settings.basel_search_widget}}">
+   <a href="#"><i class="fa fa-search"></i></a>
+   <div class="basel-search-wrapper">
+      <div class="basel-search-inner">
+         <span class="basel-close-search">{% comment %}ly_i18n_replace_for_[ 'general.search.close_search' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.search.close_search' | t }}{% endcapture %}{% include 'ly-static-string' with '13490145' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+         <form role="search" method="get" id="searchform" class="searchform{%- if settings.ajax_search %} basel-ajax-search{%- endif -%}" action="/search">
+            <div>
+               <label class="screen-reader-text" for="q"></label>
+               <div class="search-selector">
+                  <select class="search-option">
+                     <option value="search" selected><ly-as-13490143>Product Search</ly-as-13490143></option>
+                     <option value="mount"><ly-as-13490144>MountFinder™</ly-as-13490144></option>
+                  </select>
+                  <span class="search-label"><ly-as-13490144>MountFinder™</ly-as-13490144></span><i class="fa fa-caret-down"></i>
+                  <ul class="search-items">
+                     <li data-value="search"><ly-as-13490143>Product Search</ly-as-13490143></li>
+                     <li data-value="mount"><ly-as-13490144>MountFinder™</ly-as-13490144></li>
+                  </ul>
+               </div>
+               <input type="text" placeholder="{% comment %}ly_i18n_replace_for_[ 'general.search.placeholder' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.search.placeholder' | t }}{% endcapture %}{% include 'ly-static-string' with '13490146' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" value="{{ search.terms | escape }}" name="q" id="q" autocomplete="off" class="search-input">
+                <input type="text" placeholder="mount finder" autocomplete="off" class="search-input mount-finder-search-input hidden">
+               {%- if settings.only_search_products -%}<input type="hidden" name="type" value="product" />{%- endif -%}
+               <button type="submit" id="searchsubmit">{% comment %}ly_i18n_replace_for_[ 'general.search.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.search.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13490147' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+            </div>
+         </form>
+         <div class="search-results-wrapper">
+            <div class="basel-search-results">
+               <div class="autocomplete-suggestions" style="position: absolute; display: none; max-height: 300px; z-index: 9999;"></div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<script type="text/javascript">
+   $(".basel-search-inner .search-selector").unbind('click').click(function(){
+      $(this).toggleClass('shown');
+   });
+   $(".basel-search-inner .search-selector .search-items li").click(function(){
+      $(this).parent().siblings('.search-label').text($(this).text());
+      $(this).parent().siblings('.search-option').val($(this).data('value'));
+      $('.basel-search-wrapper  .search-input').toggleClass('hidden');
+   });
+</script>
+{%- endif -%}

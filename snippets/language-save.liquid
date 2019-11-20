@@ -1,0 +1,90 @@
+<script>
+ function languageSave() {
+    $('#ly-languages-switcher a').each(function(i, el) {
+        el.setAttribute('href', '#change_lang');
+    });
+    var change_lang = window.location.hash;
+    {%- assign customerLanguage = customer.metafields.global.language -%}
+    {% case language %}
+    {% when 'ly73951' %}
+        {% assign lang_selected = 'English' %}
+    {% when 'ly73952' %}
+        {% assign lang_selected = 'German' %}
+    {% when 'ly73954' %}
+        {% assign lang_selected = 'Spanish' %}
+    {% when 'ly77552' %}
+        {% assign lang_selected = 'French' %}
+    {% endcase %}
+
+    {% if customerLanguage == lang_selected %}
+        var sameAsUserLanguage = true;
+    {% else %}
+        var sameAsUserLanguage = false;
+    {% endif %}
+
+    if(change_lang == '#change_lang' && !sameAsUserLanguage) {
+        var html = "<h3>Save this language?</h3>";
+            html += '<div class="btn-wrap">';
+            html += '<button class="accept">Accept</button>';
+            html += '<button class="decline">Decline</button>';
+            html += '</div>';
+        $.colorbox({
+            open: true,
+            html: html,
+            opacity: 0,
+            closeButton: false,
+            fixed: true,
+            right: 0,
+            top: '42px',
+            className: 'change_lang_popup',
+            overlayClose: false
+        })
+        $('#cboxOverlay').hide();    
+    }
+    $('button.accept').click(function(){
+        var user_lang = globalCart.attributes.language;
+        var langObj = {
+            "ly73951": "English",
+            "ly73954": "Spanish",
+            "ly77552": "French",
+            "ly73952": "German",
+        };
+
+        var customerId = '{{ customer.id }}';
+
+        var data = {
+            action: 'update',
+            id: customerId,
+            language: langObj[user_lang],
+            newsletter: {% if customer.accepts_marketing %}1{% else %}0{% endif %},
+        };
+        var appUrlTest = '/apps/peerless/customers/update';
+
+        $.ajax({
+            type: "POST",
+            url: appUrlTest,
+            dataType: 'json',
+            crossDomain: true,
+            data: data,
+            success: function(response) {
+                if(response.success) {
+                    $(window).unbind('beforeunload');
+                }
+            },
+            error: function(data){
+            $(window).unbind('beforeunload');
+            }
+        });
+        window.location.hash = '';
+        $.colorbox.close();
+    });
+
+    $('button.decline').click(function(){
+        window.location.hash = '';
+        $.colorbox.close();
+    });
+    
+}
+languageSave();
+</script>
+

@@ -1,0 +1,48 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- include 'invoices' -%}
+
+{%- if customer == blank or account_type == "consumer" or account_type == "business_join" and invoices == "none" -%}
+  <script>
+    restrictAccess();
+  </script>
+{%- endif -%}
+
+{%- assign title = 'customer.account.title' | t -%}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+<div class="main-page-wrapper account-wrapper">
+  {%- include 'page_heading', langify_title:title -%}
+  <!-- MAIN CONTENT AREA -->
+  <div class="container">
+    <div class="row">
+      <div class="site-content col-sm-12" role="main">
+        <article id="post-9" class="post-9 page type-page status-publish hentry">
+          <div class="info-box"></div>
+          <div class="entry-content">
+            <div class="shopify">
+              {% include 'account-nav' %}
+              <!-- .basel-my-account-sidebar -->
+              <div class="shopify-MyAccount-content invoices" id="invoices">
+                <p class="page-title">{% comment %}ly_i18n_replace_for_[ 'customer.account.invoices' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.invoices' | t }}{% endcapture %}{% include 'ly-static-string' with '13491831' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                <span class="loading"></span>
+
+                <div id="invoices-list"></div>
+
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div><!-- end container -->
+</div><!-- .main-page-wrapper -->
+
+
+{% comment %}ly_asset_replace_for_[ 'account-scripts.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'account-scripts.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+<script>
+  var userId = {{customer.id}};
+  var invoicesPermission = {% if account_type == "business" %} "company" {% else %} "{{invoices}}" {% endif %};
+</script>
+{% comment %}ly_asset_replace_for_[ 'invoice.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'invoice.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}

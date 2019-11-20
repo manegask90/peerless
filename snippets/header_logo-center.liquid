@@ -1,0 +1,45 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="container">
+   <div class="wrapp-header">
+      <div class="widgetarea-head">
+         <div id="text-10" class="header-widget widget_text">
+            <div class="textwidget">{%- if settings.header_text_ss contains 'social_buttons_share' -%}{%- include 'social-sharing', gl_design:'icons-design-default', gl_size:'icons-size-default',gl_text_align:'left' -%}{%- elsif settings.header_text_ss contains 'social_buttons_follow' -%}{%- include 'social-sharing', gl_design:'icons-design-default', gl_size:'icons-size-default',gl_text_align:'left', follow_social:true -%}{%- else -%}{% comment %}ly_new_settings_replace_for_[ settings.header_text_ss ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13490139"] %}{% assign ly_translation = shop.metafields[namespace]["id13490139"] %}{% else %}{% assign ly_translation = settings.header_text_ss %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %}{%- endif -%}</div>
+         </div>
+      </div>
+      {%- include 'gl_logo' -%}
+      <div class="right-column">
+         {%- include 'header_account' -%}
+         {%- include 'header_search' -%}
+         {%- include 'header_wishlist' -%}
+         {%- unless settings.regional_site_enabled -%}
+            {%- unless settings.cart_design == 'disable' or settings.catalog_mode or template contains 'cart' -%}
+            <div class="shopping-cart basel-cart-design-{{settings.cart_design}} basel-cart-icon{%- if settings.cart_position == 'side' %} cart-widget-opener{%- endif %}{%- if settings.shopping_icon_alt %} basel-cart-alt{%- endif -%}">
+                <a href="/cart">
+                <span><ly-as-13490140>Cart (</ly-as-13490140><span class="cartCount">{{ cart.item_count }}</span>)</span>
+                <span class="basel-cart-totals">
+                    <span class="basel-cart-number cartCount">{{ cart.item_count }}</span>
+                    <span class="subtotal-divider">/</span> 
+                    <span class="basel-cart-subtotal"><span class="shopify-Price-amount amount">{{ cart.total_price | money }}</span></span>
+                </span>
+                </a>
+                {%- unless settings.regional_site_enabled -%}
+                    {%- if settings.cart_position == 'dropdown' -%}
+                        <div class="dropdown-wrap-cat">{%- include 'cart_widget_side' -%}</div>
+                    {%- endif -%}
+                {%- endunless -%}
+            </div>
+            {%- endunless -%}
+        {% endunless %}
+         <div class="mobile-nav-icon">
+            <span class="basel-burger"></span>
+         </div>
+         <!--END MOBILE-NAV-ICON-->
+      </div>
+   </div>
+</div>
+<div class="navigation-wrap">
+   <div class="container">
+      <div class="main-nav site-navigation basel-navigation menu-{{settings.basel_menu_align}}" role="navigation">{%- section 'gl_mega_menu' -%}</div>
+      <!--END MAIN-NAV-->
+   </div>
+</div>

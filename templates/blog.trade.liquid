@@ -1,0 +1,831 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<link rel="stylesheet" href="{% comment %}ly_asset_replace_for_[ 'datepicker.css' | asset_url ]_begin{% endcomment %}{% assign ly_asset = 'datepicker.css' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  }}{% comment %}ly_asset_replace_end{% endcomment %}">
+<script src="{% comment %}ly_asset_replace_for_[ 'datepicker.js' | asset_url ]_begin{% endcomment %}{% assign ly_asset = 'datepicker.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  }}{% comment %}ly_asset_replace_end{% endcomment %}"></script>
+<script>
+  jQuery.fn.datepicker.language['en'] = {
+    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+    months: ['January','February','March','April','May','June', 'July','August','September','October','November','December'],
+    monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    today: 'Today',
+    clear: 'Clear',
+    dateFormat: 'mm/dd/yyyy',
+    timeFormat: 'hh:ii aa',
+    firstDay: 0
+  };
+</script>
+
+{%- include 'countries' -%}
+
+<div class="main-page-wrapper webinar_calendar">
+
+	{% if blog.metafields.accentuate.featured_image %}
+		<div class="trade-banner-wrapper">
+			<div class="banner-img" style="background-image: linear-gradient(rgba(0, 0, 0, 0) 0%, rgb(0, 0, 0) 250%), url({% comment %}ly_code_replace_for_[ blog.metafields.accentuate.featured_image ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'accentuate' %}{% assign key = 'featured_image' %}{% if blog.metafields[ns][key] %}{% assign ly_translation = blog.metafields[ns][key] %}{% else %}{% assign ly_translation =  blog.metafields.accentuate.featured_image  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %});">
+			<div class="trade-title-wrap">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12">
+							<h2 class="trade-title">{% comment %}ly_code_replace_for_[ blog.title ]_begin{% endcomment %}{% include 'ly-title' with blog %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h2>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		</div>
+	{% endif %}
+
+	<div class="main-content">
+		<div class="posts-wrapper">
+			<div class="tabs-wrapper">
+				<div class="container">
+					<div class="row">
+						<div class="col-xs-12 text-center">
+							<a href="javascript:void(0)" id="mobile-tag-toggler"><span class="tab-text"><ly-as-13491196>Upcoming</ly-as-13491196></span><span class="arrow"></span></a>
+							<ul>
+								<li class="active"><a href="javascript:void(0)" data-target="upcomingShows"><ly-as-13491196>Upcoming</ly-as-13491196></a></li>
+								<li><a href="javascript:void(0)" data-target="pastShows"><ly-as-13491197>Past</ly-as-13491197></a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="container" style="margin-top: 20px;">
+	      <div class="info-box"></div>
+			</div>
+			<div class="posts-list"></div>
+		</div>
+	</div>
+</div>
+
+<form id="book-form" class="white-popup-block mfp-hide" novalidate="">
+	<div class="form_title"><ly-as-13492534>Book A Time</ly-as-13492534></div>
+	<p><ly-as-13492555>Please provide your contact information below and we’ll get back to you shortly to confirm a time and date.</ly-as-13492555></p>
+	<div class="info-box"></div>
+	<div class="row">
+		<div class="col-md-6">
+			<div class="form-group">
+				<label for="first_name"><ly-as-13492556>First Name</ly-as-13492556><span class="required">*</span></label>
+				<input type="text" class="form-control" id="first_name" value="{{ customer.first_name }}" name="first_name" required>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="form-group">
+				<label for="last_name"><ly-as-13492557>Last Name</ly-as-13492557><span class="required">*</span></label>
+				<input type="text" class="form-control" id="last_name" value="{{ customer.last_name }}" name="last_name" required>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="col-md-4">
+			<div class="form-group">
+				<label for="title" class="label"><ly-as-13492558>Title</ly-as-13492558></label>
+				<input type="text" class="form-controll" id="title" name="title" required>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				<label for="company" class="label"><ly-as-13492559>Company</ly-as-13492559></label>
+				<input required type="text" class="form-controll" id="company" value="{% comment %}ly_code_replace_for_[ customer.metafields.global.company ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'global' %}{% assign key = 'company' %}{% if customer.metafields[ns][key] %}{% assign ly_translation = customer.metafields[ns][key] %}{% else %}{% assign ly_translation =  customer.metafields.global.company  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}" name="company">
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				<label for="industry" class="label"><ly-as-13492560>Industry</ly-as-13492560></label>
+				<select name="industry" id="industry">
+					<option value=""><ly-as-13492561>Please Select</ly-as-13492561> </option>
+					<option value="Airports"><ly-as-13492562>Airports</ly-as-13492562></option>
+					<option value="Boats/RV"><ly-as-13492563>Boats/RV</ly-as-13492563></option>
+					<option value="Broadcast"><ly-as-13492564>Broadcast</ly-as-13492564></option>
+					<option value="Conferencing"><ly-as-13492565>Conferencing</ly-as-13492565></option>
+					<option value="Control Room"><ly-as-13492566>Control Room</ly-as-13492566></option>
+					<option value="Corporate"><ly-as-13492567>Corporate</ly-as-13492567></option>
+					<option value="Education"><ly-as-13492568>Education</ly-as-13492568></option>
+					<option value="Entertainment"><ly-as-13492569>Entertainment</ly-as-13492569></option>
+					<option value="Gaming"><ly-as-13492570>Gaming</ly-as-13492570></option>
+					<option value="Government"><ly-as-13492571>Government</ly-as-13492571></option>
+					<option value="Healthcare/Hospital"><ly-as-13492572>Healthcare/Hospital</ly-as-13492572></option>
+					<option value="Home"><ly-as-13492573>Home</ly-as-13492573></option>
+					<option value="Hospitality"><ly-as-13492574>Hospitality</ly-as-13492574></option>
+					<option value="House of Worship"><ly-as-13492575>House of Worship</ly-as-13492575></option>
+					<option value="Restaurant/Bar"><ly-as-13492576>Restaurant/Bar</ly-as-13492576></option>
+					<option value="Retail"><ly-as-13492577>Retail</ly-as-13492577></option>
+					<option value="Security"><ly-as-13492578>Security</ly-as-13492578></option>
+					<option value="Stadiums"><ly-as-13492579>Stadiums</ly-as-13492579></option>
+					<option value="Transportation"><ly-as-13492580>Transportation</ly-as-13492580></option>
+				</select>
+			</div>
+		</div>
+		
+		<div class="clearfix"></div>
+
+		<div class="col-md-8">
+			<div class="form-group">
+				<label for="email"><ly-as-13492581>Email Address</ly-as-13492581> <span class="required">*</span></label>
+				<input type="email" class="form-controll" value="{{ customer.email }}" name="email" id="email" required>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				<label for="phone"><ly-as-13492582>Phone number</ly-as-13492582></label>
+				<input type="text" class="form-controll" value="{{ customer.phone }}" name="phone" id="phone" required>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="col-md-4">
+			<div class="form-group">
+				<label for="city"><ly-as-13492583>City</ly-as-13492583></label>
+				<input type="text" class="form-controll" id="city" name="city" required>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="form-group">
+				<label for="country"><ly-as-13492585>Country</ly-as-13492585></label>
+				<select name="country" id="country" required>
+					{{countries}}
+				</select>
+			</div>
+		</div>
+		<div class="col-md-4 state_group_display_none">
+			<div class="form-group">
+				<label for="state"><ly-as-13492584>State</ly-as-13492584></label>
+				<select name="state" id="state"></select>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+
+		<div class="col-md-12">
+			<div class="form-group">
+				<div class="label"><ly-as-13492586>INTENDED MEETING PURPOSE</ly-as-13492586></div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="meeting_purpose" checked="" value="Media Interview"><i></i>
+						<span><ly-as-13492587>Media Interview</ly-as-13492587></span>
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="meeting_purpose" value="Booth Tour"><i></i>
+						<span><ly-as-13492588>Booth Tour</ly-as-13492588></span>
+					</label>
+				</div>
+				<div class="radio">
+					<label>
+						<input type="radio" name="meeting_purpose" value="Other"><i></i>
+						<span><ly-as-13492589>Other</ly-as-13492589></span>
+						<input type="text" name="meeting_purpose_other">
+					</label>
+				</div>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+	
+		<div class="col-md-12">
+			<div class="form-group">
+				<label for="notes"><ly-as-13492590>Notes/Comments</ly-as-13492590></label>
+				<textarea name="notes" id="notes" required></textarea>
+			</div>
+		</div>
+		
+		<div class="col-md-12 prefered_time_wrap">
+			<div class="row">
+				<div class="col-md-4 no-padding">
+					<label><ly-as-13492591>Preferred Meeting Time</ly-as-13492591> <span class="required">*</span></label>
+					<input type="text" name="prefered_time[]" class="prefered_time" required>
+				</div>
+			</div>
+			<button type="button" class="add_time"><ly-as-13492592>+ Add Another Time/Date</ly-as-13492592></button>
+		</div>
+
+		<div class="col-md-12 required-info"><span class="required">*</span><ly-as-13492593>Required Field</ly-as-13492593></div>
+		<div class="col-md-12">
+			<input type="hidden" name="tradeShowLink">
+			<input type="hidden" name="site" value="{{settings.site}}">
+			{% include 'email-lang' %}
+			<input type="hidden" name="lang" value="{{lang}}">
+			<button type="submit"><ly-as-13492594>Book A Time</ly-as-13492594></button>
+		</div>
+	</div>
+</form>
+
+<script type="text/javascript">
+	// Filter blog json 
+	/*
+	** parameters: current_date, type, filter_key, items_per_page, page_num
+	**** type: upcoming, registered, attended, past, title
+	**** filter_key: using for only title
+	**** items_per_page: Items count per page
+	**** page_num: page number if blog has 1 more page
+	*/
+	var filterWebinar = function(articles, type, page_num, filter_key, items_per_page) {
+		var today = new Date();
+		var inspected = inspectArticles(articles);
+		var result;
+		var filtered_articles = [];
+
+		if (filter_key === undefined) {
+	      filter_key = '';
+	    }
+	    if (items_per_page === undefined) {
+	      items_per_page = 10;
+	    }
+		if (page_num === undefined) {
+	      page_num = 1;
+	    }
+	    if (type === undefined) {
+	      type = 'upcomingShows';
+	    }
+
+			var article_group = [];
+	    switch(type) {
+        case 'pastShows':
+          article_group = inspected.pastShows;
+          break;
+        case 'registered':
+          article_group = inspected.registered;
+          break;
+        case 'attended':
+          article_group = inspected.attended;
+          break;
+        default:
+          article_group = inspected.upcomingShows;
+					break;
+	    }
+
+	    var searched_article_group = [];
+	    if(filter_key != '') {
+	    	var expr = new RegExp(filter_key.toLowerCase());
+	    	for (var i = 0; i < article_group.length; i++) {
+	    		if(expr.test(article_group[i].title.toLowerCase())){
+	    			searched_article_group.push(article_group[i]);
+	    		}
+	    	}
+	    	if(searched_article_group.length % items_per_page != 0) {
+	    		var total_page_count = Math.floor(searched_article_group.length / items_per_page) + 1;
+	    	} else {
+	    		var total_page_count = Math.floor(searched_article_group.length / items_per_page);
+	    	}
+	    } else {
+	    	if(article_group.length % items_per_page != 0) {
+	    		var total_page_count = Math.floor(article_group.length / items_per_page) + 1;
+	    	} else {
+	    		var total_page_count = Math.floor(article_group.length / items_per_page);
+	    	}
+	    }
+
+    	var array_index = 0;
+    	for (var i = 0; i < items_per_page; i++) {
+    		array_index = ( page_num - 1 ) * items_per_page + i;
+    		if (array_index < article_group.length) {
+    			if(filter_key != '') {
+    				filtered_articles = searched_article_group;
+    			} else {
+    				filtered_articles.push(article_group[array_index]);
+    			}
+    		} else {
+    			break;
+    		}
+    	}
+
+    	result = {
+    		"page_count": total_page_count,
+    		"filtered_articles": filtered_articles
+    	}
+
+ 		return result;
+ 	}
+
+	var sortArticles = function(articles) {
+		var temp = articles;
+		if (temp && temp.constructor===Array){
+      temp.sort(function(a,b){	            
+        var a_date = new Date(a.article.webinar_date);
+        var b_date = new Date(b.article.webinar_date);
+        return a_date - b_date;
+      });
+    }
+    return temp;
+	}
+
+	var inspectArticles = function(articles) {
+		var temp;
+		var article_upcoming = [];
+		var article_registered = [];
+		var article_attended = [];
+		var article_past = [];
+		var today = new Date();
+
+		for (var i = 0; i < articles.length; i++) { 
+    	var article_date = new Date(articles[i].article.webinar_date);
+    	if(article_date >= today) {
+    		article_upcoming.push(articles[i].article);
+    	}
+    	if(article_date < today) {
+    		article_past.push(articles[i].article);
+    	}
+    	// if(article_date >= today) {
+    	// 	article_upcoming.push(articles[i].article);
+    	// }
+    	// if(article_date >= today) {
+    	// 	article_upcoming.push(articles[i].article);
+    	// }
+		}
+		temp = {
+			"upcomingShows": article_upcoming,
+			"pastShows": article_past,
+			"registered": article_registered,
+			"attended": article_attended
+		}
+		return temp;
+	}
+
+	var getMonthTitle = function(article) {
+		var article_title_date = new Date(article.webinar_date);
+		var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"];
+		var article_month = monthNames[article_title_date.getMonth()];
+		var article_year = article_title_date.getFullYear();
+		var article_date_string = article_month + ' ' + article_year;
+		return article_date_string;
+	}
+
+	var generateContent = function(articles, type, page_num, filter_key, items_per_page) {
+		var temp = filterWebinar(articles, type, page_num, filter_key, items_per_page);
+		var webinar_group = temp.filtered_articles;
+		var page_count = temp.page_count;
+		var html = '';
+		var previous_title = '';
+
+		if (filter_key === undefined) {
+      filter_key = '';
+    }
+    if (items_per_page === undefined) {
+      items_per_page = 10;
+    }
+		if (page_num === undefined) {
+      page_num = 1;
+    }
+    if (type === undefined) {
+      type = 'upcomingShows';
+    }
+
+		if(webinar_group.length > 0) {
+			html += "<div class='container'>";
+				html += "<div class='row'>";
+				for (var i = 0; i < webinar_group.length; i++) {
+					var article_start_date = new Date(webinar_group[i].webinar_date);
+					var article_end_date =  webinar_group[i].webinar_time != null ? new Date(webinar_group[i].webinar_time) : 0;
+					var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"];
+					var article_start_date_month = monthNames[article_start_date.getMonth()];
+					var article_start_date_day = article_start_date.getDate();
+					var article_end_date_day = article_end_date != 0 ? article_end_date.getDate() : ' ';
+					var article_booth = webinar_group[i].booth_id;
+					html += "<div class='col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0'>";
+						if( previous_title != getMonthTitle(webinar_group[i]) ) {
+							html += "<h2 class='month-title'>" + getMonthTitle(webinar_group[i]) + "</h2>";
+							previous_title = getMonthTitle(webinar_group[i]);
+						}
+						html += "<div class='article-item' id='trade-"+webinar_group[i].id+"' data-link='"+window.location.origin+"/blogs/"+webinar_group[i].handle+"' data-id='" + webinar_group[i].id + "'>";
+							html += "<div class='article-image'>";
+								html += "<img src='" + webinar_group[i].image + "' alt='" + webinar_group[i].title + "' />";
+							html += "</div>";
+							html += "<div class='article-wrapper'>";
+								html += "<h2 class='article-title'>" + webinar_group[i].title + "</h2>";
+								html += "<div class='webinar-plan'>";
+									html += "<span class='date-wrapper'>" + article_start_date_month + " " + article_start_date_day + ( article_end_date != 0 ? ' – '+ article_end_date_day :  ' ' ) + "</span>";
+									html += "<span class='split-data-time'> | </span>";
+									html += "<span class='time-wrapper'>" + webinar_group[i].location + "</span>";
+									html += "<span class='booth-wrapper'>" + (article_booth != null ? ' | Booth #'+article_booth : ' ') + "</span>";
+								html += "</div>";
+								if(type != 'pastShows') {
+									html += "<div class='tags-wrapper hidden'>";
+									var tags = webinar_group[i].tags.split(',');
+									for (var j = 0; j < tags.length; j++) {
+										var tag_class = '';
+										switch(tags[j].trim()) {
+											case "Class Full":
+										    	tag_class = 'class_full';
+										    	break;
+										    case 'Registered':
+										  		tag_class = 'registered';
+										  		break;
+										  	case 'Spots Available':
+										    	tag_class = 'spots_available';
+										    	break;
+										}
+									    html += "<span class='tag-item " + tag_class + "'>" + tags[j] + "</span>";
+									}
+									html += "</div>";
+								}
+								if(webinar_group[i].body_html.length > 500) {
+									content_before = webinar_group[i].body_html.slice(0, 500);
+									content_after = webinar_group[i].body_html.slice(500); 
+									html += "<div class='article-content'>"
+									+ "<div class='content-before'>" 
+									+ content_before 
+									+ '<span class="dots-wrapper">... <a href="javascript:void(0)" class="see-more">see more</a></span></div>'
+									+ '<div class="less-wrapper">' 
+									+ webinar_group[i].body_html
+									+ ' <a href="javascript:void(0)" class="see-less">see less</a></span>' 
+									+ "</div>"
+									+ "</div>";
+								} else {
+									html += "<div class='article-content'>" + webinar_group[i].body_html + "</div>";
+								}
+								html += "<div class='view-more'><a href='#' class='view-more-bt'>View More<i class='fa fa-angle-down' aria-hidden='true'></i></a></div>";
+							html += "</div>";
+
+							html += "<div class='article-actions'>";
+							if(type != 'pastShows') {
+								html += "<a href='#book-form' class='btn-book-time'>Book A Time</a>"
+								html += "<a href='" + webinar_group[i].url + "'>View Details</a>";
+							}
+							html += "</div>";
+
+							var showViewWrap = false;
+							if (location.hash && location.hash.slice(7) == webinar_group[i].id) {
+								showViewWrap = true;
+							}
+							/// View more wrap begin
+							html += "<div class='view-wrap' "+(showViewWrap ? "style='display:block'" : "")+">";
+								if (webinar_group[i].trade_brochure || webinar_group[i].venue_map) {
+									html += "<div class='more-block'><div class='more-title'>Venue Info</div>";
+										if (webinar_group[i].trade_brochure)
+											html += "<a href='"+webinar_group[i].trade_brochure+"'>Trade show brochure</a>";
+
+										if (webinar_group[i].venue_map)
+											html += "<a href='"+webinar_group[i].venue_map+"'>Venue map</a>";
+
+	                html += "</div>";
+                }
+
+								if (webinar_group[i].marketing_brochure || webinar_group[i].link_to_post) {
+	                html += "<div class='more-block'><div class='more-title'>Peerless-AV</div>";
+		                if (webinar_group[i].marketing_brochure)
+		                  html += "<a href='"+webinar_group[i].marketing_brochure+"'>Marketing brochure</a>";
+
+		                if (webinar_group[i].link_to_post)
+		                  html += "<a href='"+webinar_group[i].link_to_post+"'>Link to blog post</a>";
+	                html += "</div>";
+	              }
+                html += "<div class='clearfix' style='clear: both;'></div>";
+
+                if (webinar_group[i].images.length) {
+	                /// Slider begin
+									if (webinar_group[i].images.length > 4) {
+										html += "<div class='more-bottom'><div class='more-title'>Images</div><div class='owl-carousel owl-theme popup-gallery'>"
+									} else {
+										html += "<div class='more-bottom'><div class='more-title'>Images</div><div class='owl-carousel owl-theme popup-gallery no-slider'>"
+									}
+	                	for (var imgIdx = 0; imgIdx < webinar_group[i].images.length; imgIdx++) {
+	                		var imgObj = webinar_group[i].images[imgIdx];
+		                	html += "<div class='item'>";
+		                	html += "<a href='"+imgObj.url+"' title='"+imgObj.title+"' data-desc='"+imgObj.description+"'>";
+                        html += "<img src='"+imgObj.url+"' alt='"+imgObj.title+"'>";
+                        html += "<div class='item-title'>"+imgObj.title+"</div>";
+                        html += "<div class='item-desc'>"+imgObj.description+"</div>";
+                      html += "</a>";
+			                html += "</div>";
+		                }
+
+	                html += "</div></div>";
+	                /// Slider end
+								}
+
+							html += "</div>";
+							/// View more wrap end
+
+						html += "</div>";
+					html += "</div>";
+				}
+				if(page_count > 1) {
+					html += "<div class='col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0'>";
+						html += "<nav aria-label='Page navigation'>";
+						  	html += "<ul class='pagination' data-current='" + page_num + "' data-total='" + page_count + "'>";
+						  		if(page_num == 1) {
+						  			html += "<li class='disable'><a href='javascript:void(0)' aria-label='Previous'>prev</a></li>";
+						  		} else {
+						  			html += "<li><a href='javascript:void(0)' aria-label='Previous'>prev</a></li>";
+						  		}
+							    for (var i = 1; i <= page_count; i++) {
+							    	if(i == page_num) {
+							    		html += "<li class='active'><a href='javascript:void(0)'>" + i + "</a></li>";
+							    	} else {
+							    		html += "<li><a href='javascript:void(0)'>" + i + "</a></li>";
+							    	}
+							    }
+							    if(page_num == page_count) { 
+							    	html += "<li class='disable'><a href='javascript:void(0)' aria-label='Next'>next</a></li>";
+							    } else {
+							    	html += "<li><a href='javascript:void(0)' aria-label='Next'>next</a></li>";
+							    }
+						  	html += "</ul>";
+						html += "</nav>";
+					html += "</div>";
+				}
+				html += "</div>";
+			html += "</div>";
+		} else {
+			html += "<div class='container'>";
+				html += "<div class='row'>";
+					html += "<div class='col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0'>";
+						if(filter_key == '') {
+							if(type == 'registered') {
+								html += "<p class='no-post'>Looks like you're not registered for any upcoming webinars.</p>";
+							} else if(type == "attended") {
+								html += "<p class='no-post'>Looks like you haven't attended any past webinars.</p>";
+							} else {
+								html += "<p class='no-post'>We are sorry, we don’t have any " + type + " webinars. Check back again soon!</p>";
+							}
+						} else {
+							html += "<p class='no-post'>Whoops! Looks like we don’t have any webinars matching that search term.</p>";
+
+						}
+					html += "</div>";
+				html += "</div>";
+			html += "</div>";
+		}
+		return html;
+	}
+
+	jQuery(document).ready(function($){
+		// Initialize Blog JSON
+		var url = "/blogs/trade_json";
+		var articles;
+		var upcoming_articles, registered_articles, attended_articles, past_articles;
+		var type = 'upcomingShows';
+    var book_url = '/apps/peerless/contact/trade-show-meeting';
+
+		$.ajax({
+      url: "/blogs/trade_json",
+      method: 'get',
+      async: false,
+      success: function (data) {
+        articles = JSON.parse(data);
+				articles = sortArticles(articles);
+				$(".posts-list").html(generateContent(articles));
+
+				initSlider();
+				initPopup();
+
+				initBookPopup();
+      },
+      error: function (ex) {
+        alert(ex.responseText);
+      }
+    });
+	function fillState () {
+	    var countryEl = $('#country'),
+	        stateEl = $('#state');
+	        states = JSON.parse(countryEl.find('option[value="'+countryEl.val()+'"]').attr('data-provinces')),
+	        stateOption = '';
+
+	    if (states.length) {
+	      states.forEach(function (stateArr) {
+	        stateOption += "<option value='"+stateArr[0]+"'>"+stateArr[1]+"</option>";
+	      });
+        $(".state_group_display_none").css("display", "block");
+	    } else {
+        $(".state_group_display_none").css("display", "none");
+      }
+
+	    stateEl.html(stateOption);
+	  }
+
+	  fillState();
+
+	  $('#country').on('change', function () {
+	    fillState();
+	  });
+
+	  $('.prefered_time').datepicker({
+	    timepicker: true,
+	    position: "top left",
+			language: "en",
+			minDate: new Date()
+	  });
+
+	  $('.add_time').on('click', function () {
+	    var that              = $(this),
+	        form              = that.closest('form'),
+	        preferedTime      = form.find('.prefered_time'),
+	        preferedTimeFirst = form.find('.prefered_time:first-of-type'),
+	        preferedTimeWrap  = preferedTime.parent();
+
+	    // console.table(that, form, preferedTime, preferedTimeWrap);
+	    if (preferedTime.length < 3) {
+	      preferedTimeWrap.append(preferedTimeFirst.clone().removeAttr('required'));
+
+	      form.find('.prefered_time:last-of-type').datepicker({
+	        timepicker: true,
+	        position: "top left",
+					language: "en",
+					minDate: new Date()
+	      });
+	    }
+	  });
+
+	  $('#book-form').on('submit', function (e) {
+	    e.preventDefault();
+	    var that = $(this);
+	        requiredFields = that.find('[required]'),
+	        error = false;
+
+	    requiredFields.each(function (idx, el ) {
+	      if ($(this).val() == '') {
+	        $(this).addClass('error');
+	        error = true;
+	      } else {
+	        if ($(this).is('#email') && !validateEmail($(this).val())) {
+	          error = true;
+	          $(this).addClass('error');
+	        } else {
+	          $(this).removeClass('error');
+	        }
+	      }
+	    });
+
+	    if (error) return;
+
+	    var data = that.serialize();
+	    that.find('button[type="submit"]').addClass('loading');
+	    var magnificPopup = $.magnificPopup.instance; // save instance in magnificPopup variable
+	    handleAjax(
+	      book_url,
+	      data,
+	      "POST",
+	      function (response) {
+	        if (response.success) {
+	          displaySuccess(response.message, '.info-box');
+	        } else {
+	          displayErrors(response.message, '.info-box');
+	        }
+	      },
+	      function () {
+	        $('html,body').animate({scrollTop: $('.main-content').offset().top - 100}, 500);
+	        magnificPopup.close();
+	        that.find('button[type="submit"]').removeClass('loading');
+	      },
+	      function () {
+	        displayErrors('Something went wrong, please reload page and try again', '.info-box');
+	      }
+	    )
+	  });
+        
+    $(".tabs-wrapper li").click(function(){
+    	$(".tabs-wrapper li").removeClass('active');
+    	$(this).addClass('active');
+    	type = $(this).find('a').data('target');
+    	$("#mobile-tag-toggler .tab-text").text($(this).find('a').text());
+    	$(".posts-list").html(generateContent(articles, type));
+    	if($(window).width() <= 480) {
+    		$(".tabs-wrapper ul").slideUp("slow");
+    	}
+    	initBookPopup();
+    	initSlider();
+			initPopup();
+    });
+
+    $(".posts-list").on('click', '.pagination a', function(){
+    	if($(this).text() != $(".pagination").attr("data-current")) {
+    		var page_current = parseInt($(".pagination").attr("data-current"));
+    		var page_count = parseInt($(".pagination").attr("data-total"));
+    		var target_page;
+    		$(".pagination li").removeClass('active');
+
+    		if($(this).text() == 'next') {
+    			$(".pagination li:eq(" + (page_current + 1) + ")").addClass('active');
+    			$(".pagination").attr("data-current", page_current + 1);
+    			$(".pagination li:eq(0)").removeClass('disable');
+        	if(page_current == (page_count - 1)) {
+        		$(".pagination li:eq(-1)").addClass('disable');
+        	} else {
+        		$(".pagination li:eq(-1)").removeClass('disable');
+        	}
+        	target_page = page_current + 1;
+      	} else if($(this).text() == 'prev') {
+      		$(".pagination li:eq(" + (page_current - 1) + ")").addClass('active');
+      		$(".pagination").attr("data-current", page_current - 1);
+      		$(".pagination li:eq(-1)").removeClass('disable');
+      		if(page_current == 2) {
+        		$(".pagination li:eq(0)").addClass('disable');
+        	} else {
+        		$(".pagination li:eq(0)").removeClass('disable');
+        	}
+        	target_page = page_current - 1;
+      	} else {
+      		$(this).parent().addClass('active');
+      		$(".pagination").attr("data-current", $(this).text());
+      		if($(this).text() == 1) {
+        		$(".pagination li:eq(0)").addClass('disable');
+        	} else {
+        		$(".pagination li:eq(0)").removeClass('disable');
+        	}
+        	if($(this).text() == page_count) {
+        		$(".pagination li:eq(-1)").addClass('disable');
+        	} else {
+        		$(".pagination li:eq(-1)").removeClass('disable');
+        	}
+        	target_page = parseInt($(this).text());
+      	}
+      	$(".posts-list").html(generateContent(articles, type, target_page));
+    	} 
+    });
+
+    $('#search-input').on('input',function(e){
+    	if($(this).val != '') {
+    		$(".posts-list").html(generateContent(articles, type, 1, $(this).val()));
+    	}
+		});
+
+		$("#mobile-tag-toggler").click(function(){
+			$(this).next().slideToggle("slow");
+		});
+
+		$("body").on('click', '.see-more', function(){
+			$(this).closest('.article-content').find('.content-before').hide();
+			$(this).closest('.article-content').find('.less-wrapper').show();
+		});
+
+		$("body").on('click', '.see-less', function(){
+			$(this).closest('.article-content').find('.content-before').show();
+			$(this).closest('.article-content').find('.less-wrapper').hide();
+		});
+
+		$(".posts-list").on("click", ".view-more .view-more-bt", function(e){
+			e.preventDefault();
+			var wrap = $(this).closest('.article-item').find('.view-wrap');
+			$(wrap).toggle();
+		});
+	});
+
+	function initPopup () {
+		$('.popup-gallery').magnificPopup({
+			delegate: '.owl-item a',
+			type: 'image',
+			removalDelay: 500, //delay removal by X to allow out-animation
+			callbacks: {
+				beforeOpen: function() {
+					// just a hack that adds mfp-anim class to markup 
+					this.st.image.markup = this.st.image.markup.replace('mfp-figure', 'mfp-figure mfp-with-anim');
+					this.st.mainClass = this.st.el.attr('data-effect');
+				}
+			},
+			tLoading: 'Loading image #%curr%...',
+			mainClass: 'mfp-img-mobile',
+			gallery: {
+				enabled: true,
+				navigateByImgClick: true,
+				preload: [0,1] // Will preload 0 - before current, and 1 after the current image
+			},
+			image: {
+				tError: '<a href="%url%">The image #%curr%</a> could not be loaded.',
+				titleSrc: function(item) {
+					return '<div class="item-title">' + item.el.attr('title') + '</div>' + '<div class="item-desc">' + item.el.attr('data-desc') + '</div>';
+				}
+			}
+		});
+	}
+
+	function initBookPopup () {
+		$('.btn-book-time').magnificPopup({
+	    type: 'inline',
+	    preloader: true,
+	    callbacks: {
+	    	open: function () {
+	    		var openBtn  = this.currItem.el;
+	    				parent   = openBtn.closest('.article-item')
+	    				dataLink = parent.attr('data-link'),
+							title    = parent.find('.article-title').text();
+	    		$('#title').val(title);
+	    		$('#tradeShowLink').val(dataLink);
+	    	}
+	    }
+	  });
+	}
+
+	function initSlider () {
+		$('.owl-carousel').owlCarousel({
+			loop: false,
+			margin:10,
+			nav: true,
+			dots: false,
+			responsive:{
+				0:{
+					items:1
+				},
+				600:{
+					items:3
+				},
+				1000:{
+					items:4
+				}
+			}
+		});
+	}
+</script>

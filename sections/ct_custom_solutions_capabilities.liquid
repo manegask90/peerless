@@ -1,0 +1,58 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+  <div class="custom-page-capabilities-container" style="background: url({{ section.settings.image | img_url: '1024x' }})">
+    <div class="custom-page-capabilities-header">
+      {{- section.settings.title -}}
+    </div>
+    <div class="custom-page-capabilities-cards">
+      {% case language %}
+         {% when 'ly73951' %}
+            {{- section.settings.caps -}}
+         {% when 'ly73952' %}
+            <span class="hidden"> DE</span>
+            {{- section.settings.caps -}}
+         {% when 'ly73954' %}
+            <span class="hidden"> ES</span>
+         {% when 'ly77552' %}
+            {{- section.settings.capsFR -}}
+      {% endcase %}
+    </div>
+  </div>
+{% schema %}
+  {
+    "name": "Custom Solutions Capa",
+    "class": "section-custom-solutions-capabilities",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Background Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Engineering Capabilities"
+      },
+      {
+        "type": "text",
+        "id": "caps",
+        "label": "Cabilities",
+        "default": "Industrial Design  |  Mechanical  |  Electromechanical  |  Thermal  |  Environmental  |  Structural  |  Seismic  |  Wind"
+      },
+      {
+        "type": "text",
+        "id": "capsFR",
+        "label": "Cabilities FR",
+        "default": "Industrial Design  |  Mechanical  |  Electromechanical  |  Thermal  |  Environmental  |  Structural  |  Seismic  |  Wind"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Custom Solutions Capa",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

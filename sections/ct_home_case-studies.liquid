@@ -1,0 +1,147 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="case-studies-wrap">
+  <div class="liner-continer"> 
+    <h4 class="title">
+        {{ section.settings.title_section }}
+    </h4> 
+  </div>
+  <div class="container-fluid">
+    <div class="row">
+    {% for block in section.blocks %}
+      {%- case block.type -%}
+        {%- when 'article' -%}
+        <div class="col-md-4 block">
+            <div class="main-wrapp-img">
+              <div class="banner-image" style="background-image: url({{ block.settings.image.src | img_url: '1024x' }});">
+                {% comment %} <img src="{{ block.settings.image.src | img_url: '1024x' }}"> {% endcomment %}
+              </div>
+            </div>
+            <div class="wrapper-content-baner">
+              <div class="banner-inner">
+                <div class="case-study-img-content">
+                  <div class="case-study-img-content-content">
+                    <h2>
+                      {{- block.settings.subtitle -}}
+                    </h2>
+                    <h3>
+                      {{- block.settings.title -}}
+                    </h3>
+                      {{- block.settings.info_text -}}                 
+                    <a href="{{ block.settings.link }}" target="_blank"><ly-as-13487254>Read More</ly-as-13487254></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
+        {%- when 'text' -%}
+        <div class="col-md-4 block block-no-hover">
+        <a href="{{ block.settings.link }}">
+            <div class="img-box">
+              <img src="{{ block.settings.icon.src | img_url: '1024x' }}">
+            </div>
+            <div class="case-study-content">
+              <h3>
+                {{- block.settings.title_no_hover -}}
+              </h3>
+              {{- block.settings.text_no_hover -}}
+            </div>
+        </a>
+        </div>
+      {%- endcase -%}
+    {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Home Case Studies",
+    "class": "section-case-studies",
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Article",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Outdoor Hospitality in Arizona"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Jacobsen Real Estate Ltd."
+          },
+          {
+            "type": "textarea",
+            "id": "info_text",
+            "label": "Info",
+            "default": "Read more about this featured case study and learn about the client, the application and the custom solution tailored by Peerless-AV to address all of the client’s needs."
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Article no hover",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "icon",
+            "label": "Icon"
+          },
+          {
+            "type": "text",
+            "id": "title_no_hover",
+            "label": "Title"
+          },
+          {
+            "type": "richtext",
+            "id": "text_no_hover",
+            "label": "Text"
+          },
+          {
+            "type": "url",
+            "id": "link",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Case Studies"
+      }
+    ]
+  }
+{% endschema %}
+
+
+<script>
+  function windowSize(){
+    var window_size = $(window).width(),
+        wrap = $('.main-page-wrapper .container').width(),
+        wrap_borders = wrap + 30;
+        sum = (window_size - wrap_borders) / 2;
+        
+        $('.case-studies-wrap').css({"width": window_size, "left": '-' + sum +'px'});
+}
+
+if ($(window).width() > 768) {
+  $(window).load(windowSize);
+  $(window).resize(windowSize);
+}
+</script>

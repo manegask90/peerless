@@ -1,0 +1,80 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="outdoor-enter-ultra">
+  <div class="container">
+    <div class="row outdoor-enter-ultra-inner">
+      <div class="col-md-12 ultra-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{ section.settings.desc }}</div>
+      </div>
+      <div class="ultra-cards">
+        <div class="row">
+        {%- for block in section.blocks -%}
+          <div class="col-md-4 ultra-card">
+            <div class="block-inner">
+              <div class="img-wrap">
+                <img src="{{block.settings.image  | img_url: '200x' }}" alt="Image" />
+              </div>
+              <div class="content-wrap">
+                <h5 class="cap-title">{{block.settings.title}}</h5>
+                <div>{{block.settings.content}}</div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Outdoor Enter ultra",
+    "class": "section-outdoor-enter-cap",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Why UltraView™?"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "Content Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "content",
+            "label": "Content"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Outdoor Enter ultra Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

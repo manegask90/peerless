@@ -1,0 +1,15 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- if position == 'top' -%}
+	{%-if root == blank -%}{%-assign src_ = src | img_url: '23x'-%}
+	{%-if src_ contains '.jpg' -%}{%-assign src__= src | img_url: size, format: 'pjpg'  %}{%-else-%}{%-assign src__ = src | img_url: '700x' %}{%-endif-%}
+	{%-elsif root == 'asset'-%}{%-assign src_ = src | asset_img_url: '23x'-%}
+	{%-if src_ contains '.jpg' -%}{%-assign src__= src | asset_img_url: size, format: 'pjpg'  %}{%-else-%}{%-assign src__ = src | asset_img_url: size %}{%-endif-%}
+	{%-endif-%}
+{{src__}}
+{%- else -%}
+	{%-if root == blank -%}{%-assign src_ = src | img_url: '23x'-%}
+	{%-if src_ contains '.jpg' -%}{%-assign src__= src | img_url: size, format: 'pjpg' %}{%-else-%}{%-assign src__ = src | img_url: size %}{%-endif-%}
+	{%-elsif root == 'asset'-%}{%-assign src_ = src | asset_img_url: '23x'-%}
+	{%-if src_ contains '.jpg' -%}{%-assign src__= src | asset_img_url: size, format: 'pjpg' %}{%-else-%}{%-assign src__ = src | asset_img_url: size %}{%-endif-%}
+	{%-endif-%}{{src__}}
+{%- endif -%}

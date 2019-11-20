@@ -1,0 +1,13 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<li id="menu-item-123123123123" class="region-menu menu-item menu-item-123123123123 menu-item-has-children menu-item-design-default item-event-hover">
+   <a href="#"><ly-as-13490093>Select Region:</ly-as-13490093><span> {% comment %}ly_new_settings_replace_for_[ settings.region_title ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13490094"] %}{% assign ly_translation = shop.metafields[namespace]["id13490094"] %}{% else %}{% assign ly_translation = settings.region_title %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %}</span></a>
+   <div class="sub-menu-dropdown color-scheme-dark">
+      <div class="wrap">
+         <ul class="sub-menu color-scheme-dark">
+         	{%- for link in linklists[settings.regions_link_list].links -%}
+         		 <li class="menu-item menu-item-design-default item-event-hover{%- if link.active %} active{%- endif -%}"><a href="{{ link.url }}">{% comment %}ly_code_replace_for_[ link.title | split: '[' | first ]_begin{% endcomment %}{% include 'ly-title' with link %}{{ ly_translation | split: '[' | first }}{% comment %}ly_code_replace_end{% endcomment %}</a></li>
+         	{%- endfor -%}
+         </ul>
+      </div>
+   </div>
+</li>

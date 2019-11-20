@@ -1,0 +1,25 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="sales-leadership-item">
+  <!--div class="sales-leadership-item-img-wrapper">
+    <img src="{{ block.settings.photo | img_url: '' }}" alt="{{ block.settings.name }}">
+</div-->
+
+  <div class="sales-leadership-item-description-wrapper">
+    <div class="sales-leadership-item-title-wrapper">
+      <h2>{{ block.settings.name }}</h2>
+      <p>{{ block.settings.position }}</p>
+    </div>
+    <div class="contacts">
+      {% unless block.settings.phone == blank %}
+        <p><span><ly-as-13490581>P:</ly-as-13490581> </span>{{ block.settings.phone }}</p>
+      {% endunless %}
+
+      {% unless block.settings.c == blank %}
+        <p><span><ly-as-13490582>C:</ly-as-13490582> </span>{{ block.settings.c }}</p>
+      {% endunless %}
+      {% unless block.settings.email == blank %}
+        <a href="mailto:{{ block.settings.email }}"><span><ly-as-13490583>E:</ly-as-13490583> </span>{{ block.settings.email }}</a>
+      {% endunless %}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}          <div id="rewind-menu-backup">
+          [
+          {% for linklist in linklists %}
+          { "id" : "{{ linklist.handle }}",
+            "handle" : "{{ linklist.handle }}",
+            "title" : {% comment %}ly_code_replace_for_[ linklist.title | strip_html | json  ]_begin{% endcomment %}{% include 'ly-title' with linklist %}{{ ly_translation | strip_html | json  }}{% comment %}ly_code_replace_end{% endcomment %},
+            "links" : [
+                {% for link in linklist.links %}
+                  {"url" : "{{ link.url }}",
+                 "title" : {% comment %}ly_code_replace_for_[ link.title | strip_html | json ]_begin{% endcomment %}{% include 'ly-title' with link %}{{ ly_translation | strip_html | json }}{% comment %}ly_code_replace_end{% endcomment %}}{% unless link == linklist.links.last %},{% endunless %}
+                {% endfor %}
+              ]
+          }{% unless linklist.handle == linklists.last.handle %},{% endunless %}
+          {% endfor %}
+          ]
+          </div>

@@ -1,0 +1,18 @@
+{% case settings.site %}
+  {% when 'US' %}
+    {% include 'theme-US' %}
+  {% when 'UK' %}
+    {% include 'theme-UK' %}
+  {% when 'FR' %}
+    {% include 'theme-FR' %}
+  {% when 'DE' %}
+    {% include 'theme-Germany' %}
+  {% else %}
+  {% include 'theme-US' %}
+{% endcase %}
+
+
+{% if 0 == 1 %}
+  {{ content_for_header }}
+  {{ content_for_layout }}
+{% endif %}

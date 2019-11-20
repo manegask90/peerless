@@ -1,0 +1,19 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<a href="{% if section.settings.button_text %}{{ section.settings.button_url }}{% else %}javascript:void(0){% endif %}" class="pull-right opening-btn">{{ section.settings.button_text }}</a>
+{% schema %}
+{
+  	"name": "Opening Button",
+  	"class": "opening_button",
+  	"settings": [  
+  		{
+  			"type": "text",
+  			"id": "button_text",
+  			"label": "Button Text"
+  		},
+  		{
+  			"type": "url",
+  			"id": "button_url",
+  			"label": "Button URL"
+  		}
+  	]
+}
+{% endschema %}

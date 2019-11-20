@@ -1,0 +1,61 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<script>
+$('document').ready(function(){
+  $(document).on('click', ".product_remove_from_wishlist", function() {
+    var $this       = $(this),
+        prod_id     = $this.attr('data-id'),
+        customer_id = $this.attr('data-customer_id'),
+        data_email  = $this.attr('data-email'),
+        data_handle = $this.attr('data-handle'),
+        holder      = $this.closest('.yith-wcwl-add-to-wishlist'),
+        pr_this     = holder.find('.gl_remove_wishlist'),
+        load        = holder.find('.gl_removing_wishlist'),
+        add      = holder.find('.gl_add_wishlist');;
+    
+    pr_this.hide();
+    //$("#removing_from_whislist_"+prod_id).show();
+    
+    // var settings = {
+    //   async: true,
+    //   crossDomain: true,
+    //   url: "https://nitro-wishlist.teathemes.net/?shop=" + Shopify.shop,
+    //   method: "POST",
+    //   headers: {
+    //     "cache-control": "no-cache",
+    //     "content-type": "application/json",
+    //     "postman-token": "e407778c-4a28-5171-7f26-4ef92228416c"
+    //   },
+    //   processData: false,
+    //   data: {
+    //     action:      "remove",
+    //     customer_id: customer_id,
+    //     email:       data_email,
+    //     handle:      data_handle,
+    //     id:          prod_id
+    //   }
+    // }
+
+    pr_this.hide();
+    load.show();
+    $.ajax({
+      url: 'https://nitro-wishlist.teathemes.net?shop='+ Shopify.shop,
+       type: 'POST',
+       cache: true,
+       data: $(this).data(),
+    })
+    .done(function (data, status) {
+      if(data.status == 'success' && status == 'success') {
+        globalWishlistCounter = data.data.ids.length;
+        add.show();
+        load.hide();
+        pr_this.hide();
+        $('.gl_count_wishlist').html(function(i, val) { return val*1-1 });
+      } else {
+        load.hide();
+        pr_this.show();
+        console.log('Error: '+data.message);
+      }
+    });
+  });
+});
+</script>

@@ -1,0 +1,256 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% paginate blogs[blog.handle].articles by blogs[blog.handle].articles_count %}
+	{% assign article_list = blogs[blog.handle].articles | sort: "created_at" | reverse %}
+{% endpaginate %}
+
+{% assign year2019 == 0 %}
+{% assign year2018 == 0 %}
+{% assign year2017 == 0 %}
+{% assign year2016 == 0 %}
+{% assign year2015 == 0 %}
+{% assign year2014 == 0 %}
+{% assign year2013 == 0 %}
+{% for single_article in article_list %}
+	{% for tag in single_article.tags %}
+		{% if tag == '2019' %}
+			{% assign year2019 = year2019 | plus:1 %}
+		{%endif%}
+		{% if tag == '2018' %}
+			{% assign year2018 = year2018 | plus:1 %}
+		{%endif%}
+		{% if tag == '2017' %}
+			{% assign year2017 = year2017 | plus:1 %}
+		{%endif%}
+		{% if tag == '2016' %}
+			{% assign year2016 = year2016 | plus:1 %}
+		{%endif%}
+		{% if tag == '2015' %}
+			{% assign year2015 = year2015 | plus:1 %}
+		{%endif%}
+		{% if tag == '2014' %}
+			{% assign year2014 = year2014 | plus:1 %}
+		{%endif%}
+		{% if tag == '2013' %}
+			{% assign year2013 = year2013 | plus:1 %}
+		{%endif%}
+	{%endfor%}
+{%endfor%}
+<div class="press-releases-wrapper">
+	<div class="container">
+		<div class="row">
+			<div id="tabs">
+				<div class="col-sm-3 col-xs-12">
+					<ul>
+						{% comment %} {% for article in article_list %}
+							<li class="year-{{ article.tags }}" data-target="group-{{ article.tags }}">{{ article.tags }}</li>
+						{% endfor %} {% endcomment %}
+						
+							
+						{% if year2019 > 0 %}
+							<li class="ui-state-active"><a href="#tabs-1" class="test">2019</a></li>
+						{%endif%}
+						{% if year2018 > 0 %}
+							<li><a href="#tabs-2">2018</a></li>
+						{%endif%}
+						{% if year2017 > 0 %}
+							<li><a href="#tabs-3">2017</a></li>
+						{%endif%}
+						{% if year2016 > 0 %}
+							<li><a href="#tabs-4">2016</a></li>
+						{%endif%}
+						{% if year2015 > 0 %}
+							<li><a href="#tabs-5">2015</a></li>
+						{%endif%}
+						{% if year2014 > 0 %}
+							<li><a href="#tabs-6">2014</a></li>
+						{%endif%}
+						{% if year2013 > 0 %}
+							<li><a href="#tabs-7">2013</a></li>
+						{%endif%}
+					</ul>
+ <ul><li> PR Contact <br>
+                    Beth Gard <br>
+                  (732) 212-0823 <br>
+                    bethg@lotus823.com </li> </ul>
+				</div>
+			<div class="col-sm-9 col-xs-12">
+				<div class="title-wrap">
+					<h1 class="title">{% comment %}ly_code_replace_for_[ blog.title ]_begin{% endcomment %}{% include 'ly-title' with blog %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+				</div>
+				<div class="blogs-wrapper">
+				{% if year2019 > 0 %}	
+					<div id="tabs-1">
+						<div class="year-wrap">
+							<h2 class="year">2019</h2>
+						</div>
+						{% for single_article in article_list %}
+							{% for tag in single_article.tags %}
+								{% if tag == '2019' %}
+										<div class="accordion">
+											<h3 class="accordion-header active">{% comment %}ly_code_replace_for_[ single_article.title ]_begin{% endcomment %}{% include 'ly-title' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}<i class="fa fa-angle-up" aria-hidden="true"></i></h3>
+											<div class="acord-month ui-accordion-content">
+												{% comment %}ly_code_replace_for_[ single_article.content ]_begin{% endcomment %}{% include 'ly-content' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+											</div>
+										</div>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</div>
+				{%endif%}
+				{% if year2018 > 0 %}	
+					<div id="tabs-2">
+						<div class="year-wrap">
+							<h2 class="year">2018</h2>
+						</div>
+						{% for single_article in article_list %}
+							{% for tag in single_article.tags %}
+								{% if tag == '2018' %}
+										<div class="accordion">
+											<h3 class="accordion-header active">{% comment %}ly_code_replace_for_[ single_article.title ]_begin{% endcomment %}{% include 'ly-title' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}<i class="fa fa-angle-up" aria-hidden="true"></i></h3>
+											<div class="acord-month ui-accordion-content">
+												{% comment %}ly_code_replace_for_[ single_article.content ]_begin{% endcomment %}{% include 'ly-content' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+											</div>
+										</div>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</div>
+				{%endif%}	
+				{% if year2017 > 0 %}
+					<div id="tabs-3">
+						<div class="year-wrap">
+							<h2 class="year">2017</h2>
+						</div>
+						{% for single_article in article_list %}
+							{% for tag in single_article.tags %}
+								{% if tag == '2017' %}
+										<div class="accordion">
+											<h3 class="accordion-header active">{% comment %}ly_code_replace_for_[ single_article.title ]_begin{% endcomment %}{% include 'ly-title' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}<i class="fa fa-angle-up" aria-hidden="true"></i></h3>
+											<div class="acord-month ui-accordion-content">
+												{% comment %}ly_code_replace_for_[ single_article.content ]_begin{% endcomment %}{% include 'ly-content' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+											</div>
+										</div>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</div>
+				{%endif%}
+				{% if year2016 > 0 %}
+					<div id="tabs-4">
+						<div class="year-wrap">
+							<h2 class="year">2016</h2>
+						</div>
+						{% for single_article in article_list %}
+							{% for tag in single_article.tags %}
+								{% if tag == '2016' %}
+										<div class="accordion">
+											<h3 class="accordion-header active">{% comment %}ly_code_replace_for_[ single_article.title ]_begin{% endcomment %}{% include 'ly-title' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}<i class="fa fa-angle-up" aria-hidden="true"></i></h3>
+											<div class="acord-month ui-accordion-content">
+												{% comment %}ly_code_replace_for_[ single_article.content ]_begin{% endcomment %}{% include 'ly-content' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+											</div>
+										</div>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</div>
+				{%endif%}	
+				{% if year2015 > 0 %}
+					<div id="tabs-5">
+						<div class="year-wrap">
+							<h2 class="year">2015</h2>
+						</div>
+						{% for single_article in article_list %}
+							{% for tag in single_article.tags %}
+								{% if tag == '2015' %}
+										<div class="accordion">
+											<h3 class="accordion-header active">{% comment %}ly_code_replace_for_[ single_article.title ]_begin{% endcomment %}{% include 'ly-title' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}<i class="fa fa-angle-up" aria-hidden="true"></i></h3>
+											<div class="acord-month ui-accordion-content">
+												{% comment %}ly_code_replace_for_[ single_article.content ]_begin{% endcomment %}{% include 'ly-content' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+											</div>
+										</div>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</div>
+				{%endif%}	
+				{% if year2014 > 0 %}
+					<div id="tabs-6">
+						<div class="year-wrap">
+							<h2 class="year">2014</h2>
+						</div>
+						{% for single_article in article_list %}
+							{% for tag in single_article.tags %}
+								{% if tag == '2014' %}
+										<div class="accordion">
+											<h3 class="accordion-header active">{% comment %}ly_code_replace_for_[ single_article.title ]_begin{% endcomment %}{% include 'ly-title' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}<i class="fa fa-angle-up" aria-hidden="true"></i></h3>
+											<div class="acord-month ui-accordion-content">
+												{% comment %}ly_code_replace_for_[ single_article.content ]_begin{% endcomment %}{% include 'ly-content' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+											</div>
+										</div>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					</div>
+				{%endif%}	
+				{% if year2013 > 0 %}
+					<div id="tabs-7">
+						<div class="year-wrap">
+							<h2 class="year">2013</h2>
+						</div>
+						{% for single_article in article_list %}
+							{% for tag in single_article.tags %}
+								{% if tag == '2013' %}
+										<div class="accordion">
+											<h3 class="accordion-header active">{% comment %}ly_code_replace_for_[ single_article.title ]_begin{% endcomment %}{% include 'ly-title' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}<i class="fa fa-angle-up" aria-hidden="true"></i></h3>
+											<div class="acord-month ui-accordion-content">
+												{% comment %}ly_code_replace_for_[ single_article.content ]_begin{% endcomment %}{% include 'ly-content' with single_article %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+											</div>
+										</div>
+								{% endif %}
+							{% endfor %}
+						{% endfor %}
+					 </div>
+				{%endif%}	 
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+   </div>
+</div>
+
+<script>
+$( document ).ready(function() {
+     $( "#tabs" ).tabs({
+      active: 0
+    });
+});
+</script>
+
+<script>
+		var headers = $('.accordion .accordion-header');
+		var contentAreas = $('.accordion .ui-accordion-content ').show();
+		var expandLink = $('.accordion-expand-all');
+
+		// add the accordion functionality
+		headers.click(function() {
+			var panel = $(this).next();
+			var isOpen = panel.is(':visible');
+
+			$(this).toggleClass( "active" );
+		
+			// open or close as necessary
+			panel[isOpen? 'slideUp': 'slideDown']()
+				// trigger the correct custom event
+				.trigger(isOpen? 'hide': 'show');
+
+			// stop the link from causing a pagescroll
+			return false;
+		});
+
+		// hook up the expand/collapse all
+		expandLink.click(function(){
+			$(".ui-accordion-content").show();
+		});
+
+
+</script>

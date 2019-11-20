@@ -1,0 +1,62 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="led-mounting-desc">
+  <div class="container">
+    <div class="row led-mounting-inner">
+      <div class="col-md-7 col-xs-12">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">
+          {{section.settings.desc}}
+        </div>
+        <a class="btn" href="{{section.settings.btnUrl}}">{{section.settings.btnText}}</a>
+      </div>
+      <div class="col-md-5 col-xs-12">
+        <script src="https://fast.wistia.com/embed/medias/9vmbydw02g.jsonp" async></script><script src="https://fast.wistia.com/assets/external/E-v1.js" async></script><div class="wistia_responsive_padding" style="padding:56.25% 0 0 0;position:relative;"><div class="wistia_responsive_wrapper" style="height:100%;left:0;position:absolute;top:40%;width:100%;"><div class="wistia_embed wistia_async_9vmbydw02g videoFoam=true" style="height:100%;position:relative;width:100%">&nbsp;</div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Led Mounting Description",
+    "class": "section-led-mounting-desc",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Unprecedented experience"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      },
+      {
+        "type": "text",
+        "id": "btnText",
+        "label": "Button text",
+        "default": "New LED Video Wall Configurator"
+      },
+      {
+        "type": "url",
+        "id": "btnUrl",
+        "label": "Button link"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Led Mounting Description Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

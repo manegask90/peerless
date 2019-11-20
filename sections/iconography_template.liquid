@@ -1,0 +1,56 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="row">
+  {% for block in section.blocks %}
+    <div class="col-md-10 col-md-offset-1 iconography-row-item">
+      <div class="row">
+        <div class="col-sm-2">
+            <img src="{{ block.settings.image | img_url: '' }}" />
+        </div>
+        <div class="col-sm-8">
+          <h2>{{ block.settings.title }}</h2>
+          <article>
+              {{ block.settings.content }}
+          </article>
+        </div>
+        <div class="col-sm-2 text-right">
+          {% unless block.settings.url == blank %}
+            <a href="{{ block.settings.url }}" class="visit-website"><ly-as-13489391>Visit Website</ly-as-13489391></a>
+          {% endunless %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+{% schema %}
+{
+  "name": "Certs & Icongraphy",
+  "blocks": [
+    {
+      "type": "icongraphy",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "text",
+          "id": "url",
+          "label": "Link Url"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

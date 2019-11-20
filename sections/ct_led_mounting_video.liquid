@@ -1,0 +1,51 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="led-mounting-video">
+  <div class="container">
+    <div class="led-mounting-video-inner ">
+      <h4 class="box-title">{{ section.settings.title }}</h4>
+
+      {%- if section.settings.video %}
+        <div class="video-wrap">
+          {%- if section.settings.video.type == 'youtube' -%}
+            <iframe id="ytplayer" type="text/html"
+              src="http://www.youtube.com/embed/{{section.settings.video.id}}?&showinfo=0"
+              frameborder="0"/></iframe>
+          {%- else if section.settings.video.type == 'vimeo' -%}
+            <iframe src="https://player.vimeo.com/video/{{section.settings.video.id}}" width="{video_width}" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+          {%- endif -%}
+        </div>
+      {%- endif -%}  
+    </div>
+  </div>
+</div>
+<!-- https://vimeo.com/321603291 -->
+<!-- https://www.youtube.com/watch?v=8BlmmXqvOSo -->
+{% schema %}
+  {
+    "name": "Led Video",
+    "class": "section-led-mounting-video",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "SEAMLESS Video"
+      },
+      {
+       "type": "video_url",
+       "id": "video",
+       "accept": ["youtube", "vimeo"],
+       "label": "Video URL",
+       "placeholder": "Enter vide URL",
+       "info": "You can use vimeo or youtube"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Led Mounting Video",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

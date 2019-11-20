@@ -1,0 +1,162 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="custom-page-wrapper">
+	{% section 'ct_hospitality_slider' %}
+  <div class="industry-info-box"></div>
+	{% section 'ct_hospitality_article' %}
+	{% section 'ct_hospitality_products1' %}
+</div>
+
+<form id="hospitality-form" class="white-popup-block popup-form mfp-hide" novalidate="">
+  <div class="form_title" style="margin-bottom: 12px;margin-top: 28px;"><ly-as-13491819>What can we help you with?</ly-as-13491819></div>
+  <div class="header-hospitality-form">Please provide your contact information and a short message below, and representatives from our Hospitality team will reach out to you shortly.</div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group" style="margin-bottom: 20px">
+        <label for="first_name"><ly-as-13491821>First Name</ly-as-13491821><span class="required"> *</span></label>
+        <input type="text" class="form-control" id="first_name" value="{{ customer.first_name }}" name="first_name" required>
+      </div>
+    </div>
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <div class="form-group">
+        <label for="last_name"><ly-as-13491822>Last Name</ly-as-13491822><span class="required"> *</span></label>
+        <input type="text" class="form-control" id="last_name" value="{{ customer.last_name }}" name="last_name" required>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <div class="form-group">
+        <label for="email"><ly-as-13491823>Email Address</ly-as-13491823><span class="required"> *</span></label>
+        <input type="email" class="form-controll" value="{{ customer.email }}" name="email" id="email" required>
+      </div>
+    </div>
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <div class="form-group">
+        <label for="phone"><ly-as-13491824>Phone Number</ly-as-13491824></label>
+        <input type="text" class="form-controll" value="{{ customer.phone }}" name="phone" id="phone">
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <div class="form-group">
+        <label for="job_title"><ly-as-13491825>Job Title</ly-as-13491825></label>
+        <input type="text" class="form-controll" name="job_title" id="job_title">
+      </div>
+    </div>
+    <div class="col-md-6" style="margin-bottom: 20px">
+      <div class="form-group">
+        <label for="company"><ly-as-13491826>Company</ly-as-13491826></label>
+        <input type="text" class="form-controll" value="{% comment %}ly_code_replace_for_[ customer.metafields.global.company ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'global' %}{% assign key = 'company' %}{% if customer.metafields[ns][key] %}{% assign ly_translation = customer.metafields[ns][key] %}{% else %}{% assign ly_translation =  customer.metafields.global.company  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}" name="company" id="company">
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="col-md-12">
+      <div class="form-group" style="margin-bottom: 0">
+        <label for="message"><ly-as-13491827>Message</ly-as-13491827><span class="required"> *</span></label>
+        <textarea name="message" id="message" required=""></textarea>
+      </div>
+    </div>
+    
+    <div class="clearfix"></div>
+
+    <div class="col-md-12 required-info" style="margin-bottom: 20px;"><span class="required">* </span><ly-as-13491828>Required Field</ly-as-13491828></div>
+    <div class="col-md-12">
+      <input type="hidden" name="site" value="US">
+      {% include 'email-lang' %}
+      <input type="hidden" name="lang" value="{{lang}}">
+      <button type="submit"><ly-as-13491829>Send Message</ly-as-13491829></button>
+    </div>
+  </div>
+</form>
+
+{% comment %}ly_asset_replace_for_[ 'imask.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'imask.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+<script type="text/javascript">
+  var phoneElement = document.getElementById('phone');
+  var maskOptions = {
+    mask: '+1 (000) 000-0000'
+  };
+  var phoneMask = new IMask(phoneElement, maskOptions);
+
+  $(document).ready(function(){
+    $('.main-header').addClass('kiosk-header');
+    $('.header-wrap').addClass('kiosk-header');
+    $('.contact-hospitality').magnificPopup({
+	    type: 'inline',
+	    preloader: true,
+	  });
+
+    $("#hospitality-form").submit(function(){
+      var validationError = validateHospitalityForm();
+      if (validationError) {
+        return false;
+      }
+
+      sendHospitalityForm($(this));
+      return false;
+    });
+  });
+
+   function validateHospitalityForm () {
+    var requiredFields = $('#hospitality-form [required]');
+    var validationError = false;
+    requiredFields.each(function () {
+      var parent  = $(this).closest('div'),
+          errorBox = parent.find('.error-box');
+      if ($(this).val() == '') {
+        $(this).addClass('error');
+        validationError = true;
+      } else if ($(this).is('#email') && !validateEmail($(this).val())) {
+        $(this).addClass('error');
+        validationError = true;
+      } else if ($(this).is('#phone') && phoneMask.unmaskedValue.length != 10) {
+        $(this).addClass('error');
+        validationError = true;
+      } else {
+        $(this).removeClass('error');
+      }
+    });
+    return validationError;
+  }
+
+  function sendHospitalityForm (that) {
+    that.find('[type="submit"]').addClass('loading');
+    handleAjax(
+      '/apps/peerless/contact/hospitality',
+      that.serialize(),
+      "post",
+      function (response) {
+        if (response.success) {
+          displaySuccess(response.message, '.industry-info-box');
+        } else {
+          displayErrors(response.message, '.industry-info-box');
+        }
+      },
+      function () {
+        that.find('[type="submit"]').removeClass('loading');
+        $.magnificPopup.close();
+      },
+      function (error) {
+        displayErrors('Something went wrong, please reload page and try again', '.industry-info-box');
+      }
+    );
+  }
+
+  $(document).ready(function(){
+    $('a.18509240008819').attr('href', '/pages/led-mounting-systems');
+    $('.product .product-element-top a[data-pid = 18509240008819]').attr('href', '/pages/led-mounting-systems');
+
+    $('a.18509366329459').attr('href', '/pages/led-mounting-systems');
+    $('.product .product-element-top a[data-pid = 18509366329459]').attr('href', '/pages/led-mounting-systems');
+
+    $('a.18418758811763').attr('href', '/pages/xtreme™-high-bright-outdoor-displays');
+    $('.product .product-element-top a[data-pid = 18418758811763]').attr('href', '/pages/xtreme™-high-bright-outdoor-displays');
+
+    $('a.18418743574643').attr('href', 'https://ultraview.peerless-av.com/');
+    $('.product .product-element-top a[data-pid = 18418743574643]').attr('href', 'https://ultraview.peerless-av.com/');
+  });
+</script>

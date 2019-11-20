@@ -1,0 +1,74 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% layout 'gift_card' %}
+
+{%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+{%- assign formatted_initial_value_stripped = formatted_initial_value | strip_html -%}
+
+<header class="giftcard__header text-center" role="banner">
+  <div class="site-header__logo h1 text-center" itemscope itemtype="http://schema.org/Organization">
+    <a href="{{ shop.url }}" class="site-header__link site-header__logo-link" itemprop="url">{{ langify_shop_name }}</a>
+  </div>
+
+  <h1>{% comment %}ly_i18n_replace_for_[ 'gift_cards.issued.subtext' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'gift_cards.issued.subtext' | t }}{% endcapture %}{% include 'ly-static-string' with '13491742' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h1>
+  {% unless gift_card.enabled %}
+    <p class="giftcard__tag">{% comment %}ly_i18n_replace_for_[ 'gift_cards.issued.disabled' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'gift_cards.issued.disabled' | t }}{% endcapture %}{% include 'ly-static-string' with '13491743' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+  {% endunless %}
+  {% assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" %}
+  {% if gift_card.expired and gift_card.enabled %}
+    <p class="giftcard__tag">{% comment %}ly_i18n_replace_for_[ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date ]_begin{% endcomment %}{% capture ly_template %}{{ 'gift_cards.issued.expired' | t: expiry: gift_card_expiry_date }}{% endcapture %}{% include 'ly-static-string' with '13491745' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = gift_card_expiry_date  %}{% assign ly_template = ly_template | replace: '[[expiry]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+  {% endif %}
+  {% if gift_card.expired != true and gift_card.expires_on and gift_card.enabled %}
+    <p class="giftcard__tag giftcard__tag--active">{% comment %}ly_i18n_replace_for_[ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date ]_begin{% endcomment %}{% capture ly_template %}{{ 'gift_cards.issued.active' | t: expiry: gift_card_expiry_date }}{% endcapture %}{% include 'ly-static-string' with '13491747' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = gift_card_expiry_date  %}{% assign ly_template = ly_template | replace: '[[expiry]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+  {% endif %}
+</header>
+
+<div class="giftcard-wrapper">
+  <main class="giftcard" role="main">
+    <div class="giftcard__wrap">
+      <img src="{{ 'gift-card/card.jpg' | shopify_asset_url }}" alt="">
+
+      {%- assign initial_value_size = formatted_initial_value | size -%}
+      <div class="h1 giftcard__amount{% if initial_value_size > 6 %} giftcard__amount--medium{% endif %}">
+        {% if gift_card.balance != gift_card.initial_value %}
+          <span class="giftcard__tooltip">
+            <span class="giftcard__tooltip-label">{% comment %}ly_i18n_replace_for_[ 'gift_cards.issued.remaining_html' | t: balance: gift_card.balance | money ]_begin{% endcomment %}{% capture ly_template %}{{ 'gift_cards.issued.remaining_html' | t: balance: gift_card.balance | money }}{% endcapture %}{% include 'ly-static-string' with '13491749' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = gift_card.balance  %}{% assign ly_template = ly_template | replace: '[[balance]]', replacement %}{% if escape_content %}{{ ly_template | money }}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+          </span>
+        {% endif %}
+        <strong>{{ formatted_initial_value }}</strong>
+      </div>
+
+      {%- assign code_size = gift_card.code | format_code | size -%}
+      <div class="giftcard__code{% if code_size <= 25 %} giftcard__code--large{% elsif code_size > 25 and code_size <= 30 %} giftcard__code--medium{% else %} giftcard__code--small{% endif %}" onclick="selectText('GiftCardDigits');">
+        <div class="giftcard__code__inner">
+          <strong class="giftcard__code__text {% if gift_card.expired or gift_card.enabled != true %} disabled{% endif %}" id="GiftCardDigits">{{ gift_card.code | format_code }}</strong>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-center">
+      {% comment %}ly_i18n_replace_for_[ 'gift_cards.issued.redeem_html' | t: value: formatted_initial_value_stripped ]_begin{% endcomment %}{% capture ly_template %}{{ 'gift_cards.issued.redeem_html' | t: value: formatted_initial_value_stripped }}{% endcapture %}{% include 'ly-static-string' with '13491751' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = formatted_initial_value_stripped  %}{% assign ly_template = ly_template | replace: '[[value]]', replacement %}{% if escape_content %}{{ ly_template}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+    </p>
+
+    <div id="QrCode" class="giftcard__qr-code" data-identifier="{{ gift_card.qr_identifier }}"></div>
+
+    <div class="text-center">
+      <p>
+        <a href="{{ shop.url }}" class="btn" target="_blank">
+          {% comment %}ly_i18n_replace_for_[ 'gift_cards.issued.shop_link' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'gift_cards.issued.shop_link' | t }}{% endcapture %}{% include 'ly-static-string' with '13491752' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+          {% include 'icon-arrow-right' %}
+        </a>
+      </p>
+      <p>
+        <button type="button" class="btn btn--secondary print-link" onclick="window.print();">
+          {% comment %}ly_i18n_replace_for_[ 'gift_cards.issued.print' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'gift_cards.issued.print' | t }}{% endcapture %}{% include 'ly-static-string' with '13491753' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+        </button>
+      </p>
+      {% if gift_card.pass_url %}
+        <p>
+          <a class="giftcard__apple-wallet" href="{{ gift_card.pass_url }}">
+            <img class="giftcard__apple-wallet-image" src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{% comment %}ly_i18n_replace_for_[ 'gift_cards.issued.add_to_apple_wallet' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'gift_cards.issued.add_to_apple_wallet' | t }}{% endcapture %}{% include 'ly-static-string' with '13491754' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+          </a>
+        </p>
+      {% endif %}
+    </div>
+  </main>
+</div>

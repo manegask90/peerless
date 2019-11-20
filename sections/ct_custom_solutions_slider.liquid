@@ -1,0 +1,171 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% if section.settings.slider_show == 'yes' %}
+  <div class="custom-page-slider owl-carousel">
+    {% for block in section.blocks %}
+    <div class="custom-page-slider-text">
+      <div class="custom-page-slider-text-left">
+        <span>0{{ forloop.index }}</span>
+      </div>
+      <div class="custom-page-slider-text-right">
+        <p class="custom-page-slider-title">{{ block.settings.title }}</p>
+        <p class="custom-page-slider-subtitle">{{ block.settings.subtitle }}</p>
+        <span class="custom-page-slider-content">{{ block.settings.content }}</span>
+        <div class="btn-wrap">{{ block.settings.html_area }}</div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('.custom-page-slider').owlCarousel({
+      loop: true,
+      margin: 0,
+      nav: true,
+      dots: true,
+      items: 1
+    });
+    var img_urls = [];
+    var img_postions = [];
+    {% for block in section.blocks %}
+      var img_url = '{{ block.settings.image.src | img_url: 'master' }}';
+      img_postions.push('{{block.settings.bg_y_postion}}');
+      img_urls.push(img_url);
+    {% endfor %}
+    $('.custom-page-slider').css({
+      'background-image': 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%), url(' + img_urls[0] + ')',
+      'background-position-y': img_postions[0]+"%",
+    });
+    $('.custom-page-slider').on('changed.owl.carousel', function(event) {
+      $(this).css({
+        'background-image': 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%), url(' + img_urls[event.page.index] + ')',
+        'background-position-y': img_postions[event.page.index]+"%",
+      });
+    });
+  });
+  </script>
+{% else %}
+  <div class="custom-page-slider">
+    {% for block in section.blocks %}
+    {% if forloop.index == 1 %}
+    <div class="custom-page-slider-text">
+      <div class="custom-page-slider-text-left">
+        <span>0{{ forloop.index }}</span>
+      </div>
+      <div class="custom-page-slider-text-right">
+        <p class="custom-page-slider-title">{{ block.settings.title }}</p>
+        <p class="custom-page-slider-subtitle">{{ block.settings.subtitle }}</p>
+        <span class="custom-page-slider-content">{{ block.settings.content }}</span>
+        <a href="{{ section.settings.configurator_url }}"><span class="custom-page-slider-button-white"><ly-as-13487248>USE LED CONFIGURATOR</ly-as-13487248></span></a>
+        <a href="{{ section.settings.custom_kiosk_url }}"><span class="custom-page-slider-button-white"><ly-as-13487249>Build your custom kiosk</ly-as-13487249></span></a>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    var img_urls = [];
+    var img_postions = [];
+    {% for block in section.blocks %}
+      var img_url = '{{ block.settings.image.src | img_url: 'master' }}';
+      img_postions.push('{{block.settings.bg_y_postion}}');
+      img_urls.push(img_url);
+    {% endfor %}
+
+    $('.custom-page-slider').css({
+      'background-image': 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%), url(' + img_urls[0] + ')',
+      'background-position-y': img_postions[0]+"%",
+    });
+  });
+  </script>
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Custom Solutions Slider",
+    "class": "section-custom-page-slider",
+    "settings": [
+      {
+        "type": "select",
+        "id": "slider_show",
+        "label": "Show Slider",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      },
+      {
+        "type": "url",
+        "id": "configurator_url",
+        "label": "Led configurator url"
+      },
+      {
+        "type": "url",
+        "id": "custom_kiosk_url",
+        "label": "Custom kiosk url"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "slider",
+        "name": "Slider",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "range",
+            "id": "bg_y_postion",
+            "min": 0,
+            "max":  100,
+            "step": 1,
+            "unit": "%",
+            "label": "Background y postion",
+            "default": 50
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Custom Solutions"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Special and Unique Applications, Non-Standard, Special-Needs"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>When you have a unique environment, it can be difficult to find the right product that fits all your needs. That’s where our expert Custom Solutions Team comes in. As the industry leader in custom solutions, we offer true innovation, technical expertise, and state-of-the-art facilities to take projects from concept through successful completion. Remember - just because it doesn’t exist yet, doesn’t mean we can’t design and manufacture it for you.</p>"
+          },
+          {
+           "type": "html",
+           "id": "html_area",
+           "label": "Custom HTML"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Custom Solutions Slider",
+        "settings": {
+          "slider_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

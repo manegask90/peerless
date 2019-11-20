@@ -1,0 +1,25 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="xtreme-high-capabilities">
+  <div class="container">
+    <div class="row xtreme-high-capabilities-inner">
+      <div class="col-md-12 capabilities-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{section.settings.desc}}</div>
+      </div>
+      <div class="capabilities-cards">
+        {%- for block in section.blocks -%}
+          <div class="col-md-12 capabilities-card">
+            <div class="block-inner">
+              <div class="img-wrap">
+                <img src="{{block.settings.image  | img_url: '115x' }}" alt="Image" />
+              </div>
+              <div class="content-wrap">
+                <h5>{{block.settings.title}}</h5>
+                <div>{{block.settings.content}}</div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>

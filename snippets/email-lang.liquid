@@ -1,0 +1,25 @@
+{% if customer %}
+    {% assign lang = customer.metafields.global.language %}
+    {% case lang %}
+        {% when 'English' %}
+            {% assign lang = 'ENG' %}
+        {% when 'German' %}
+            {% assign lang = 'DE' %}
+        {% when 'Spanish' %}
+            {% assign lang = 'LA' %}
+        {% when 'French' %}
+            {% assign lang = 'FR' %}
+    {% endcase %}
+{% else %}
+    {% assign lang = language %}
+    {% case language %}
+        {% when 'ly73951' %}
+            {% assign lang = 'ENG' %}
+        {% when 'ly73952' %}
+            {% assign lang = 'DE' %}
+        {% when 'ly73954' %}
+            {% assign lang = 'LA' %}
+        {% when 'ly77552' %}
+            {% assign lang = 'FR' %}
+    {% endcase %}  
+{% endif %}

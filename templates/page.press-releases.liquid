@@ -1,0 +1,56 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% section 'press-releases' %}
+
+{% if settings.site == 'UK' %}
+	{% section 'press-releases_uk' %}
+{% elsif settings.site == 'FR' %}
+	{% section 'press-releases_fr' %}
+{% elsif settings.site == 'DE' %}
+	{% section 'press-releases_de' %}
+{% elsif settings.site == 'Latin America' %}
+	{% section 'press-releases' %}
+
+{% endif %}
+
+<script>
+$( document ).ready(function() {
+     $( "#tabs" ).tabs({
+      active: 0
+    });
+});
+// $( function() {
+// 	var headers = $('#accordion .accordion-header');
+// 	var contentAreas = $('#accordion .ui-accordion-content ').hide();
+//     $( ".accordion" ).accordion({
+//     	collapsible: true
+//     });
+//     // $('.accordion .acord-month').data('isAllOpen', true);
+//   } );
+</script>
+
+<script>
+	var headers = $('.accordion .accordion-header');
+	var contentAreas = $('.accordion .ui-accordion-content ').show();
+	var expandLink = $('.accordion-expand-all');
+
+	// add the accordion functionality
+	headers.click(function() {
+	    var panel = $(this).next();
+	    var isOpen = panel.is(':visible');
+
+	    $(this).toggleClass( "active" );
+	 
+	    // open or close as necessary
+	    panel[isOpen? 'slideUp': 'slideDown']()
+	        // trigger the correct custom event
+	        .trigger(isOpen? 'hide': 'show');
+
+	    // stop the link from causing a pagescroll
+	    return false;
+	});
+
+	// hook up the expand/collapse all
+	expandLink.click(function(){
+		$(".ui-accordion-content").show();
+	});
+</script>

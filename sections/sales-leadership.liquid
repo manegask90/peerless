@@ -1,0 +1,61 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h4 class="sales-contacts-pre-title"><ly-as-13489587>Leadership</ly-as-13489587></h4>
+      {% include 'title-red-underline', head_title: 'North American Sales', classes: 'text-white' %}
+    </div>
+  </div>
+
+  <div class="row">
+    {% for block in section.blocks %}
+      <div class="sales-leadership-item-wrap clearfix">
+        {% include 'sales-leadership-item' %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sales Leaderships",
+  "blocks": [
+    {
+      "type": "contacts",
+      "name": "Contacts",
+      "settings": [
+        {
+          "id": "photo",
+          "type": "image_picker",
+          "label": "Photo"
+        },
+        {
+          "id": "name",
+          "type": "text",
+          "label": "Name"
+        },
+        {
+          "id": "position",
+          "type": "text",
+          "label": "Position"
+        },
+        {
+          "id": "phone",
+          "type": "text",
+          "label": "Phone"
+        },
+        {
+          "id": "c",
+          "type": "text",
+          "label": "C"
+        },
+        {
+          "id": "email",
+          "type": "text",
+          "label": "Email"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

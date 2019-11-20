@@ -1,0 +1,295 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="about-timeline-wrapper">
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12">
+				<h2 class="timeline-title">{{ section.settings.timeline_title }}</h2>
+				<p class="timeline-summary">{{ section.settings.summary_text }}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="timeline-slider-wrapper">
+		<div class="timeline-sequence clearfix test">
+			<div class="container margin-edit">
+				<div>
+					<div class="timeline-inner-wrap">
+						{% for block in section.blocks %}
+							{% assign main_item_class = '' %}
+							{% if block.settings.main_item == true %}
+								{% assign main_item_class = 'sequence-main-item' %}
+							{% endif %}
+							<div class="sequence-item sequence-item-{{forloop.index}} {{ main_item_class }}">
+								{% if block.settings.main_item %}
+									<div class="timeline-slider-item">
+										<p class="timeline-slider-title">{{ block.settings.item_year }}</p>
+										<p class="timeline-slider-content">{{ block.settings.item_summary }}</p>
+										<p class="timeline-slider-img">{{ block.settings.timeline_image | img_url: '' | img_tag }}</p>
+									</div>
+								{% else %}
+									<span class="sequence-tooltip">{{ block.settings.item_summary }}</span>
+									<p class="sequence-title">{{ block.settings.item_year }}</p>
+								{% endif %}
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="timeline-slide-btn timeline-prev">
+			<img src="{% comment %}ly_asset_replace_for_[ 'arrow-left.png' | asset_url]_begin{% endcomment %}{% assign ly_asset = 'arrow-left.png' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  }}{% comment %}ly_asset_replace_end{% endcomment %}" alt="Prev">
+		</div>
+		<div class="timeline-slide-btn timeline-next">
+			<img src="{% comment %}ly_asset_replace_for_[ 'arrow-right.png' | asset_url]_begin{% endcomment %}{% assign ly_asset = 'arrow-right.png' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  }}{% comment %}ly_asset_replace_end{% endcomment %}" alt="Next">
+		</div>
+
+		<ul class="row timeline-slider hidden">
+			{% for block in section.blocks %}
+				{% if block.settings.main_item %}
+					<li class="col-xs-2 timeline-slider-item">
+						<p class="timeline-slider-title">{{ block.settings.item_year }}</p>
+						<p class="timeline-slider-content">{{ block.settings.item_summary }}</p>
+						<p class="timeline-slider-img">{{ block.settings.timeline_image | img_url: '' | img_tag }}</p>
+					</li>
+				{% endif %}
+			{% endfor %}
+		</ul>
+	</div>
+
+</div>
+
+<script>
+	$('.sequence-main-item').eq(0).addClass('sequence-main-item-active');
+
+	$('.sequence-main-item').on('click', function(e){
+		$('.sequence-main-item-active').removeClass('sequence-main-item-active');
+		$(this).addClass('sequence-main-item-active');
+	});
+	if (window.innerWidth < 1200) {
+		resizeTimeline();
+		slideTimeline();
+	}
+
+	$(window).on('resize', function () {
+		if (window.innerWidth < 1200) {
+			resizeTimeline();
+			slideTimeline()
+		}
+	});
+
+	function resizeTimeline () {
+		var container = $('.timeline-sequence .container'),
+			maineTimelineItemWidth = window.innerWidth > 576 ? container.width() / 2 : container.width(),
+			timelineItems = $('.sequence-main-item .timeline-slider-item');
+		timelineItems.css('width', maineTimelineItemWidth );
+		var elIndexArr = [];
+		/// get indexes of main items
+		jQuery('.sequence-item.sequence-main-item').each(function (idx, el) {
+			elIndexArr.push($(el).index());
+		});
+
+		elIndexArr.forEach(function (el, idx, arr) {
+			var prevElement = arr[idx-1] ? arr[idx-1] : 1,
+				//nextElement = arr[idx+1] ? arr[idx+1] : arr[arr.length -1],
+				elCount = el - prevElement,
+				itemWidth = maineTimelineItemWidth / elCount;
+
+			for(var i = prevElement; i < el; i++) {
+				$('.sequence-item').eq(i).css('width', itemWidth);
+			}
+		});
+
+		$('.sequence-main-item').each(function (idx, el) {
+			$(el).find('.timeline-slider-item').css('padding-left', ($(el).outerWidth()/2 - 25));
+		});
+	}
+	function slideTimeline() {
+		if($('.timeline-slide-btn').hasClass('initialized')) return;
+
+		$('.timeline-slide-btn').addClass('initialized');
+
+		var isAnimating = false;
+		$('.timeline-slide-btn').click(function () {
+			if (isAnimating) return;
+
+			isAnimating = true;
+			var container              = $('.timeline-sequence .container'),
+				maineTimelineItemWidth = window.innerWidth > 576 ? container.width() / 2 : container.width(),
+				timelineWrap           = $('.timeline-inner-wrap'),
+				timelineWrapWidth      = timelineWrap.width();
+				computedTranslate      = getComputedTranslateXY(timelineWrap[0]),
+				computedTranslateX     = computedTranslate[0] ? computedTranslate[0] : 0;
+
+			if ($(this).hasClass('timeline-next')) { // move left
+				if ((computedTranslateX + -maineTimelineItemWidth) > -timelineWrapWidth)
+				timelineWrap.css('transform', 'translateX('+( computedTranslateX + -maineTimelineItemWidth) +'px)');
+			} else { // move right
+				if (computedTranslateX < 0) {
+					var translateX = computedTranslateX + maineTimelineItemWidth <= 0 ? computedTranslateX + maineTimelineItemWidth : 0;
+					timelineWrap.css('transform', 'translateX('+(translateX) +'px)');
+				}
+			}
+			setTimeout(function () {
+				isAnimating = false;
+			}, 500);
+		});
+		$('.sequence-item').on('click', function () {
+			// if (isAnimating) return;
+
+			isAnimating = true;
+			var container              = $('.timeline-sequence .container'),
+				maineTimelineItemWidth = window.innerWidth > 576 ? container.width() / 2 : container.width(),
+				timelineWrap           = $('.timeline-inner-wrap'),
+				timelineWrapWidth      = timelineWrap.width();
+				computedTranslate      = getComputedTranslateXY(timelineWrap[0]),
+				computedTranslateX     = computedTranslate[0] ? computedTranslate[0] : 0,
+				windowHalfWidth        = window.innerWidth/2,
+				elPostion              = $(this)[0].getBoundingClientRect(),
+				leftPos                = elPostion.left + elPostion.width / 2;
+				translateWidth         = leftPos > windowHalfWidth ?  -(leftPos - windowHalfWidth) : windowHalfWidth - leftPos,
+				translateX             = computedTranslateX + translateWidth > 0 ? 0 : computedTranslateX + translateWidth;
+
+			timelineWrap.css('transform', 'translateX('+(translateX) +'px)');
+			setTimeout(function () {
+				isAnimating = false;
+			}, 500);
+		});
+	}
+
+	function getComputedTranslateXY(obj)
+	{
+		const transArr = [];
+	    if(!window.getComputedStyle) return;
+	    const style = getComputedStyle(obj),
+	        transform = style.transform || style.webkitTransform || style.mozTransform;
+	    let mat = transform.match(/^matrix3d\((.+)\)$/);    
+	    if(mat) return parseFloat(mat[1].split(', ')[13]);
+	    mat = transform.match(/^matrix\((.+)\)$/);
+	    mat ? transArr.push(parseFloat(mat[1].split(', ')[4])) : 0;
+	    mat ? transArr.push(parseFloat(mat[1].split(', ')[5])) : 0;
+	    return transArr;
+	}
+
+
+new Swipe(document.querySelector('.timeline-slider-wrapper'), function(event, direction) {
+	switch (direction) {
+		case "up":
+			break;
+		case "down":
+			break;
+		case "left":
+			event.preventDefault();
+			$('.timeline-next').click();
+			break;
+		case "right":
+			event.preventDefault();
+			$('.timeline-prev').click();
+			break;
+	}
+});
+
+function Swipe(elem, callback) {
+	var self = this;
+	this.callback = callback;
+
+
+	function handleEvent(e) {
+		self.touchHandler(e);
+	}
+
+	elem.addEventListener('touchstart', handleEvent, false);
+	elem.addEventListener('touchmove', handleEvent, false);
+	elem.addEventListener('touchend', handleEvent, false);
+}
+Swipe.prototype.touches = {
+	"touchstart": {"x":-1, "y":-1},
+	"touchmove" : {"x":-1, "y":-1},
+	"touchend"  : false,
+	"direction" : "undetermined"
+};
+Swipe.prototype.touchHandler = function (event) {
+	var touch;
+	if (typeof event !== 'undefined'){
+		if (typeof event.touches !== 'undefined') {
+			touch = event.touches[0];
+			switch (event.type) {
+				case 'touchstart':
+				case 'touchmove':
+					this.touches[event.type].x = touch.pageX;
+					this.touches[event.type].y = touch.pageY;
+					break;
+				case 'touchend':
+					this.touches[event.type] = true;
+					var x = (this.touches.touchstart.x - this.touches.touchmove.x),
+						y = (this.touches.touchstart.y - this.touches.touchmove.y);
+					if (x < 0) x /= -1;
+					if (y < 0) y /= -1;
+					if (x > y)
+						this.touches.direction = this.touches.touchstart.x < this.touches.touchmove.x ? "right" : "left";
+					else
+						this.touches.direction = this.touches.touchstart.y < this.touches.touchmove.y ? "down" : "up";
+					this.callback(event, this.touches.direction);
+					break;
+			}
+		}
+	}
+};
+</script>
+
+{% schema %}
+	{
+      	"name": "About Timeline",
+      	"settings": [
+      		{
+	            "type": "html",
+	            "id": "timeline_title",
+	            "label": "Timeline Title"
+         	},
+         	{
+	            "type": "text",
+	            "id": "summary_text",
+	            "label": "Summray Text"
+         	}
+        ],
+        "blocks": [
+		 	{
+			    "type": "timeline_item",
+			    "name": "Timeline Item",
+			    "settings": [
+			       {
+			          "type": "text",
+			          "id": "item_year",
+			          "label": "Year"
+			       },
+			       {
+			          "type": "textarea",
+			          "id": "item_summary",
+			          "label": "Summary"
+			       },
+			       {
+			          "type": "checkbox",
+			          "id": "main_item",
+			          "label": "Main Item"
+			       },
+			       {
+			          "type": "image_picker",
+			          "id": "timeline_image",
+			          "label": "Timeline Image"
+			       }
+			    ]
+		 	}
+		],
+        "presets": [
+         	{
+            	"name": "About Timeline",
+            	"category": "Content",
+            	"blocks": [
+	               { 
+	                  "type": "timeline_item"
+	               }
+	            ]
+         	}
+      	]
+    }
+{% endschema %}

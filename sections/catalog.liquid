@@ -1,0 +1,49 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<h1><ly-as-13487128>Catalog</ly-as-13487128></h1> 
+<div class="catalog">   
+    <div class="row">
+    {% for block in  section.blocks %}
+        <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12"> 
+            <a target="_blanck" href="{% if block.settings.catalog-url %}{{block.settings.catalog-url}}{% else %}javascript:void(0){% endif %}">
+                <div class="block">      
+                    <img src="{{ block.settings.image-catalog | img_url: '500x' }}">
+                    <p>
+                        <span>{{ block.settings.detailed-title-catalog }}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% schema %}
+{
+  "name": "Catalog",
+  "settings": [   
+  ],
+  "blocks": [    
+    {
+        "type": "image",
+        "name": "Catalog Block",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "image-catalog",
+                "label": "Image"
+            },
+            {
+                "type": "text",
+                "id": "detailed-title-catalog",
+                "label": "Text",
+                "default": "catalog 1"
+            },
+            {
+                "type": "url",
+                "id": "catalog-url",
+                "label": "URL"
+            }
+        ]
+    }
+  ]
+}
+{% endschema %}

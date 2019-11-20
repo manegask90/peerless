@@ -1,0 +1,40 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="row">
+	{% for block in section.blocks %}
+		<div class="col-xs-12 col-sm-6">
+			<div class="block">
+				<h2 class="block-title">{{ block.settings.block_title }}</h2>
+				<p class="block-description">{{ block.settings.block_description }}</p>
+				<a href="{% if block.settings.block_link %}{{ block.settings.block_link }}{% else %}javascript:void(0){% endif %}"><ly-as-13487127>More Info</ly-as-13487127></a>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+{% schema %}
+{
+	"name": "Opening Template",
+	"class": "opening_template",
+  	"blocks": [
+	    {
+	      	"type": "opening_blocks",
+	      	"name": "Opening Block",
+	      	"settings": [
+		        {
+		          	"type": "text",
+		          	"id": "block_title",
+		          	"label": "Block Title"
+		        },
+		        {
+		          	"type": "textarea",
+		          	"id": "block_description",
+		          	"label": "Block Description"
+		        },
+		        {
+		          	"type": "url",
+		          	"id": "block_link",
+		          	"label": "Block URL"
+		        }
+	      	]
+	    }
+  	]
+}
+{% endschema %}

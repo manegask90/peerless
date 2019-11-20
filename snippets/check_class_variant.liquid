@@ -1,0 +1,9 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{%- if product.options.size == 2 -%}
+	{%- for variant in product.variants -%}
+	{% comment %}ly_code_replace_for_[ variant.title ]_begin{% endcomment %}{% include 'ly-title' with variant %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %} <br>
+	{%- endfor -%}
+{%- elsif product.options.size == 3 -%}
+	{%- for variant in product.variants -%}
+	{% comment %}ly_code_replace_for_[ variant.title ]_begin{% endcomment %}{% include 'ly-title' with variant %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %} <br>
+	{%- endfor -%}
+{%- endif -%}

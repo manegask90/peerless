@@ -1,0 +1,57 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+
+
+{%- if customer == blank -%}
+  <script>
+    restrictAccess();
+  </script>
+{%- endif -%}
+
+{%- assign title = 'customer.account.title' | t -%}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+<div class="main-page-wrapper account-wrapper">
+  {%- include 'page_heading', langify_title:title -%}
+  <!-- MAIN CONTENT AREA -->
+  <div class="container">
+    <div class="row">
+      <div class="site-content col-sm-12" role="main">
+        <article id="post-9" class="post-9 page type-page status-publish hentry">
+          <div class="info-box"></div>
+          <div class="entry-content">
+            <div class="shopify">
+              {% include 'account-nav' %}
+              <!-- .basel-my-account-sidebar -->
+              <div class="shopify-MyAccount-content saved_configurations" id="saved_configurations">
+                <p class="page-title">{% comment %}ly_i18n_replace_for_[ 'customer.account.saved_configurations' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.saved_configurations' | t }}{% endcapture %}{% include 'ly-static-string' with '13491831' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                <div class="page-subtitle">{% comment %}ly_i18n_replace_for_[ 'customer.account.configurations_subtitle' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.configurations_subtitle' | t }}{% endcapture %}{% include 'ly-static-string' with '13491831' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</div>
+                <span class="loading"></span>
+
+                <div id="saved_configurations-list"></div>
+
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div><!-- end container -->
+</div><!-- .main-page-wrapper -->
+
+
+{% comment %}ly_asset_replace_for_[ 'account-scripts.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'account-scripts.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+<style type="text/css">
+  .website-wrapper,
+  .main-page-wrapper {
+    background: #f3f3f3;
+  }
+</style>
+
+{{ 'dataTable.js' | asset_url | script_tag }}
+
+<script>
+  var userId = {{customer.id}};
+</script>
+{% comment %}ly_asset_replace_for_[ 'saved_configurations.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'saved_configurations.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}

@@ -1,0 +1,44 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- if settings.top_bar_enable and settings.header_design != 'menu-top' -%}
+<div class="topbar-wrapp color-scheme-{{settings.top_bar_color}}">
+   <div class="container">
+      <div class="topbar-content">
+         {%- if settings.top_bar_text != blank -%}
+         <div class="top-bar-left">{%- if settings.top_bar_text contains '[social_buttons' -%}{{settings.top_bar_text | split:'[social_buttons' | first }} {% if settings.top_bar_text contains 'social_buttons_share' -%}{%- assign gl_follow_social = false -%}{%- else -%}{%- assign gl_follow_social = true -%}{%- endif -%}{%- include 'social-sharing', gl_design:'icons-design-colored', gl_size:'icons-size-small', follow_social:gl_follow_social -%}{%-else-%}{% comment %}ly_new_settings_replace_for_[ settings.top_bar_text ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13490124"] %}{% assign ly_translation = shop.metafields[namespace]["id13490124"] %}{% else %}{% assign ly_translation = settings.top_bar_text %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %}{%- endif -%}</div>
+          <div class="top-bar-contact">
+            <span class="top-bar-contact-span"><ly-as-13490125>CONTACT US</ly-as-13490125><i class="fa fa-caret-down"></i></span>
+            {% section 'contact-us-header' %}
+
+            <script type="text/javascript" src="https://js.maxmind.com/js/apis/geoip2/v2.1/geoip2.js"></script>
+            <script type="text/javascript">
+              var onSuccess = function(location) {
+                if (location.continent.code == 'NA') {
+                    document.getElementById('us-customer').style.display = "block";
+                    document.getElementById('non-us-customer').style.display = "none";
+                }
+                else {
+                    document.getElementById('us-customer').style.display = "none";
+                    document.getElementById('non-us-customer').style.display = "block";
+                }
+              };
+              var onError = function(error){};
+              /** NOT WORKING! */
+              //geoip2.city(onSuccess, onError);
+          </script>
+          </div>
+         {%- endif -%}
+         {%- section 'gl_top_bar_menu' -%}
+      </div>
+   </div>
+</div>
+<!--END TOP HEADER-->
+{%- endif -%}
+<div class="header-wrap">
+   <!-- HEADER -->
+   <header class="main-header header-has-no-bg header-{{settings.header_design}} icons-design-{{settings.header_icon_style}} color-scheme-{{settings.header_color_scheme}}">
+      {%- assign name_el_header = 'header_' | append:settings.header_design -%}
+      {%- include name_el_header -%}
+   </header>
+   <!--END MAIN HEADER-->
+</div>
+<div class="clear"></div>

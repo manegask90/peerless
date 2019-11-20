@@ -1,0 +1,66 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<section class="section-image_wrapper">
+  <div class="main">
+    {% for block in section.blocks %}
+      <div class="image_box_wrapper count__{{ section.settings.in_one_row }}" style="background-image: url({{ block.settings.box_image | img_url: '270x220' }});"> 
+        <a href="{{ block.settings.box_url }}" class="image_box_link">
+          <h3 class="image_box_title">
+            {{- block.settings.box_title -}}
+          </h3>
+          <!-- <img class="image_box_image" src="{{ block.settings.box_image | img_url: '270x220' }}"> -->
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% schema %}
+{
+	"name": "Index Image Section",
+  "class": "index-section box_images_sw",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Box Images"
+    },
+    {
+      "type": "range",
+      "id": "in_one_row",
+      "min": 2,
+      "max": 6,
+      "step": 2,
+      "unit": "box",
+      "label": "Images in one row",
+      "default": 4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image Box",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "box_image",
+          "label": "Box Image"
+        },
+        {
+          "type": "text",
+          "id": "box_title",
+          "label": "Box Title"
+        },
+        {
+          "type": "url",
+          "id": "box_url",
+          "label": "Box Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Index Image Section",
+    	"category": "Content"
+   	}
+  ]
+}
+{% endschema %}

@@ -1,0 +1,30 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="main-page-wrapper page-careers">
+   	<!-- MAIN CONTENT AREA -->
+   	<div class="container">
+      	<div class="row">
+      		<div class="col-xs-12">
+				{% case language %}
+					{% when 'ly73951' %}
+						<h1 class="title"><ly-as-13491759>Peerless-AV</ly-as-13491759><span class="symbol">®</span> <ly-as-13491760>Careers</ly-as-13491760></h1>
+					{% when 'ly73952' %}
+						<h1 class="title"><ly-as-13491759>STELLEN BEI PEERLESS-AV</ly-as-13491759><span class="symbol">®</span></h1>
+					{% when 'ly73954' %}
+						<span class="hidden"> ES</span>
+					{% when 'ly77552' %}
+						<h1 class="title">EMPLOIS Peerless-AV<span class="symbol">®</span></h1>
+				{% endcase %}
+			</div>
+      		<div class="col-xs-12">{% section 'opening_button' %}</div>
+      	</div>
+  	</div>
+   	{% section 'careers_template' %}
+</div>
+<style>
+	body .main-page-wrapper.page-careers .title .symbol {
+		font-size: 18px;
+		vertical-align: top;
+		transform: translate(0, -6px);
+		display: inline-block;	
+	}
+</style>

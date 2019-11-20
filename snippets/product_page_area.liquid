@@ -1,0 +1,1301 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<!-- Purchasing permissions -->
+{%- include 'purchasing' -%}
+
+<style>
+  .single-product-content p.price, #productPrice #product-price{
+  	color: #191919;
+  }
+</style>
+{%- if settings.first_available_variant or settings.remove_sold_out -%}
+{%- assign current_variant = product.selected_or_first_available_variant -%}
+{%- elsif product.selected_variant != blank  -%}
+{%- assign current_variant = product.selected_variant -%}
+{%- else -%}
+{%- assign current_variant = product.variants.first -%}
+{%- endif -%}
+{%- assign first_available_variant = settings.first_available_variant -%}
+{%- assign loop_countdown = settings.loop_show_countdown -%}
+{%- if settings.pr_image_size != blank -%}{%- assign crop_nt = settings.pr_image_size | replace: ' x', 'x' | replace: 'x ', 'x' -%}{%- endif -%}
+{%- if settings.pr_thumb_image_size != blank -%}{%- assign crop_thumb_nt = settings.pr_thumb_image_size | replace: ' x', 'x' | replace: 'x ', 'x' -%}{%- endif -%}
+{%- include 'check_label_gl' -%}
+{%- if settings.color_name_check != blank -%}{%- assign _gl_color_name = settings.color_name_check | replace: ' ,', ',' | replace: ', ', ',' | split: ',' -%}{%- assign gl_color_name = _gl_color_name | downcase -%}{%-else-%}{%- assign gl_color_name = '\nathan_dt\' -%}{%-endif-%}
+{%- for option in product.options_with_values -%}
+{%- assign downcased_option = option.name | downcase -%}
+{%- assign downcased_option_check = option.name | downcase | prepend: '"' | append: '"' | strip -%} 
+{%- if downcased_option == 'color' or downcased_option == 'colour' or gl_color_name contains downcased_option_check -%}
+{%- assign colour_count = option.values.size | plus:0 -%}
+{%- endif -%}
+{%- endfor -%}
+{%- if settings.product_sidebar == 'left' -%}
+{%- case settings.size_sidebar -%}
+{% when '1' %}
+{%- assign class_gl = 'col-sm-10 col-sm-push-2' -%}
+{%- assign class_sidebar = 'col-sm-2 col-sm-pull-10' -%}
+{% when '2' %}
+{%- assign class_gl = 'col-sm-9 col-sm-push-3' -%}
+{%- assign class_sidebar = 'col-sm-3 col-sm-pull-9' -%}
+{% when '3' %}
+{%- assign class_gl = 'col-sm-8 col-sm-push-4' -%}
+{%- assign class_sidebar = 'col-sm-4 col-sm-pull-8' -%}
+{%- endcase -%}
+{%- elsif settings.product_sidebar == 'right' -%}
+{%- case settings.size_sidebar -%}
+{% when '1' %}
+{%- assign class_gl = 'col-sm-10' -%}
+{%- assign class_sidebar = 'col-sm-2' -%}
+{% when '2' %}
+{%- assign class_gl = 'col-sm-9' -%}
+{%- assign class_sidebar = 'col-sm-3' -%}
+{% when '3' %}
+{%- assign class_gl = 'col-sm-8' -%}
+{%- assign class_sidebar = 'col-sm-4' -%}
+{%- endcase -%}
+{%- else -%}
+{%- assign class_gl = 'col-sm-12' -%}
+{%- endif -%}
+{%- case settings.size_img_products -%}
+{% when '1' %}
+{%- assign class_images = 'col-sm-4' -%}
+{%- assign class_summary = 'col-sm-8' -%}
+{% when '2' %}
+{%- assign class_images = 'col-sm-6' -%}
+{%- assign class_summary = 'col-sm-6' -%}
+{% when '3' %}
+{%- assign class_images = 'col-sm-8' -%}
+{%- assign class_summary = 'col-sm-4' -%}
+{%- endcase -%}
+{%- case settings.countdown_style -%}
+{%- when 'light' -%}
+{%- assign countdown_style = 'color-scheme-dark timer-size-small timer-style-standard' -%} 
+{%- when 'dark' -%}
+{%- assign countdown_style = 'color-scheme-light timer-size-small timer-style-standard' -%}
+{%- when 'transparent_1' -%}
+{%- assign countdown_style = 'color-scheme-light timer-size-small timer-style-transparent' -%}
+{%- when 'transparent_2' -%}
+{%- assign countdown_style = 'color-scheme-dark timer-size-small timer-style-transparent' -%}
+{%- endcase -%}
+{%- if settings.show_share_btn and settings.share_type == '1' -%}
+{%- assign gl_follow_social = false -%}
+{%- elsif settings.show_share_btn and settings.share_type == '2' -%}
+{%- assign gl_follow_social = true -%}
+{%- endif -%}
+{%- include 'check_not_feature_img' -%}
+{%- if settings.show_grouped_variant_image and product.has_only_default_variant == false and product.images.size > 1 and not_group == false -%}{%- include 'check_position_feature_img' -%}{%-endif-%}
+
+<!-- Check contains discontinued tag -->
+{%- assign prod_discontinued_tag = false -%}
+{%- assign prod_low_stock_tag = false -%}
+{%- assign prod_special_order_tag = false -%}
+{%- assign prod_out_of_stock_tag = false -%}
+{%- assign discontinued_des_block_class = "" -%}
+{%- assign prod_AdapterNeeded_tag = false -%}
+{% for tag in product.tags %}
+  {% if tag contains 'Discontinued' or tag contains 'discontinued' %}
+    {%- assign prod_discontinued_tag = true -%}
+    {%- assign discontinued_des_block_class = " discontinued_description_block" -%}
+  {% endif %}
+
+  {% if tag contains 'AdaptorNeeded' %}
+    {%- assign prod_AdapterNeeded_tag = true -%}    
+  {% endif %}
+ 
+{% endfor %}
+
+  {% if product.tags contains 'Stock: Low Stock' %}
+    {%- assign prod_low_stock_tag = true -%}    
+    {%- assign prod_special_order_tag = false -%}
+    {%- assign prod_out_of_stock_tag = false -%}
+  {% endif %}
+
+  {% if product.tags contains 'Stock: Special Order' %}
+    {%- assign prod_special_order_tag = true -%}
+    {%- assign prod_low_stock_tag = false -%}
+    {%- assign prod_out_of_stock_tag = false -%}     
+  {% endif %}
+
+   {% if product.tags contains 'Stock: Out of Stock' %}
+    {%- assign prod_out_of_stock_tag = true -%}
+    {%- assign prod_low_stock_tag = false -%}
+    {%- assign prod_special_order_tag = false -%}
+  {% endif %}
+<!--  -->
+<div class="single-breadcrumbs-wrapper">
+  <div class="container">
+    <a href="javascript:baselThemeModule.backHistory()" class="basel-back-btn basel-tooltip"><span class="basel-tooltip-label"><ly-as-13490530>Back</ly-as-13490530></span><span><ly-as-13490530>Back</ly-as-13490530></span></a>
+    <nav class="shopify-breadcrumb"><a href="/">{% comment %}ly_i18n_replace_for_[ 'general.breadcrumbs.home' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'general.breadcrumbs.home' | t }}{% endcapture %}{% include 'ly-static-string' with '13490552' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>{%- if template contains 'product' and collection.url -%}<a href="{{ collection.url }}">{% comment %}ly_code_replace_for_[ collection.title  ]_begin{% endcomment %}{% include 'ly-title' with collection %}{{ ly_translation  }}{% comment %}ly_code_replace_end{% endcomment %}</a>{%- endif -%}<span class="breadcrumb-last">{% comment %}ly_code_replace_for_[ product.title  ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ ly_translation  }}{% comment %}ly_code_replace_end{% endcomment %}</span></nav>
+    {%- if collection == blank and product.collections.first != blank -%}{%- assign collection = product.collections.first -%}{%- endif -%}
+    {%- if collection.next_product or collection.previous_product -%}
+    {%- assign product_image_size = '219x' -%}
+    <div class="basel-products-nav">
+      {%- if collection.previous_product -%}
+      <div class="product-btn product-prev">
+        <a href="{{ collection.previous_product.url }}"><ly-as-13490531>Previous product</ly-as-13490531><span></span></a>
+        <div class="wrapper-short">
+          <div class="product-short">
+            {%- if collection.previous_product.featured_image -%}
+            <a href="{{collection.previous_product.url}}" class="product-thumb">
+              <img width="219" height="280" src="{%-include 'gl_image_format',src: collection.previous_product.featured_image.src , size: '70x' -%}" class="attachment-shop_thumbnail size-shop_thumbnail sp-post-image" alt="{% comment %}ly_code_replace_for_[ collection.previous_product.title | escape  ]_begin{% endcomment %}{% include 'ly-title' with collection.previous_product %}{{ ly_translation | escape  }}{% comment %}ly_code_replace_end{% endcomment %}" >
+            </a>
+            {%- endif -%}
+            <a href="{{ collection.previous_product.url }}" class="product-title">{% comment %}ly_code_replace_for_[collection.previous_product.title]_begin{% endcomment %}{% include 'ly-title' with collection.previous_product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</a>
+            <span class="price">
+              {%- if collection.previous_product.price_varies -%}
+              {{ collection.previous_product.price_min | money }} – {{ collection.previous_product.price_max | money }}
+              {%- elsif collection.previous_product.compare_at_price > collection.previous_product.price -%}<del>{{ collection.previous_product.compare_at_price  | money }}</del> <ins>{{ collection.previous_product.price | money }}</ins>
+              {%- else -%}
+              {{ collection.previous_product.price | money }}
+              {%- endif -%}
+            </span>
+          </div>
+        </div>
+      </div>
+      {%- endif -%}
+      {%- if collection.next_product -%}
+      <div class="product-btn product-next">
+        <a href="{{collection.next_product.url}}"><ly-as-13490532>Next product</ly-as-13490532><span></span></a>
+        <div class="wrapper-short">
+          <div class="product-short">
+            {%- if collection.next_product.featured_image -%}
+            <a href="{{collection.next_product.url}}" class="product-thumb">
+              <img width="219" height="280" src="{%-include 'gl_image_format',src: collection.next_product.featured_image.src , size: '70x' -%}" class="attachment-shop_thumbnail size-shop_thumbnail sp-post-image" alt="{% comment %}ly_code_replace_for_[ collection.next_product.title | escape  ]_begin{% endcomment %}{% include 'ly-title' with collection.next_product %}{{ ly_translation | escape  }}{% comment %}ly_code_replace_end{% endcomment %}" >
+            </a>
+            {%- endif -%}
+            <a href="{{collection.next_product.url}}" class="product-title">{% comment %}ly_code_replace_for_[collection.next_product.title]_begin{% endcomment %}{% include 'ly-title' with collection.next_product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</a>
+            <span class="price">
+              {%- if collection.next_product.price_varies -%}
+              {{ collection.next_product.price_min | money }} – {{ collection.next_product.price_max | money }}
+              {%- elsif collection.next_product.compare_at_price > collection.next_product.price -%}<del>{{ collection.next_product.compare_at_price  | money }}</del> <ins>{{ collection.next_product.price | money }}</ins>
+              {%- else -%}
+              {{ collection.next_product.price | money }}
+              {%- endif -%}
+            </span>
+          </div>
+        </div>
+      </div>
+      {%- endif -%}
+    </div>
+    {%- endif -%}
+  </div>
+</div>
+<div class="container"></div>
+<div id="product-{{product.id}}" itemscope itemtype="http://schema.org/Product" class="product-nathan-{{product.id}} nathan_style_{{settings.button_art_to_cart_style}} single-product-page single-product-content {{design_products_page}}{%- if product.metafields.meta.video contains 'youtube' or product.metafields.meta.video contains 'vimeo' %} product-with-attachments{%- endif %}{%- if linklists[product.handle].links.size > 0 %} product-type-grouped{%- endif %}{%- if settings.show_grouped_variant_image and product.images.size > 1 and product.has_only_default_variant == false and not_group == false %} gl_group_variant_images{%- endif -%}">
+  <meta itemprop="name" content="{% comment %}ly_code_replace_for_[ product.title ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ ly_translation | strip_html }}{% comment %}ly_code_replace_end{% endcomment %}">
+  <meta itemprop="url" content="{{ shop.url }}{{ product.url }}">
+  <meta itemprop="image" content="{{ product.featured_image.src | img_url: '800x' }}">
+  {%- assign product_image_zoom_size = 'master' -%}
+  {%- assign product_image_scale = '2' -%}
+  <div class="{%- if design_products_page != 'product-design-sticky' -%}container{%- else -%}container-fluid{%-endif-%}">
+    <div class="row">
+      
+      <div class="product-image-summary {{class_gl}}">
+        <div class="row">
+          <div class="{{class_images}} product-top-left-box">
+            {%- if product.images.size > 0 -%}
+              <div class="product-images">
+                {%- include 'product_labels' -%}
+                <div class="shopify-product-gallery shopify-product-gallery--with-images shopify-product-gallery--columns-4 images row thumbs-position-{{settings.thumbnails_position}} image-action-{{settings.main_click}}">
+                  <div class="{%- if product.images.size > 1 and settings.thumbnails_position == 'left' and design_products_page != 'product-design-sticky' -%}col-md-9 col-md-push-3{%- else -%}col-sm-12{%- endif -%}">
+                    <figure id="gl_thum" class="shopify-product-gallery__wrapper{%- if design_products_page != 'product-design-sticky' %} owl-carousel{%- endif %}{%- if settings.main_click == 'popup' %} shopify-main-image{%- endif -%}">
+                      {%- if settings.show_grouped_variant_image and product.has_only_default_variant == false and product.images.size > 1 and not_group == false -%}
+                      {%- if current_variant.featured_image != blank -%}
+                      {%- assign image = current_variant.featured_image -%}
+                      {%- assign product_image_photowipe = image.width | append: 'x' -%}
+                      {%- if crop_nt != blank -%}
+                      {%- assign image_width_append = crop_nt -%}
+                      {%- assign image_width_append_arr = image_width_append | replace: ' x', 'x' | replace: 'x ', 'x' | replace: ' x ', 'x' | split: 'x' -%}
+                      {%- assign image_width = image_width_append_arr[0] -%}
+                      {%- assign image_size_first = image_width | plus:0 -%}
+                      {%- assign image_height = image_size_first | divided_by: image.aspect_ratio | round -%}
+                      {%- else -%} 
+                      {%- assign product_image_size = image.width | append: 'x' -%}
+                      {%- assign image_width = image.width -%}
+                      {%- endif -%}
+                      {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                      {%- if image.attached_to_variant? and settings.use_clicking_variant_image -%}
+                      <figure data-variant_id= "{{current_variant.id}}" data-lenght= "{{product.options.size}}" data-one='{{ current_variant.option1 | handleize }}' data-two= '{{ current_variant.option2 | handleize }}' data-three= '{{ current_variant.option3 | handleize }}' data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                            data-src="{{ img_url }}" 
+                            data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}"data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                            data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                            {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                            {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                            {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                            {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                            {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                            {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img width="{{ image.width }}" height="{{ image.height }}" src="{{ image | img_url: '50x' }}" class="lazyload attachment-shop_single size-shop_single sp-post-image" alt="{{image.alt}}" title="{% comment %}ly_code_replace_for_[product.title]_begin{% endcomment %}{% include 'ly-title' with product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}" 
+                            data-src="{{ img_url }}" 
+                            data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ image.aspect_ratio }}" data-sizes="auto">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- else -%}
+                      <figure data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                            data-src="{{ img_url }}" 
+                            data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                            data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                            {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                            {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                            {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                            {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                            {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                            {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img width="{{ image.width }}" height="{{ image.height }}" src="{{ image | img_url: '50x' }}" class="lazyload attachment-shop_single size-shop_single sp-post-image" alt="{{image.alt}}" title="{% comment %}ly_code_replace_for_[product.title]_begin{% endcomment %}{% include 'ly-title' with product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}" 
+                            data-src="{{ img_url }}" 
+                            data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ image.aspect_ratio }}" data-sizes="auto">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- endif -%}
+                      {%- endif -%}
+                      {%- assign option_index = 0 -%}{%-assign image_index = 0-%}
+                      {%- for option in product.options -%}
+                      {%- assign downcased_option = option | downcase -%}
+                      {%- assign downcased_option_check = option | downcase | prepend: '"' | append: '"' | strip -%} 
+                      {%- if downcased_option == 'color' or downcased_option == 'colour' or gl_color_name contains downcased_option_check -%}
+                      {%- assign option_index = forloop.index0 -%}
+                      {%- assign displayed_option_values = '' -%}
+                      {%- for variant in product.variants -%}
+                      {%- assign option_value = variant.options[option_index] -%}
+                      {%- unless displayed_option_values contains option_value -%}
+                      {%- if current_variant.option1 == option_value or current_variant.option2 == option_value or current_variant.option3 == option_value -%}
+                      {%- assign imgs_arr_child = imgs_arr[image_index] | split:','  -%}
+                      {%- for src in imgs_arr_child -%}
+                      {%- for image in product.images -%}
+                      {%- if src == image and src != current_variant.featured_image -%}
+                      {%- assign product_image_photowipe = image.width | append: 'x' -%}
+                      {%- if crop_nt != blank -%}
+                      {%- assign image_width_append = crop_nt -%}
+                      {%- assign image_width_append_arr = image_width_append | replace: ' x', 'x' | replace: 'x ', 'x' | replace: ' x ', 'x' | split: 'x' -%}
+                      {%- assign image_width = image_width_append_arr[0] -%}
+                      {%- assign image_size_first = image_width | plus:0 -%}
+                      {%- else -%}
+                      {%- assign product_image_size = image.width | append: 'x' -%}
+                      {%- assign image_width = image.width -%}
+                      {%- endif -%}
+                      {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                      {%- if image.attached_to_variant? and settings.use_clicking_variant_image -%}
+                      {%- for variant in image.variants -%}
+                      <figure data-variant_id= "{{variant.id}}" data-lenght= "{{product.options.size}}" data-one='{{ variant.option1 | handleize }}' data-two= '{{ variant.option2 | handleize }}' data-three= '{{ variant.option3 | handleize }}' data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image test3">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                            data-src="{{ img_url }}" 
+                            data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                            data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                            {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                            {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                            {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                            {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                            {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                            {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img width="{{ image.width }}" height="{{ image.height }}" src="{{ image | img_url: '50x' }}" class="lazyload attachment-shop_single size-shop_single sp-post-image" alt="{{image.alt}}" title="{% comment %}ly_code_replace_for_[product.title]_begin{% endcomment %}{% include 'ly-title' with product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}" 
+                            data-src="{{ img_url }}" 
+                            data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ image.aspect_ratio }}" data-sizes="auto">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- endfor -%}
+                      {%- else -%}
+                      <figure data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                          data-src="{{ img_url }}" 
+                          data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                          data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                          {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                          {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                          {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                          {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                          {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                          {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img width="{{ image.width }}" height="{{ image.height }}" src="{{ image | img_url: '50x' }}" class="lazyload attachment-shop_single size-shop_single sp-post-image" alt="{{image.alt}}" title="{% comment %}ly_code_replace_for_[product.title]_begin{% endcomment %}{% include 'ly-title' with product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}" 
+                            data-src="{{ img_url }}" 
+                            data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ image.aspect_ratio }}" data-sizes="auto">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- endif -%}
+                      {%- endif -%}
+                      {%- endfor -%}
+                      {%- endfor -%}
+                      {%- endif -%}
+                      {%- assign displayed_option_values = displayed_option_values | join: ',' -%}
+                      {%- assign displayed_option_values = displayed_option_values | append: ',' | append: option_value -%}
+                      {%- assign displayed_option_values = displayed_option_values | split: ',' -%}
+                      {%- assign image_index = image_index | plus: 1 -%}
+                      {%- endunless -%}
+                      {%- endfor -%}
+                      {%- endif -%}
+                      {%- endfor -%}
+                      {%-else-%}
+                      {%- if current_variant.featured_image != blank -%}
+                      {%- assign image = current_variant.featured_image -%}
+                      {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                      {%- assign product_image_photowipe = image.width | append: 'x' -%}
+                      {%- if crop_nt != blank -%}
+                      {%- assign image_width_append = crop_nt -%}
+                      {%- assign image_width_append_arr = image_width_append | replace: ' x', 'x' | replace: 'x ', 'x' | replace: ' x ', 'x' | split: 'x' -%}
+                      {%- assign image_width = image_width_append_arr[0] -%}
+                      {%- assign image_size_first = image_width | plus:0 -%}
+                      {%- else -%} 
+                      {%- assign product_image_size = image.width | append: 'x' -%}
+                      {%- assign image_width = image.width -%}
+                      {%- endif -%}
+                      {%- if image.attached_to_variant? and settings.use_clicking_variant_image -%}
+                      <figure data='{{ forloop.index}}' data-variant_id= "{{current_variant.id}}" data-lenght= "{{product.options.size}}" data-one='{{ current_variant.option1 | handleize | handleize }}' data-two= '{{ current_variant.option2 | handleize | handleize }}' data-three= '{{ current_variant.option3 | handleize | handleize }}' data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                            data-src="{{ img_url }}" 
+                            data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                            data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                            {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                            {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                            {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                            {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                            {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                            {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img class="attachment-shop_single size-shop_single sp-post-image lazyload"
+                            src="{{ image | img_url: '50x' }}"
+                            data-src="{{ img_url }}"
+                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                            data-aspectratio="{{ image.aspect_ratio }}"
+                            data-sizes="auto"
+                            data-variant_id= "{{variant.id}}" data-image-id="{{ image.id }}"
+                            data-large_image="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}"
+                            alt="{{ image.alt | split:'|' | last | escape }}">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- else -%}
+                      <figure data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                            data-src="{{ img_url }}" 
+                            data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                            data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                            {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                            {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                            {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                            {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                            {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                            {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img class="attachment-shop_single size-shop_single sp-post-image lazyload"
+                            src="{{ image | img_url: '50x' }}"
+                            data-src="{{ img_url }}"
+                            data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                            data-aspectratio="{{ image.aspect_ratio }}"
+                            data-sizes="auto"
+                            data-variant_id= "{{variant.id}}" data-image-id="{{ image.id }}"
+                            data-large_image="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}"
+                            alt="{{ image.alt | split:'|' | last | escape }}">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- endif -%}
+                      {%- elsif variant_recoment == true -%}
+                      {%- assign id_page = id_page | json -%}
+                      {%- for image in product.images -%}
+                      {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                      {%- for variant in image.variants -%}
+                      {%- assign image_re_id = image.id | prepend :'"'| append: '"'-%}
+                      {%- if image_re_id == id_page -%}
+                      {%- if crop_nt != blank -%}
+                      {%- assign image_width_append = crop_nt -%}
+                      {%- assign image_width_append_arr = image_width_append | replace: ' x', 'x' | replace: 'x ', 'x' | replace: ' x ', 'x' | split: 'x' -%}
+                      {%- assign image_width = image_width_append_arr[0] -%}
+                      {%- assign image_size_first = image_width | plus:0 -%}
+                      {%- else -%}
+                      {%- assign product_image_size = image.width | append: 'x' -%}
+                      {%- assign image_width = image.width -%}
+                      {%- endif -%}
+                      {%- assign product_image_photowipe = image.width | append: 'x' -%}
+                      {%- if image.attached_to_variant? and settings.use_clicking_variant_image -%}
+                      {%- for variant in image.variants -%}
+                      <figure data-variant_id= "{{variant.id}}" data-lenght= "{{product.options.size}}" data-one='{{ variant.option1 | handleize }}' data-two= '{{ variant.option2 | handleize }}' data-three= '{{ variant.option3 | handleize }}' data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                          data-src="{{ img_url }}" 
+                          data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                          data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                          {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                          {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                          {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                          {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                          {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                          {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img width="{{ image.width }}" height="{{ image.height }}" src="{{ image | img_url: '50x' }}" class="lazyload attachment-shop_single size-shop_single sp-post-image" alt="{{image.alt}}" title="{% comment %}ly_code_replace_for_[product.title]_begin{% endcomment %}{% include 'ly-title' with product %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}" 
+                          data-src="{{ img_url }}" 
+                          data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                          data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]" data-aspectratio="{{ image.aspect_ratio }}" data-sizes="auto">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- endfor -%}
+                      {%- else -%}
+                      <figure data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                              data-src="{{ img_url }}" 
+                              data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                              data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                            {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                            {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                            {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                            {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                            {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                            {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img class="attachment-shop_single size-shop_single sp-post-image lazyload"
+                          src="{{ image | img_url: '50x' }}"
+                          data-src="{{ img_url }}"
+                          data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                          data-aspectratio="{{ image.aspect_ratio }}"
+                          data-sizes="auto"
+                          data-variant_id= "{{variant.id}}" data-image-id="{{ image.id }}"
+                          data-large_image="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}"
+                          alt="{{ image.alt | split:'|' | last | escape }}">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- endif -%}
+                      {%- assign current_variant_re_nt = image -%}
+                      {%- endif -%}
+                      {%- endfor- %}
+                      {%- endfor -%}
+                      {%- endif -%}
+                      {%- for image in product.images -%}
+                      {%- assign img_url = image | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                      {%- unless current_variant.featured_image == image or current_variant_re_nt == image -%}
+                      {%- if crop_nt != blank -%}
+                      {%- assign image_width_append = crop_nt -%}
+                      {%- assign image_width_append_arr = image_width_append | replace: ' x', 'x' | replace: 'x ', 'x' | replace: ' x ', 'x' | split: 'x' -%}
+                      {%- assign image_width = image_width_append_arr[0] -%}
+                      {%- assign image_size_first = image_width | plus:0 -%}
+                      {%- else -%}
+                      {%- assign product_image_size = image.width | append: 'x' -%}
+                      {%- assign image_width = image.width -%}
+                      {%- endif -%}
+                      {%- assign product_image_photowipe = image.width | append: 'x' -%}
+                      {%- if image.attached_to_variant? and settings.use_clicking_variant_image -%}
+                      {%- for variant in image.variants -%}
+                      <figure data-variant_id= "{{variant.id}}" data-lenght= "{{product.options.size}}" data-one='{{ variant.option1 | handleize }}' data-two= '{{ variant.option2 | handleize }}' data-three= '{{ variant.option3 | handleize }}' data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                              data-src="{{ img_url }}" 
+                              data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                              data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                            {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                            {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                            {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                            {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                            {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                            {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img class="attachment-shop_single size-shop_single sp-post-image lazyload"
+                              src="{{ image | img_url: '50x' }}"
+                              data-src="{{ img_url }}"
+                              data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                              data-aspectratio="{{ image.aspect_ratio }}"
+                              data-sizes="auto"
+                              data-variant_id= "{{variant.id}}" data-image-id="{{ image.id }}"
+                              data-large_image="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}"
+                              alt="{{ image.alt | split:'|' | last | escape }}">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- endfor -%}
+                      {%- else -%}
+                      <figure data-thumb="{%- if crop_thumb_nt != blank -%}{%-include 'gl_image_format_crop',src: image.src , size: crop_thumb_nt,position:'top' -%}{%- else -%}{%-include 'gl_image_format',cache:true,src: image.src , size: '219x' -%}{%- endif -%}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}" data-id="{{image.id}}" class="shopify-product-gallery__image">
+                        <a href="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-alt="{{image.alt | strip_html | replace: '"', "'"}}">
+                          {%- if crop_nt != blank -%}
+                          {%- assign image_height = 50 | divided_by: image.aspect_ratio | round -%}
+                          {%- assign image_size_el = 50 | append:'x' | append:image_height -%}
+                          <img width="{{ image_size_first }}" height="{{ image_height }}" src="{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %}" class="lazyload attachment-shop_catalog size-shop_catalog" alt="{{ image.alt | escape }}" 
+                              data-src="{{ img_url }}" 
+                              data-large_image="{%-include 'gl_image_format',cache:true, src: image.src, size: product_image_photowipe -%}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}" 
+                              data-srcset="{%-include 'gl_image_format_crop',src: image.src , size: crop_nt,position:'top' %} {{image_size_first}}w 
+                              {%- if image_size_first > 235 -%}{%- assign image_height = 235 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 235 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 235w{%- endif -%} 
+                              {%- if image_size_first > 768 -%}{%- assign image_height = 768 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 768 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 768w{%- endif -%}
+                              {%- if image_size_first > 803 -%}{%- assign image_height = 803 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 803 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 803w{%- endif -%} 
+                              {%- if image_size_first > 266 -%}{%- assign image_height = 266 | divided_by: image.aspect_ratio | round -%}{%- assign image_size_el = 266 | append:'x' | append:image_height -%},{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 266w{%- endif -%} 
+                              {%- if image_size_first > 219 -%}{%- assign image_height = 219 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 219 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 219w{%- endif -%} 
+                              {%- if image_size_first > 526 -%}{%- assign image_height = 526 | divided_by: image.aspect_ratio | round -%},{%- assign image_size_el = 526 | append:'x' | append:image_height -%}{%-include 'gl_image_format_crop',src: image.src , size:image_size_el,position:'top' %} 526w{%- endif -%}" sizes="(max-width: {{ image_size_first }}px) 100vw, {{ image_size_first }}px"> 
+                          {%- else -%} 
+                          <img class="attachment-shop_single size-shop_single sp-post-image lazyload"
+                              src="{{ image | img_url: '50x' }}"
+                              data-src="{{ img_url }}"
+                              data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 2048]"
+                              data-aspectratio="{{ image.aspect_ratio }}"
+                              data-sizes="auto"
+                              data-variant_id= "{{variant.id}}" data-image-id="{{ image.id }}"
+                              data-large_image="{{ image | img_url: product_image_zoom_size, scale: product_image_scale }}" data-large_image_width="{{ image.width }}" data-large_image_height="{{ image.height }}"
+                              alt="{{ image.alt | split:'|' | last | escape }}">
+                          {%- endif -%}
+                          <div class="jas-wrap-lazy"></div>
+                        </a>
+                      </figure>
+                      {%- endif -%}
+                      {%- endunless -%}
+                      {%- endfor -%}
+                      {%-endif-%}
+                      
+                      
+                    </figure>
+                    {%- if settings.main_click == 'zoom' and settings.show_zoom_img -%}<div class="basel-show-product-gallery-wrap"><a href="#" class="basel-show-product-gallery basel-tooltip"><span class="basel-tooltip-label">{% comment %}ly_i18n_replace_for_[ 'products.product.click_zoom' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.click_zoom' | t }}{% endcapture %}{% include 'ly-static-string' with '13490553' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>{% comment %}ly_i18n_replace_for_[ 'products.product.click_zoom' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.click_zoom' | t }}{% endcapture %}{% include 'ly-static-string' with '13490553' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a></div>{%- endif -%}
+                    
+                    {% assign both_tags = "" %}
+                    {% if prod_discontinued_tag == true and prod_AdapterNeeded_tag == true %}
+                      {% assign both_tags = "both_tags" %}
+                    {% endif %}
+                    {% if prod_AdapterNeeded_tag == true %}
+                        <div class="adapter_plate_need_txt {{both_tags}}"><ly-as-13490533>Adaptor Plate Needed</ly-as-13490533></div> 
+                      {% endif %}
+
+                      {% if prod_discontinued_tag == true %}
+                        <div class="discontinued_prod_txt {{both_tags}}"><ly-as-13490534>Discontinued</ly-as-13490534></div>                   
+                      {% endif %}
+                    
+                    
+                    
+                    
+                  </div>
+                  {%- if product.images.size > 1 and design_products_page != 'product-design-sticky' -%}<div class="{%- if settings.thumbnails_position == 'left' -%}col-md-3 col-md-pull-9{%- else -%}col-sm-12{%- endif -%}"><div id="gl_thumbnails" class="thumbnails"></div></div>{%- endif -%}
+                </div>
+                {%- if settings.use_view_360 -%}
+                {%- section 'product_360_section' -%}
+                {%- elsif product.metafields.meta.video contains 'youtube' or product.metafields.meta.video contains 'vimeo' -%}
+                <div class="product-additional-galleries">
+                  <div class="product-video-button">
+                    <a href="{% comment %}ly_code_replace_for_[product.metafields.meta.video]_begin{% endcomment %}{% assign language = cart.attributes['language'] %}{% if language == nil %}{% assign language = shop.metafields['languages']['default'] %}{% endif %}{% assign ns = language | append: 'meta' %}{% assign key = 'video' %}{% if product.metafields[ns][key] %}{% assign ly_translation = product.metafields[ns][key] %}{% else %}{% assign ly_translation = product.metafields.meta.video %}{% endif %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}"><span>{% comment %}ly_i18n_replace_for_[ 'products.product.video' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.video' | t }}{% endcapture %}{% include 'ly-static-string' with '13490554' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span></a>
+                  </div>
+                </div>
+                {%- endif -%}            
+                
+              </div>
+            {%- endif -%}
+            {% include 'product-related-documentation1' %}
+            </div>
+
+
+
+
+          
+          <div class="{{class_summary}} summary entry-summary">
+            <div class="summary-inner{%- if design_products_page == 'product-design-compact' %} basel-scroll{%- endif -%}">
+              <div class="basel-scroll-content">
+                <h1 itemprop="name" class="product_title entry-title">{% comment %}ly_code_replace_for_[ product.title ]_begin{% endcomment %}{% include 'ly-title' with product %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h1>
+                {% assign current_variant = product.selected_or_first_available_variant %}
+                <span class="variant-sku">{{ current_variant.sku }}</span>
+                {% if prod_discontinued_tag == true %} <!-- Discontinued condition -->
+                <div class="dicontinued_title_tag">
+                      <strong><ly-as-13490535>Discontinued:</ly-as-13490535></strong>
+                      {% if product.metafields.custom.discontinued_product %}
+                      <span><ly-as-13490536>This product has been replaced by</ly-as-13490536></span>  
+                      {% assign product_custom_handle = product.metafields.custom.discontinued_product | handleize %}
+                      {% assign product_custom = all_products[product_custom_handle] %}
+                      <a href="{{ product_custom.url }}">{% comment %}ly_code_replace_for_[ product_custom.title ]_begin{% endcomment %}{% include 'ly-title' with product_custom %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+                      {% else %}
+                      <span><ly-as-13490537>This product has been discontinued.</ly-as-13490537></span>
+                      {% endif %}
+                </div>
+                {% endif %}
+                
+                {% if prod_discontinued_tag == true %}
+                  <span class="variant-sku">{{ current_variant.sku }}</span>
+                {% endif %}
+                {%- if settings.show_product_page_rating -%}
+                <a href="#shopify-section-gl-product-page-description" class="shopify-product-rating">
+                  <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                </a>
+                {%- endif -%}
+                {% assign current_variant = product.selected_or_first_available_variant %}
+                <!--
+                <div class="row">
+                <div class="col-md-12"><span class="variant-sku">{{ current_variant.sku }}</span></div>
+                </div>
+                -->
+                <div class="clearfix"></div>
+
+                {% for product_option in product.options_with_values %}
+                  {% if product_option.name == "Part Number" %}
+                    {% assign part_num = product_option.selected_value %}
+                    {% assign option_index = forloop.index %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if part_num %}
+                <div class="product-part-number">
+                  <span class="part-no">{{ part_num }}</span>
+                </div>
+                {% endif %}
+
+                {% if product.metafields.custom.subtitle %}
+                  <p class="custom_subtitle">{% comment %}ly_code_replace_for_[ product.metafields.custom.subtitle ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'custom' %}{% assign key = 'subtitle' %}{% if product.metafields[ns][key] %}{% assign ly_translation = product.metafields[ns][key] %}{% else %}{% assign ly_translation =  product.metafields.custom.subtitle  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</p>
+                {% endif %}
+
+                {%- if settings.use_description_excerpt -%}
+                  {%- assign _prodcut_excerpt_length = settings.prodcut_excerpt_length | plus:0 -%}
+                  {%- assign prodcut_excerpt_length = _prodcut_excerpt_length | default: 31 -%}
+                  <div class="shopify-product-details__short-description{%- if product.template_suffix == 'design_compact'%} hide hidden{%- endif %}{%- if settings.use_description_full %} gl_mb_20{%- endif -%}  {{ discontinued_des_block_class }}" itemprop="description">
+                    {%- if settings.use_description_full -%}
+                      {% include 'ly-description' with product %}{%- include 'shortcode' load: ly_translation -%}
+                    {%-else-%}
+                    <p class="p_des_ex">
+                      {%- if product.metafields.meta.description_excerpt -%}
+                      {% comment %}ly_code_replace_for_[  product.metafields.meta.description_excerpt | strip ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'meta' %}{% assign key = 'description_excerpt' %}{% if product.metafields[ns][key] %}{% assign ly_translation = product.metafields[ns][key] %}{% else %}{% assign ly_translation =   product.metafields.meta.description_excerpt | strip  %}{% endif %}{{  ly_translation | strip }}{% comment %}ly_code_replace_end{% endcomment %}
+                      {% elsif product.description contains  '[' %}
+                        {% assign pr_des = product.description | split: '[' %}
+                        {% assign pr_des = pr_des[1] | split: ']' | first | append:']' | prepend:'[' %}
+                      {% comment %}ly_code_replace_for_[ product.description | remove: pr_des | strip_html | truncatewords: prodcut_excerpt_length ]_begin{% endcomment %}{% include 'ly-description' with product %}{{ ly_translation | remove: pr_des | strip_html | truncatewords: prodcut_excerpt_length }}{% comment %}ly_code_replace_end{% endcomment %}
+                      {%-else-%}
+                      {% comment %}ly_code_replace_for_[ product.description | strip_html | truncatewords: prodcut_excerpt_length ]_begin{% endcomment %}{% include 'ly-description' with product %}{{ ly_translation | strip_html | truncatewords: prodcut_excerpt_length }}{% comment %}ly_code_replace_end{% endcomment %}
+                      {%-endif-%}
+                    </p>
+                    {%-endif-%}
+                  </div>
+                {%-endif-%}
+                
+
+                {%- assign section_settings_countdown = settings.show_countdown -%}
+                {%- include 'basel_count_down' -%}
+                {%- unless product.options.size == 1 and product.has_only_default_variant -%}
+                  {%-capture variantSoldout-%}
+                    {%-for option in product.options_with_values-%}
+                      {%-for value in option.values-%}
+                        {% if option.selected_value == value and forloop.last == false %} bg_{{value | handleize}}{% endif-%}
+                      {%-endfor-%}
+                    {%-endfor-%}
+                  {%-endcapture-%}
+                {%-endunless-%}
+                {%- if product.metafields.external -%}
+                  {%- assign check = product.metafields.external | first | last -%}
+                  {%- if check contains 'https:' or check  contains 'http:' -%}{%- assign check_external = true -%}{%-else-%}{%- assign check_external = false -%}{%-endif-%}
+                {%-endif-%}
+
+
+
+
+                
+                
+                <div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+                
+                  {% include 'saw_compute_discount' with product %}
+                  {% include 'saw_variant' with current_variant %}
+                  
+                  <meta itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+                  <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+                  <link itemprop="availability" href="http://schema.org/{%- if product.available -%}InStock{%- else -%}OutOfStock{%- endif -%}"> 
+                </div>
+
+
+
+                <!-- OUT OF STOCK -->
+
+                {%- if product.variants.size == 1 and sold_out -%}
+                  <!-- <p class="stock out-of-stock" id="out-of-stock-gl">{% comment %}ly_i18n_replace_for_[ 'products.product.outofstock' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.outofstock' | t }}{% endcapture %}{% include 'ly-static-string' with '13490559' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p> -->
+                  {{ purchaseRestirct }} 
+                  
+                  {%- if settings.product_quantity_message -%}
+                    <div id="variantQuantity" class="variant-quantity{%- if current_variant.inventory_management %} show{%- endif -%}">
+                      {%- if current_variant.inventory_management -%}
+                        {%- if current_variant.inventory_quantity < 10 and current_variant.inventory_quantity > 0 -%}
+                          {{ 'products.product.only_left' | t: count: current_variant.inventory_quantity }}
+                        {%- elsif current_variant.inventory_quantity <= 0 and current_variant.incoming -%}
+                          {%- assign next_incoming_date = current_variant.next_incoming_date | date: format: 'month_day_year' -%}
+                          {% comment %}ly_i18n_replace_for_[ 'products.product.will_not_ship_until' | t: date:next_incoming_date ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.will_not_ship_until' | t: date:next_incoming_date }}{% endcapture %}{% include 'ly-static-string' with '13490558' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = next_incoming_date  %}{% assign ly_template = ly_template | replace: '[[date]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+                        {%- endif -%}
+                      {%- endif -%}
+                    </div>
+                  {%- endif -%}
+
+                {%- elsif linklists[product.handle].links.size == 0 -%}
+                  {%- if check_external and product.variants.size == 1 -%}
+                    <p class="cart"><a href="{{ check }}" rel="nofollow" class="single_add_to_cart_button button alt">{% comment %}ly_code_replace_for_[ product.metafields.external | first | first ]_begin{% endcomment %}{{ ly_translation | first | first }}{% comment %}ly_code_replace_end{% endcomment %}</a></p>
+                  {%- else -%}
+                    {% capture "form_classes" -%}
+                    add-to-cart-form cart{%- if product.variants.size > 1 %} variations_form{%-endif %}{%- if settings.show_watch_products %} swatch-color-single{%- endif -%}{% if prod_low_stock_tag == true or prod_special_order_tag == true or prod_out_of_stock_tag == true %} stock-status{%- endif -%}
+                    {%- endcapture %}
+                    {%- form 'product', product, id: "cart-form", class: form_classes -%}
+                      {%- if purchasing == true -%} <!-- Purchasing permission a -->
+                        <select name="id" id="product-select" class="product-form__variants hide hidden">
+                          {%- for variant in product.variants -%}
+                          <option  data-sku="{{ variant.sku }}" data-index="{{ forloop.index0 }}" value="{{ variant.id }}"{%- if variant.id == current_variant.id %} selected="selected"{%- endif -%}>{% comment %}ly_code_replace_for_[ variant.title ]_begin{% endcomment %}{% include 'ly-title' with variant %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</option>
+                          {%- endfor -%}
+                        </select>
+                        {%- if product.has_only_default_variant == false and settings.swatch_design != '3' -%}{%- include 'swatch' -%}{%- elsif product.has_only_default_variant == false and settings.swatch_design == '3' -%}{%- include 'swatch_simple' -%}{%- endif -%}
+                      {%- endif -%}
+
+                      {% comment %} <script>
+                        console.log('product.variants.size', {{product.variants.size | json}});
+                        console.log('product.price_varies', {{product.price_varies | json}});
+                        console.log('purchasing', {{purchasing | json}});
+                        console.log('prod_discontinued_tag', {{prod_discontinued_tag | json}});
+                        console.log('design_products_page', {{design_products_page | json}});
+                        console.log('product.has_only_default_variant', {{product.has_only_default_variant | json}});
+                      </script> {% endcomment %}
+                      {% if current_variant.price == 0  %}
+                      <br>
+                      {%- if prod_low_stock_tag or prod_special_order_tag or prod_out_of_stock_tag -%}
+                        {% include 'out_stock_europa' %}
+                      {%- endif -%}
+                        {{ purchaseRestirct }}
+                      {%- endif -%}
+                      {%- if product.variants.size > 1 -%}
+                        <div class="single_variation_wrap {% if prod_discontinued_tag == true %}hidden{% endif %}">
+                          {%- if product.price_varies and purchasing == true -%}
+                            <div class="shopify-variation single_variation">
+                              <div class="shopify-variation-price">
+                                
+                                {% include 'saw_compute_discount' with product %}
+                                {% include 'saw_variant' with current_variant %}
+
+                                {% if saw_has_discount == false or saw_variant_price >= saw_variant_compare_at_price %}
+                                  <!-- original price markup here -->
+                                  <span class="price" id="productPrice">
+                                    {%- if on_sale -%}<del id="old-product-price">{{ current_variant.compare_at_price | money }}</del> <ins id="product-price">{{ current_variant.price | money }}</ins>
+                                    {%- else -%}
+                                    <span id="product-price">{{ current_variant.price | money }}</span>
+                                    {%- endif -%}
+                                  </span>
+                     
+                                  {% if settings.site  != 'US' %} 
+                                      {%- if prod_low_stock_tag or prod_special_order_tag or prod_out_of_stock_tag -%}
+                                          {% include 'out_stock_europa' %}
+                                      {%- endif -%}
+                                      {{ purchaseRestirctRegional }}
+                                    {% else %}
+                                      {{ purchaseRestirct }}
+                                  {% endif %} 
+                                  <div class="shopify-variation-add-to-cart variations_button shopify-variation-add-to-cart-enabled">
+                                    <div id="shopify_quantity" class="quantity">
+                                      <input type="button" value="-" class="minus">
+                                      <input type="number" step="1" min="1" max="{%- if current_variant.inventory_quantity <= 0 and current_variant.available and current_variant.inventory_management != null -%}999{%- elsif current_variant.inventory_management != null -%}{{current_variant.inventory_quantity}}{%- else -%}999{%- endif -%}" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric">
+                                      <input type="button" value="+" class="plus">
+                                    </div>
+                                    <p class="stock out-of-stock variant_stock" id="out-of-stock-gl" style="display: none">{% comment %}ly_i18n_replace_for_[ 'products.product.outofstock' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.outofstock' | t }}{% endcapture %}{% include 'ly-static-string' with '13490559' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                                    <p class="stock out-of-stock variant_stock" id="unavailable-gl" style="display: none">{% comment %}ly_i18n_replace_for_[ 'products.product.unavailable' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.unavailable' | t }}{% endcapture %}{% include 'ly-static-string' with '13490560' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                                    {%- if check_external == false -%}
+                                      {%- if current_variant.inventory_quantity <= 0 and current_variant.available and current_variant.inventory_management == 'shopify' -%}
+                                      <button type="submit" id="shopify_add_to_cart" class="add_to_cart_button ajax_form_cart single_add_to_cart_button button alt">{% comment %}ly_i18n_replace_for_[ 'products.product.pre_orders' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.pre_orders' | t }}{% endcapture %}{% include 'ly-static-string' with '13490561' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                                      {%- else -%}
+                                      <button type="submit" id="shopify_add_to_cart" class="add_to_cart_button ajax_form_cart single_add_to_cart_button button alt">{% comment %}ly_i18n_replace_for_[ 'products.product.add_to_cart' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}{% include 'ly-static-string' with '13490562' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                                      {%- endif -%}
+                                    {%- else -%}
+                                    <a href="{{ check }}" rel="nofollow" class="single_add_to_cart_button button alt">{% comment %}ly_code_replace_for_[ product.metafields.external | first | first ]_begin{% endcomment %}{{ ly_translation | first | first }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+                                    {%- endif -%}
+                                  </div>
+                                {% else %}
+                                  <!-- who price markup here -->
+                                  <span class="price" id="productPrice">
+                                   <del id="old-product-price">{{ saw_variant_compare_at_price  | money }}</del> <ins id="product-price">{{ saw_variant_price | money }}</ins>
+                                  </span>
+                                {% endif %}
+
+                                {% comment %} {%- if product.price_varies and customer != blank-%}
+                                <a href="javascript:void(0)" id="show_listPrice"><ly-as-13490538>list price</ly-as-13490538></a>
+                                {%- endif -%} {% endcomment %}
+                              </div>
+                            </div>
+                          {%- endif -%} <!-- if product.price_varies and purchasing == true -->
+
+                          {% if prod_discontinued_tag == false %} <!-- Discontinued condition -->
+                            {%- if purchasing == true -%} <!-- Purchasing permission starts -->
+                              {%- if settings.product_quantity_message -%}
+                                <div id="variantQuantity" class="variant-quantity{%- if product.has_only_default_variant and current_variant.inventory_management %} show{%- endif -%}">
+                                  {%- if product.has_only_default_variant and current_variant.inventory_management -%}
+                                  {%- if current_variant.inventory_quantity < 10 and current_variant.inventory_quantity > 0 -%}
+                                  {% comment %}ly_i18n_replace_for_[ 'products.product.only_left' | t: count: current_variant.inventory_quantity ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.only_left' | t: count: current_variant.inventory_quantity }}{% endcapture %}{% include 'ly-static-string' with '13490556' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = current_variant.inventory_quantity  %}{% assign ly_template = ly_template | replace: '[[count]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+                                  {%- elsif current_variant.inventory_quantity <= 0 and current_variant.incoming -%}
+                                  {%- assign next_incoming_date = current_variant.next_incoming_date | date: format: 'month_day_year' -%}
+                                  {% comment %}ly_i18n_replace_for_[ 'products.product.will_not_ship_until' | t: date:next_incoming_date ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.will_not_ship_until' | t: date:next_incoming_date }}{% endcapture %}{% include 'ly-static-string' with '13490558' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = next_incoming_date  %}{% assign ly_template = ly_template | replace: '[[date]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+                                  {%- endif -%}
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%}
+                              <div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+                                
+                                {% include 'saw_compute_discount' with product %}
+                                {%- if linklists[product.handle].links.size == 0 -%}
+                                  {%- if product.price_varies -%}
+                                        {% comment %} <p class="price">{{ product.price_min | money }} – {{ product.price_max | money }}</p> {% endcomment %}
+                                  {%- elsif on_sale -%}<del id="old-product-price">{{current_variant.compare_at_price | money }}</del> <ins id="product-price">{{ current_variant.price | money }}</ins>
+                                  {%- else -%}
+                                      {% if current_variant.price == 0  %}
+                                        {% if settings.site  != 'US' %} 
+                                            {%- if prod_low_stock_tag == true or prod_special_order_tag == true or prod_out_of_stock_tag == true -%}
+                                                {% include 'out_stock_europa' %}
+                                            {%- endif -%}
+                                            {{ purchaseRestirct }}  
+                                          {% else %}
+                                            {{ purchaseRestirctRegional }}
+                                        {% endif %}    
+                                      {% else %}
+                                          <p class="price"{%- unless product.price_varies %} id="productPrice"{%- endunless -%}>
+                                  {%- endif -%}
+                                {%- else -%}
+                                      {%- if on_sale -%}
+                                        {{ current_variant.price | money }} – {{ current_variant.compare_at_price | money }}
+                                      {%- else -%}
+                                        {{ current_variant.price | money }}
+                                      {%- endif -%}
+                                      </p>
+                                      {%- endif -%}
+                                {%- endif -%} <!-- linklists[product.handle].links.size -->
+
+                                <meta itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+                                <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+                                <link itemprop="availability" href="http://schema.org/{%- if product.available -%}InStock{%- else -%}OutOfStock{%- endif -%}">
+                              </div>
+                              
+                              {% if settings.site  != 'US' %} 
+                                {{ purchaseRestirct }} 
+                              {% else %}
+                                  {%- if current_variant.price != 0 -%}
+                                    <div class="shopify-variation-add-to-cart variations_button shopify-variation-add-to-cart-enabled">
+                                      <div id="shopify_quantity" class="quantity">
+                                        <input type="button" value="-" class="minus">
+                                        <input type="number" step="1" min="1" max="{%- if current_variant.inventory_quantity <= 0 and current_variant.available and current_variant.inventory_management != null -%}999{%- elsif current_variant.inventory_management != null -%}{{current_variant.inventory_quantity}}{%- else -%}999{%- endif -%}" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric">
+                                        <input type="button" value="+" class="plus">
+                                      </div>
+                                      <p class="stock out-of-stock variant_stock" id="out-of-stock-gl" style="display: none">{% comment %}ly_i18n_replace_for_[ 'products.product.outofstock' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.outofstock' | t }}{% endcapture %}{% include 'ly-static-string' with '13490559' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                                      <p class="stock out-of-stock variant_stock" id="unavailable-gl" style="display: none">{% comment %}ly_i18n_replace_for_[ 'products.product.unavailable' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.unavailable' | t }}{% endcapture %}{% include 'ly-static-string' with '13490560' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                                      {%- if check_external == false -%}
+                                        {%- if current_variant.inventory_quantity <= 0 and current_variant.available and current_variant.inventory_management == 'shopify' -%}
+                                        <button type="submit" id="shopify_add_to_cart" class="add_to_cart_button ajax_form_cart single_add_to_cart_button button alt">{% comment %}ly_i18n_replace_for_[ 'products.product.pre_orders' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.pre_orders' | t }}{% endcapture %}{% include 'ly-static-string' with '13490561' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                                        {%- else -%}
+                                        <button type="submit" id="shopify_add_to_cart" class="add_to_cart_button ajax_form_cart single_add_to_cart_button button alt">{% comment %}ly_i18n_replace_for_[ 'products.product.add_to_cart' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}{% include 'ly-static-string' with '13490562' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                                        {%- endif -%}
+                                      {%- else -%}
+                                      <a href="{{ check }}" rel="nofollow" class="single_add_to_cart_button button alt">{% comment %}ly_code_replace_for_[ product.metafields.external | first | first ]_begin{% endcomment %}{{ ly_translation | first | first }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+                                      {%- endif -%}
+                                    </div>
+                                 {%- endif -%} <!-- current_variant.price != 0 -->
+                                 {% endif %}
+                            {% endif %} <!-- purchasing == true -->
+                          {% endif %} <!-- prod_discontinued_tag == false -->
+                       {% else %} <!-- else product.variants.size > 1 -->
+                          {%- if settings.product_quantity_message -%}
+                            <div id="variantQuantity" class="variant-quantity{%- if product.variants.size == 1 and current_variant.inventory_management %} show{%- endif -%}">
+                              {%- if product.variants.size == 1 and current_variant.inventory_management -%}
+                                {%- if current_variant.inventory_quantity < 10 and current_variant.inventory_quantity > 0 -%}
+                                  {% comment %}ly_i18n_replace_for_[ 'products.product.only_left' | t: count: current_variant.inventory_quantity ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.only_left' | t: count: current_variant.inventory_quantity }}{% endcapture %}{% include 'ly-static-string' with '13490556' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = current_variant.inventory_quantity  %}{% assign ly_template = ly_template | replace: '[[count]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+                                  {%- elsif current_variant.inventory_quantity <= 0 and current_variant.incoming -%}
+                                  {%- assign next_incoming_date = current_variant.next_incoming_date | date: format: 'month_day_year' -%}
+                                  {% comment %}ly_i18n_replace_for_[ 'products.product.will_not_ship_until' | t: date:next_incoming_date ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.will_not_ship_until' | t: date:next_incoming_date }}{% endcapture %}{% include 'ly-static-string' with '13490558' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = next_incoming_date  %}{% assign ly_template = ly_template | replace: '[[date]]', replacement %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+                                {%- endif -%}
+                              {%- endif -%}
+                            </div>
+                          {%- endif -%} <!-- settings.product_quantity_message -->
+                          {% if prod_discontinued_tag == false %}
+                            {%- if purchasing == true -%}
+                              <div itemprop="offers" itemscope="" itemtype="http://schema.org/Offer">
+                                {% include 'saw_compute_discount' with product %}
+                                {% include 'saw_variant' with current_variant %}
+
+                                {% if saw_has_discount == false or saw_variant_price >= saw_variant_compare_at_price %}
+
+                                      {% if settings.site  != 'US' %} 
+                                        <p class="price"{%- unless product.price_varies %} id="productPrice"{%- endunless -%}>
+                                      {% else %}
+                                      <!-- original price markup here -->                                
+                                        {%- if linklists[product.handle].links.size == 0 -%}
+                                        <p class="price"{%- unless product.price_varies %} id="productPrice"{%- endunless -%}>
+
+                                      {%- if product.price_varies -%}
+                                        {{ product.price_min | money }} – {{ product.price_max | money }}
+                                      {%- elsif on_sale -%}<del id="old-product-price">{{current_variant.compare_at_price | money }}</del> <ins id="product-price">{{ current_variant.price | money }}</ins>
+                                      {%- else -%}
+                                        {% if current_variant.price == 0  %}
+                                          {% if settings.site  != 'US' %} 
+                                              {%- if prod_low_stock_tag == true or prod_special_order_tag == true or prod_out_of_stock_tag == true -%}
+                                                {% include 'out_stock_europa' %}
+                                              {%- endif -%}
+                                              {{ purchaseRestirct }}  
+                                            {% else %}
+                                              {{ purchaseRestirctRegional }}
+                                          {% endif %}    
+                                        {% else %}
+                                            {{ current_variant.price | money }}
+                                        {% endif %} 
+                                      {%- endif -%}
+                                      {% endif %} 
+                                    {%- else -%}
+                                      {%- if on_sale -%}
+                                        {{ current_variant.price | money }} – {{ current_variant.compare_at_price | money }}
+                                      {%- else -%}
+                                        {{ current_variant.price | money }}
+                                      {%- endif -%}
+                                    {%- endif -%}
+                                  </p>
+                                {% else %}
+                                
+                                  <!-- WHO price markup here -->
+                                  <p class="price"{%- unless product.price_varies %} id="productPrice"{%- endunless -%}>
+                                    {%- if product.price_varies -%}
+                                    {{ saw_product_price | money }} – {{ saw_product_price_max | money }}
+                                    {%- else -%}
+                                    <del id="old-product-price">{{ saw_variant_compare_at_price  | money }}</del> <ins id="product-price">{{ saw_variant_price | money }}</ins>
+                                    {%- endif -%}
+                                  </p>
+                                {% endif %}
+
+                                
+                                <meta itemprop="price" content="{{ product.price | divided_by: 100.00 }}">
+                                <meta itemprop="priceCurrency" content="{{ shop.currency }}">
+                                <link itemprop="availability" href="http://schema.org/{%- if product.available -%}InStock{%- else -%}OutOfStock{%- endif -%}"> 
+                              </div>
+
+                              {% if settings.site  != 'US' %} 
+                                {{ purchaseRestirct }} 
+                              {% else %}
+                              {%- if current_variant.price != 0 -%}
+                                <div class="shopify-variation-add-to-cart variations_button shopify-variation-add-to-cart-enabled">
+                                  <div id="shopify_quantity" class="quantity">
+                                    <input type="button" value="-" class="minus">
+                                    <input type="number" step="1" min="1" max="{%- if current_variant.inventory_quantity <= 0 and current_variant.available and current_variant.inventory_management != null -%}999{%- elsif current_variant.inventory_management != null -%}{{current_variant.inventory_quantity}}{%- else -%}999{%- endif -%}" name="quantity" value="1" title="Qty" class="input-text qty text" size="4" pattern="[0-9]*" inputmode="numeric">
+                                    <input type="button" value="+" class="plus">
+                                  </div>
+                                  <p class="stock out-of-stock variant_stock" id="out-of-stock-gl" style="display: none">{% comment %}ly_i18n_replace_for_[ 'products.product.outofstock' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.outofstock' | t }}{% endcapture %}{% include 'ly-static-string' with '13490559' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                                  <p class="stock out-of-stock variant_stock" id="unavailable-gl" style="display: none">{% comment %}ly_i18n_replace_for_[ 'products.product.unavailable' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.unavailable' | t }}{% endcapture %}{% include 'ly-static-string' with '13490560' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                                  {%- if check_external == false -%}
+                                    {%- if current_variant.inventory_quantity <= 0 and current_variant.available and current_variant.inventory_management == 'shopify' -%}
+                                    <button type="submit" id="shopify_add_to_cart" class="add_to_cart_button ajax_form_cart single_add_to_cart_button button alt">{% comment %}ly_i18n_replace_for_[ 'products.product.pre_orders' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.pre_orders' | t }}{% endcapture %}{% include 'ly-static-string' with '13490561' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                                    {%- else -%}
+                                    <button type="submit" id="shopify_add_to_cart" class="add_to_cart_button ajax_form_cart single_add_to_cart_button button alt">{% comment %}ly_i18n_replace_for_[ 'products.product.add_to_cart' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}{% include 'ly-static-string' with '13490562' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                                    {%- endif -%}
+                                  {%- else -%}
+                                  <a href="{{ check }}" rel="nofollow" class="single_add_to_cart_button button alt">{% comment %}ly_code_replace_for_[ product.metafields.external | first | first ]_begin{% endcomment %}{{ ly_translation | first | first }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+                                  {%- endif -%}
+                                </div>
+                              {%- endif -%} <!-- current_variant.price != 0 -->
+                              {% endif %}
+                            {% endif %} <!-- purchasing == true -->
+                          {% endif %} <!-- prod_discontinued_tag == false -->
+                       {%- endif -%} <!-- product.variants.size > 1 -->
+                    {%- endform -%}
+                  {%- endif -%}
+                {%- else -%}
+                  <form class="cart" method="post" enctype="multipart/form-data">
+                    <table cellspacing="0" class="group_table">
+                      <tbody>
+                        {%- include 'product_group' -%}
+                      </tbody>
+                    </table>
+                    {%- if check_external == false -%}
+                      <button type="submit" id="multi-variant-add" class="add_to_cart_button single_add_to_cart_button button alt">{% comment %}ly_i18n_replace_for_[ 'products.product.add_to_cart' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}{% include 'ly-static-string' with '13490562' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                    {%- else -%}
+                      <a href="{{ check }}" rel="nofollow" class="single_add_to_cart_button button alt">{% comment %}ly_code_replace_for_[ product.metafields.external | first | first ]_begin{% endcomment %}{{ ly_translation | first | first }}{% comment %}ly_code_replace_end{% endcomment %}</a>
+                    {%- endif -%}
+                  </form>
+                  {%- if settings.product_img_trust_seal and settings.img_trust_seal != blank -%}{%- include 'product_img_trust_seal',padding_class:'gl_mb_20' -%}{%- endif -%}
+                {%- endif -%}
+                {% comment %} {%- endif -%} {% endcomment %}
+                
+                
+                {%- if product.variants.size == 1 -%}<div class="clear "></div>{%- endif -%}
+                {%- if product.variants.size > 1 and settings.product_img_trust_seal == false -%}<div class="clear "></div>{%- endif -%}
+                {%- if settings.use_wishlist and pages['wishlist'].empty? != true -%}{%- include 'gl-wishlist-product' -%}{%- endif -%}
+                {%- if settings.use_compare or settings.size_chart  -%}
+                  <div class="compare-btn-wrapper">
+                    {%- if settings.use_compare and pages['compare'].empty? != true -%}
+                      <a href="#compare_popup" data-pid="{{product.handle}}_sp_{{product.id}}" class="compare button" data-pid="{{product.handle}}" rel="nofollow">{% comment %}ly_i18n_replace_for_[ 'products.product.compare' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.compare' | t }}{% endcapture %}{% include 'ly-static-string' with '13490563' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                    {%- endif -%}
+                    {%- if settings.size_chart -%}
+                      {%- if product.metafields.meta.image_size_chart != blank or settings.image_size_chart != blank -%}
+                        <a class="cd chp jas-magnific-image button size_guide" href="{%- if product.metafields.meta.image_size_chart != blank-%}{% comment %}ly_code_replace_for_[product.metafields.meta.image_size_chart]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'meta' %}{% assign key = 'image_size_chart' %}{% if product.metafields[ns][key] %}{% assign ly_translation = product.metafields[ns][key] %}{% else %}{% assign ly_translation = product.metafields.meta.image_size_chart %}{% endif %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}{%- else -%}{{ settings.image_size_chart | img_url: '1x1' | replace: '_1x1', ''  }}{%- endif -%}" data-effect="mfp-zoom-in">{% comment %}ly_i18n_replace_for_[ 'products.product.product_size_guide' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.product_size_guide' | t }}{% endcapture %}{% include 'ly-static-string' with '13490564' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                      {%- endif -%}
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+                          
+                {% include 'product-related-documentation-mobile' %}         
+                          
+                {%- if settings.product_img_trust_seal and settings.img_trust_seal != blank -%}
+                  {%- if product.variants.size > 1 -%}<div class="clear "></div>{%- endif -%}
+                  {%- if settings.design_products == '4' -%}{%- include 'product_img_trust_seal',padding_class:'gl_mb_20' -%}{%- elsif product.variants.size > 1 -%}{%- include 'product_img_trust_seal',padding_class:'gl_pt_15' -%}{%- else-%}{%- include 'product_img_trust_seal',padding_class:'gl_pt_15' -%}{%- endif -%}
+                {%- endif -%}
+                {%- if design_products_page == 'product-design-compact' -%}<div class="shopify-tabs sp-tabs-wrapper tabs-layout-accordion">{%- section 'gl-product-page-description' -%}</div>{%- endif -%}
+
+                <div class="clear "></div>
+
+                {% for tag in product.tags %}
+                  {% if tag contains 'Certification' %}
+                    <div class="custom_cerification-wr">
+                      <span class="certification_label">Certifications</span>:
+                      <span class="certification_image-wr">
+                        {% for tag in product.tags %}
+                          {% if tag contains 'Certification' %}
+                            {% assign image_name = tag | handleize %}
+                            <img src="{{ image_name | append: '.png' | asset_img_url: '300x' }}" alt="{{ tag }}" />
+                          {% endif %}
+                        {% endfor %}
+                      </span>
+                    </div>
+                  {% break %}
+                  {% endif %}
+                {% endfor %}
+                
+                {%- if settings.show_share_btn and design_products_page == 'product-design-alt' -%}
+                  <div class="product-share"><span class="share_label-wr"><ly-as-13490540>Share:</ly-as-13490540></span>{%- include 'social-sharing', gl_design:'icons-design-colored', gl_size:'icons-size-default', follow_social:gl_follow_social -%}</div>
+                {%- endif -%}
+                {%- if settings.show_share_btn and design_products_page != 'product-design-alt' -%}
+                  <div class="product-share">
+                    <span class="share-title">{% comment %}ly_i18n_replace_for_[ 'products.product.product_share' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.product_share' | t }}{% endcapture %}{% include 'ly-static-string' with '13490565' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+                    {%- include 'social-sharing', follow_social:gl_follow_social -%}
+                  </div>
+                {%- endif -%}
+                
+                {% if product.metafields.custom_fields["warranty"] != blank %}
+                  <div class="custom_warranty-wr">
+                    <span class="warranty_label"><ly-as-13490541>Warranty:</ly-as-13490541></span>
+                    <span class="warranty_value-wr">{{ product.metafields.custom_fields["warranty"] }}</span>
+                  </div>
+                {% endif %}
+
+                <div class="custom_document-wr">
+                  <a href="#product-related-documentation" class="document_scroll product-related-documentation-scroll-to"><ly-as-13490542>See installation and related documentation</ly-as-13490542></a>
+                </div>
+
+                <hr class="split-line" />
+
+                <!-- If I am on the US site, I see a California cancer warning. -->
+                {% if settings.site  == 'US' %}
+                  <div class="custom-warning">
+                    <strong><ly-as-13490543>California Residents Warning:</ly-as-13490543></strong><ly-as-13490544>Cancer and reproductive harm - see</ly-as-13490544><a href="http://www.p65warnings.ca.gov" target="_blank"><ly-as-13490545> www.P65Warnings.ca.gov </ly-as-13490545></a><ly-as-13490546>for more information.</ly-as-13490546></div>
+                  <hr class="split-line" />
+                {% endif %}
+                <!-- // If I am on the US site, I see a California cancer warning. -->
+
+                {%- if settings.show_real_time_visitor -%}<div class="fake_counter_real_time gl_pt_15" style="display:none">{% comment %}ly_new_settings_replace_for_[ settings.text_real ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13490547"] %}{% assign ly_translation = shop.metafields[namespace]["id13490547"] %}{% else %}{% assign ly_translation = settings.text_real %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %} <span id="number_counter"><span>296</span><i class="fa fa-bolt" aria-hidden="true"></i></span> {% comment %}ly_new_settings_replace_for_[ settings.text_visitor ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13490548"] %}{% assign ly_translation = shop.metafields[namespace]["id13490548"] %}{% else %}{% assign ly_translation = settings.text_visitor %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %}</div>{%- endif -%}
+                {%- if product.has_only_default_variant == false  -%}</div>{%- endif-%} 
+     {% if product.type == 'Kiosk' % | remove 'mountfinder_product' %} 
+               {% else %}   {% include 'mountfinder_product' %}
+                {% endif %}
+              </div>
+            </div>
+          </div><!-- .summary --> 
+        </div>  
+      </div>
+      {%- if settings.product_sidebar != '1' -%}
+        <aside class="sidebar-container {{class_sidebar}} sidebar-{{settings.product_sidebar}}" role="complementary">
+          <div class="sidebar-inner">
+            {%- section 'gl_section_sidebar_product' -%}<!-- .widget-area -->
+          </div><!-- .sidebar-inner -->
+        </aside><!-- .sidebar-container -->
+      {%- endif -%}
+    </div> <!-- row -->
+  {%- if product.variants.size > 1  -%}</div>{%- endif-%}  
+  <!--    {%- if settings.show_share_btn and design_products_page == 'product-design-alt' -%}
+<div class="product-share">{%- include 'social-sharing', gl_design:'icons-design-colored', gl_size:'icons-size-default', follow_social:gl_follow_social -%}</div>
+{%- endif -%} -->
+{%- if product.has_only_default_variant -%}</div>{%- endif-%} 
+  {%- if design_products_page != 'product-design-compact' -%}
+  <div class="product-tabs-wrapper">
+    <div class="col-xs-12 no-padding">
+      <div class="col-xs-12 no-padding">
+        <div class="col-xs-12 no-padding">
+
+          <div class="shopify-tabs sp-tabs-wrapper tabs-layout-tabs">{%- section 'gl-product-page-description' -%}</div>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+  {%- endif -%}
+
+  <!--  Related Documentation start  -->
+  <!-- <div class="col-xs-12 no-padding document-block" id="product-related-documentation">
+    <div class="container">
+      <div class="col-xs-12 no-padding document-block-heading">
+        <h2><ly-as-13490549>Related Documentation</ly-as-13490549></h2>
+      </div>
+
+      {% assign docs = product.metafields.docs.docs | split: ' | ' %}
+      {% for doc in docs %}
+        {% assign doc_data = doc | strip %}
+        {% if doc_data == '' %}
+          {% continue %}
+        {% endif %}
+        {% assign doc_data = doc_data | split: '; ' %}
+        <div class="col-sm-3 no-padding">
+          <a href="{{ doc_data[1] }}">
+            <div class="col-xs-12 no-padding document-block-content">
+              <div class="document-img">
+                {% assign lower_url = doc_data[1] | downcase %}
+                {% if lower_url contains 'dwg' %}
+                  <img src="{{ 'dwg.png' | asset_img_url: '300x' }}" alt="" />
+                {% else %}
+                  <img src="{{ 'pdf.png' | asset_img_url: '300x' }}" alt="" />
+                {% endif %}
+              </div>
+              <h3>{{ doc_data[0] }}</h3>
+              <a href="{{ doc_data[1] }}"><span><img src="{{ 'download__1.png' | file_url }}"></span><ly-as-13490550>download</ly-as-13490550></a>
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+      {% unless product.metafields.global.BIMSMITH == blank %}
+      <div class="col-xs-12 no-padding document-block-btn">
+        <a href="{% comment %}ly_code_replace_for_[ product.metafields.global.BIMSMITH ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'global' %}{% assign key = 'BIMSMITH' %}{% if product.metafields[ns][key] %}{% assign ly_translation = product.metafields[ns][key] %}{% else %}{% assign ly_translation =  product.metafields.global.BIMSMITH  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}"><ly-as-13490551>Visit bimsmith for revit files</ly-as-13490551></a>
+      </div>
+      {% endunless %}
+    </div>
+  </div> -->
+  <!--  Related Documentation start  -->
+
+</div>
+
+<script type="text/javascript">
+  jQuery(document).ready(function($){
+    $("#show_listPrice").click(function(){
+      $("p.price").toggle("slow");
+    });
+
+    var data = {
+      shop: "peerless-av.myshopify.com",
+      lang: getCurrentLanguage(),
+    };
+    var appUrl = '/apps/peerless/product-specification/{{product.handle}}';
+
+    $.ajax({
+      method: "GET",
+      url: appUrl,
+      data: data,
+      success: function (resp) {
+        if (resp.specCats) {
+          $html = resp.specCats.map(function (specCat) {
+            var specification = Array.isArray(specCat.specification) ? 
+                          specCat.specification : 
+                          Object.values(specCat.specification);
+            if (specification.length) 
+              $('.basel_additional_tab_tab.tab-specification').show();
+
+            return renderSpecificationBlock(specCat, specification);
+          });
+
+          $('.tab_specifications .tab-pad-bottom').append($html);
+        }
+      },
+      error: function (error) {
+      },
+    });
+
+    function renderSpecificationBlock (specCat, specification) {
+      if (!specification.length) return null;
+      var resp = '<div class="col-sm-6 col-xs-12"><div class="col-xs-12 no-padding prod-spec-block">'+
+        '<h2 class="spec-sub-title">'+specCat.cat_name+'</h2><ul>';
+
+      resp += specification.map(function (specItem) {
+            return renderSpecItem(specItem);
+          }).join('');
+          
+      resp += '</ul></div></div>';
+
+      return resp;
+    }
+
+    function renderSpecItem (specItem) {
+      return '<li><h3>'+specItem.name+'</h3><p>'+specItem.value+'</p></li>';
+    }
+
+  var testPrice = '{{current_variant.price}}';
+
+    function linksDWG(){
+      var links = $('.document-block-heading a[href$=".DWG"]');
+          console.log(links);
+          links.attr("href", "#");
+          links.click(function(e) {
+          e.preventDefault();
+          var html = [
+              '<div class="added-to-cart">',
+                  '<p>Please loggin</p>',
+                  '<a href="#" class="btn btn-style-link close-popup">' + theme.strings.continue_shopping + '</a>',
+                  '<a href="/account/login" class="btn btn-color-primary view-cart">' + theme.strings.login + '</a>',
+              '</div>',
+          ].join("");
+          $.magnificPopup.open({
+              items: {
+                  src: '<div id="login-wishlist" class="gl_login-wishlist white-popup add-to-cart-popup popup-added_to_cart">' + html + '</div>',
+                  type: 'inline'
+              }
+          });
+
+          $('.gl_login-wishlist').on('click', '.close-popup', function(e) {
+              e.preventDefault();
+              $.magnificPopup.close();
+          });
+      });
+    }
+    {% if settings.site  != 'US' %}
+      {% if customer == blank%}
+        linksDWG();
+      {% endif %}
+    {% endif %}
+
+    $(document).on('click', '.spr-summary-actions-newreview', function () {
+      $('.spr-container input[type="email"]').attr('type', 'text');
+    });
+  });
+
+var restrict = document.querySelectorAll('.purchase-restict');
+    for(var i=1;i<restrict.length;i++){
+      restrict[i].style.display = "none";
+    }
+  const variantWrap = $('.single_variation_wrap').children('.shopify-variation-add-to-cart');
+  if (variantWrap.length > 0) {
+    $('.shopify-variation .shopify-variation-price .shopify-variation-add-to-cart').addClass('hidden');
+  }
+</script>

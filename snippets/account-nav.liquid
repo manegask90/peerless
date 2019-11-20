@@ -1,0 +1,87 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.com' | last |
+  replace:'\/','/' | 
+  replace:'%20',' ' | 
+  replace:'\u0026','&'
+-%}
+
+{%- assign account_type = "consumer" -%}
+{% for tag in customer.tags %}
+  {% if tag == "B2B Admin" %}
+    {%- assign account_type = "business" -%}
+    {% break %}
+  {% endif %}
+  {% if tag == "B2B Join" %}
+    {%- assign account_type = "business_join" -%}
+    {% break %}
+  {% endif %}
+{% endfor %}
+{%- assign invoices = customer.metafields.global.invoices -%}
+{%- assign user_management = customer.metafields.global.user_management -%}
+{%- include 'order_history' -%}
+
+<button class="btn open-account-nav"><span class="basel-burger"></span></button>
+
+<div class="basel-my-account-sidebar">
+  <div class="basel-my-account-sidebar-inner">
+    <div class="account-hello-wrapper">
+      <div class="avatar-wrapper">
+        <span>{% if customer.first_name != blank %}{{ customer.first_name | slice: 0 }}{% endif %}{% if customer.last_name != blank %}{{ customer.last_name | slice: 0 }}{% endif %}</span>
+      </div>
+      <div class="hello-content">
+        <p>{% comment %}ly_i18n_replace_for_[ 'customer.account.hello' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.hello' | t }}{% endcapture %}{% include 'ly-static-string' with '13489611' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}, {% if customer.first_name != blank %}{{customer.first_name}}{% else %}{{customer.email}}{% endif %}! <a href="/account/logout">({% comment %}ly_i18n_replace_for_[ 'customer.account.log_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.log_out' | t }}{% endcapture %}{% include 'ly-static-string' with '13489612' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %})</a></p>
+      </div>
+    </div>
+    <nav class="shopify-MyAccount-navigation">
+      <ul>
+        <li class="{% if pageUrl == '/account' %} is-active {% endif %} 
+            shopify-MyAccount-navigation-link 
+            shopify-MyAccount-navigation-link--dashboard">
+            <a href="/account">{% comment %}ly_i18n_replace_for_[ 'customer.account.dashboard' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.dashboard' | t }}{% endcapture %}{% include 'ly-static-string' with '13489613' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+        </li>
+        {% if settings.regional_site_enabled == false %}
+          {% if account_type == "business" or account_type == "business_join" and user_management == "1" %}
+            <li class="{% if pageUrl == '/pages/user-management' %} is-active {% endif %}
+                shopify-MyAccount-navigation-link shopify-MyAccount-navigation-link--user-management split-bottom">
+              <a href="/pages/user-management"><ly-as-13489608>User Management</ly-as-13489608></a>
+            </li>
+          {% endif %}
+          {% if order_history != "none" %}
+          <li class="{% if pageUrl == '/pages/order-history' or pageUrl == '/account?view=order_history' %} is-active {% endif %}
+              shopify-MyAccount-navigation-link 
+              shopify-MyAccount-navigation-link--order-history">
+              <a href="/pages/order-history">{% comment %}ly_i18n_replace_for_[ 'customer.orders.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.orders.title' | t }}{% endcapture %}{% include 'ly-static-string' with '13489614' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+          </li>
+          {% endif %}
+          {% if account_type == "business" or account_type == "business_join" and invoices != "none" %}
+            <li class="{% if pageUrl == '/pages/invoices' %} is-active {% endif %}
+                shopify-MyAccount-navigation-link 
+                shopify-MyAccount-navigation-link--invoices split-bottom">
+                <a href="/pages/invoices"><ly-as-13489609>Invoices</ly-as-13489609></a>
+            </li>
+          {% endif %}
+        {% endif %}
+        <li class="{% if pageUrl == '/account/addresses' %} is-active {% endif %}
+              shopify-MyAccount-navigation-link 
+              shopify-MyAccount-navigation-link--edit-address">
+          <a href="/account/addresses">{% comment %}ly_i18n_replace_for_[ 'customer.addresses.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.addresses.title' | t }}{% endcapture %}{% include 'ly-static-string' with '13489615' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+        </li>
+        <li class="{% if pageUrl contains '/pages/saved-configurations' %} is-active {% endif %}
+            shopify-MyAccount-navigation-link 
+            shopify-MyAccount-navigation-configuration">
+          <a href="/pages/saved-configurations"><ly-as-13489610>Saved Configurations</ly-as-13489610></a>
+        </li>
+        {%- if settings.use_wishlist and pages['wishlist'].empty? != true -%}
+        {%- include 'nitro-wishlist' -%}
+        <li class="{% if pageUrl == '/pages/wishlist' %} is-active {% endif %}
+            shopify-MyAccount-navigation-link 
+            shopify-MyAccount-navigation-link--wishlist">
+          <a href="/pages/wishlist">{% comment %}ly_i18n_replace_for_[ 'customer.account.wishlist' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.wishlist' | t }}{% endcapture %}{% include 'ly-static-string' with '13489616' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+        </li>
+        {%- endif -%}
+      </ul>
+    </nav>
+  </div>
+  <div class="basel-my-account-sidebar-overlay"></div>
+</div>

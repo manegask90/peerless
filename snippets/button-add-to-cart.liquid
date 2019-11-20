@@ -1,0 +1,31 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% comment %}
+  -= Variables:
+    * button_type:
+        Values: [blank, 'basel-tooltip', 'button']
+        Description: Checks if must be rendered '<a></a>' tag or '<button></button>'.
+                      Leave blank if '<a>' needed.
+
+    * class_list:
+        Values: 'class1 class2 etc'  //string
+        Description: CSS classes for button
+
+    * datasets:
+        Values: 'data-attr="value"' //string with data attributes.
+        Description: Data attributes.
+{% endcomment %}
+{% if button_url == blank %}
+  {% assign button_url = '/admin/products' %}
+{% endif %}
+{%- unless settings.regional_site_enabled -%}
+  {% if button_type == blank %}
+    <a data-lorem="ipsum" rel="nofollow" data-pid="{{ product.variants.first.id}}" data-sku="{{ product.variants.first.sku }}" href="{{ button_url }}" class="{{ class_list }}" {{ datasets }}>{% comment %}ly_i18n_replace_for_[ 'products.product.add_to_cart' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}{% include 'ly-static-string' with '13489687' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+  {% elsif button_type == 'basel-tooltip' %}
+    <a rel="nofollow" data-lorem="ipsum" data-pid="{{ product.variants.first.id}}" data-sku="{{ product.variants.first.sku }}" href="{{ button_url }}" class="{{ class_list }}" {{ datasets }}>
+      <span class="basel-tooltip-label">{% comment %}ly_i18n_replace_for_[ 'sections.basel_tooltip.select_options' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'sections.basel_tooltip.select_options' | t }}{% endcapture %}{% include 'ly-static-string' with '13489688' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+      {% comment %}ly_i18n_replace_for_[ 'products.product.select_option' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.select_option' | t }}{% endcapture %}{% include 'ly-static-string' with '13489689' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+    </a>
+  {% else %}
+    <button type="submit" class="{{ class_list }}">{% comment %}ly_i18n_replace_for_[ 'products.product.add_to_cart' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.add_to_cart' | t }}{% endcapture %}{% include 'ly-static-string' with '13489687' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+  {% endif %}
+{% endunless %}

@@ -1,0 +1,88 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- unless product.metafields.accessories.accessories == blank -%}
+{% assign products_handles = product.metafields.accessories.accessories | split: ',' | sort: 'title' %}
+  {%- assign counter = 0 -%}
+  {%- assign break_at = settings.many_related_products | plus: 0 -%}
+  {%- assign current_product = product -%}
+  {%- assign related_number = settings.related_silder_per_view | plus: 0 -%}
+  {%- assign gl_colum_width = 'col-galaxy' -%}
+  {%- case settings.related_products_hover -%}
+    {%- when 'base' -%}
+      {%- assign gl_include = 'section_loop_product_base' -%} 
+    {%- when 'alt' -%}
+      {%- assign gl_include = 'section_loop_product_alt' -%}
+    {%- when 'button' -%}
+      {%- assign gl_include = 'section_loop_product_button' -%}
+   {%- when 'info' -%}
+      {%- assign gl_include = 'section_loop_product_info' -%}
+   {%- when 'link' -%}
+      {%- assign gl_include = 'section_loop_product_link' -%}
+   {%- when 'standard' -%}
+      {%- assign gl_include = 'section_loop_product_standard' -%}
+   {%- when 'excerpt' -%}
+      {%- assign gl_include = 'section_loop_product_excerpt' -%}
+   {%- when 'quick' -%}
+      {%- assign gl_include = 'section_loop_product_quick' -%}
+{%- endcase -%}
+{%- case settings.related_countdown_style -%}
+    {%- when 'light' -%}
+      {%- assign countdown_style = 'color-scheme-dark timer-size-small timer-style-standard' -%} 
+    {%- when 'dark' -%}
+      {%- assign countdown_style = 'color-scheme-light timer-size-small timer-style-standard' -%}
+    {%- when 'transparent_1' -%}
+      {%- assign countdown_style = 'color-scheme-light timer-size-small timer-style-transparent' -%}
+   {%- when 'transparent_2' -%}
+      {%- assign countdown_style = 'color-scheme-dark timer-size-small timer-style-transparent' -%}
+{%- endcase -%}
+{%- if settings.related_sale_countdown -%}
+   {%- assign section_settings_countdown = true -%}
+{%- else -%}
+   {%- assign section_settings_countdown = false -%}
+{%- endif -%}
+  {%- assign settings_pr_img_size = settings.use_related_eq_height -%}
+  {%- capture related_items -%}
+    {%- for _handle in products_handles -%}
+      {% assign handle = _handle | handleize %}
+      {% assign prod_to_show = all_products[handle] %}
+          {% unless prod_to_show == blank %}
+            <div class="product-item owl-carousel-item">
+              <div class="owl-carousel-item-inner" data-product-id="{{ prod_to_show.id }}">
+                {%- include gl_include, product: prod_to_show -%}
+              </div>
+            </div>
+          {% endunless %}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- assign related_items = related_items | trim -%}
+
+  {%- unless related_items == blank -%}
+    <section class="related products">
+      {% case language %}
+         {% when 'ly73951' %}
+            {% assign custom_soltion = 'Find a custom solution' %}
+            {% assign custom_acces = 'Accessories' %}
+         {% when 'ly73952' %}
+            <span class="hidden"> DE</span>
+            {% assign custom_soltion = 'Kundenspezifische Lösung suchen' %}
+            {% assign custom_acces = 'Zubehör' %}
+         {% when 'ly73954' %}
+            <span class="hidden"> ES</span>
+            {% assign custom_soltion = 'Encontrar una solución personalizada' %}
+            {% assign custom_acces = 'Accesorios' %}
+         {% when 'ly77552' %}
+            {% assign custom_soltion = 'trouver une solution sur mesure' %}
+            {% assign custom_acces = 'Accessoires' %}
+      {% endcase %}
+      <div class="custom_soltion text-center">{{ custom_soltion }}</div>
+      {% include 'title-red-underline', head_title: custom_acces %}
+      {% comment %} <h3 class="title slider-title">{% comment %}ly_new_settings_replace_for_[ settings.title_pr_related ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13489607"] %}{% assign ly_translation = shop.metafields[namespace]["id13489607"] %}{% else %}{% assign ly_translation = settings.title_pr_related %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %}</h3> {% endcomment %}
+      <div id="carousel-{{product.id}}" class="gl_carousel_container">
+        <div class="{%- if settings_pr_img_size -%}equal-columns {% endif -%}{{settings.related_image_size}} product-items owl-carousel gl_carousel_data" data-time='{{ settings.related_silder_speed | plus: 0 }}' data-nav='{%- if settings.related_hide_button -%}false{%- else -%}true{%- endif -%}' data-items='{{ related_number }}' data-dots='{%- if settings.related_hide_pagination -%}false{%- else -%}true{%- endif -%}' data-autoplay='{%- if settings.related_autoplay -%}true{%- else -%}false{%- endif -%}' data-loop='{%- if settings.related_slider_loop -%}true{%- else -%}false{%- endif -%}' data-medium='{%- if related_number > 2 -%}{{ related_number | minus: 1 }}{%- else -%}2{%- endif -%}'>
+          {{ related_items }}
+        </div><!-- end product-items -->
+      </div><!-- end #carousel-{{product.id}} -->
+    </section>
+  {%- endunless -%}
+
+{%- endunless -%}

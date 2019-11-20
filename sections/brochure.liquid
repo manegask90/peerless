@@ -1,0 +1,62 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<h1><ly-as-13487126>Brochures</ly-as-13487126></h1> 
+<div class="brochure"> 
+    <div class="row">
+    {% for block in section.blocks %}
+        <div class="col-md-4 col-sm-6 col-xs-6 col-xxs-12 brochure-block" data-name="{{ block.settings.detailed-title-brochure }}">
+            <a target="_blank" href="{% if block.settings.brochure-url %}{{block.settings.brochure-url}}{% else %}javascript:void(0){% endif %}">
+                <div class="block">             
+                    <img src="{{ block.settings.image-brochure | img_url: '500x' }}">
+                    <p>
+                        <span>{{ block.settings.detailed-title-brochure }}</span>
+                    </p>
+                </div>
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% schema %}
+{
+  "name": "Brochure",
+  "settings": [   
+  ],
+  "blocks": [    
+    {
+        "type": "image",
+        "name": "Brochures Block",
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "image-brochure",
+                "label": "Image"
+            },
+            {
+                "type": "text",
+                "id": "detailed-title-brochure",
+                "label": "Text",
+                "default": "Brochure 1"
+            },
+            {
+                "type": "url",
+                "id": "brochure-url",
+                "label": "URL"
+            }
+        ]
+    }
+  ]
+}
+{% endschema %}
+
+<!--script>
+    var contacts = $('.brochure .row'),
+        cont = $('.brochure-block');
+
+    cont.detach().sort(function(a, b) {
+                var astts = $(a).data('name');
+                var bstts = $(b).data('name');
+                return (bstts < astts) ? (bstts < astts) ? 1 : 0 : -1;
+            });
+
+    contacts.append(cont);
+</script-->

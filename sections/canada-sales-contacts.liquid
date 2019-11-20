@@ -1,0 +1,121 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="row sales-contacts-row">
+  <div class="col-xs-12 canada-heading">
+    {% include 'title-with-lines', head_title: 'Canada' %}
+  </div>
+
+  <div class="col-sm-8">
+    <div class="row">
+      <div class="col-xs-12">
+        <img src="{{ section.settings.map | img_url: '' }}">
+      </div>
+    </div>
+  </div>
+
+  <div class="col-sm-4 sales-contacts-aside canada-sales-contacts-aside">
+    <div class="row">
+      {% for block in section.blocks %}
+        {% if block.type == 'aside_address' %}
+          <div class="col-xs-12">
+            {% include 'sale-contact' %}
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Canada Sales Contacts",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "map",
+      "label": "Map"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "aside_address",
+      "name": "Aside Address",
+      "settings": [
+        {
+          "id": "location",
+          "type": "text",
+          "label": "Location"
+        },
+        {
+          "id": "location_color",
+          "type": "select",
+          "label": "Location color",
+          "options": [
+            {
+              "value": "theme-light-blue",
+              "label": "Light Blue (#899bb0)"
+            },
+            {
+              "value": "theme-lighter-blue",
+              "label": "Lighter Blue (#346094)"
+            },
+            {
+              "value": "theme-blue",
+              "label": "Blue (#293977)"
+            },
+            {
+              "value": "theme-dark-blue",
+              "label": "Dark Blue (#313958)"
+            },
+            {
+              "value": "theme-light-grey",
+              "label": "Light Grey (#c9c8c7)"
+            },
+            {
+              "value": "theme-grey",
+              "label": "Grey (#8c8d8e)"
+            },
+            {
+              "value": "theme-dark-grey",
+              "label": "Dark Grey (#545353)"
+            },
+            {
+              "value": "theme-black",
+              "label": "Black (#111111)"
+            }
+          ],
+          "default": "theme-grey"
+        },
+        {
+          "id": "covered_areas",
+          "type": "text",
+          "label": "Covered areas"
+        },
+        {
+          "id": "name",
+          "type": "text",
+          "label": "Name"
+        },
+        {
+          "id": "position",
+          "type": "text",
+          "label": "Position"
+        },
+        {
+          "id": "phone",
+          "type": "text",
+          "label": "Phone"
+        },
+        {
+          "id": "c",
+          "type": "text",
+          "label": "C"
+        },
+        {
+          "id": "email",
+          "type": "text",
+          "label": "Email"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,157 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="xtreme-high-transform">
+  <div class="container">
+    <div class="row xtreme-high-transform-inner">
+      <div class="col-md-12 transform-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{ section.settings.desc }}</div>
+      </div>
+      <div class="transform-cards">
+        <div class="row">
+            <div class="col-md-5 transform-info">
+                <div class="trans-title-box">
+                    <h5 class="trans-title"><span><ly-as-13487646>New</ly-as-13487646></span><span> </span>{{section.settings.kiosk_title}}</h5>
+                </div>
+                {%- for block in section.blocks -%}
+                    {%- case block.type -%}
+                        {%- when 'text' -%}
+                        <div class="model-wrap">
+                            <div class="model-title">{{block.settings.title}}</div>
+                            <div class="model-info">{{block.settings.kiosk_desc}}</div>
+                        </div>
+                    {%- endcase -%}
+                {%- endfor -%}
+                <div class="features-wrap">
+                    <div class="features-title">
+                        {{- section.settings.feature_title -}}
+                    </div>
+                    <div class="features-cont">
+                        {{section.settings.features}}
+                    </div>
+                </div>
+                <div class="btn-wrap">
+                    <a href="{{section.settings.kiosk_url}}"><ly-as-13487647>Learn More</ly-as-13487647></a>
+                </div>
+            </div>
+            <div class="col-md-7">
+              <div class="transform-img-wrap">
+              {%- for block in section.blocks -%}
+                  {%- case block.type -%}
+                      {%- when 'article' -%}
+                      <div class="transform-card big-block">
+                        <div class="block-inner">
+                          <div class="img-wrap">
+                              <img src="{{block.settings.image  | img_url: '730x' }}" alt="Image" />
+                          </div>
+                        </div>
+                      </div>
+                      {%- when 'content' -%}
+                      <div class="transform-card small-block">
+                        <div class="block-inner">
+                          <div class="img-wrap">
+                              <img src="{{block.settings.image  | img_url: '360x' }}" alt="Image" />
+                          </div>
+                        </div>
+                      </div>
+                  {%- endcase -%}
+              {%- endfor -%}
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Xtreme High Transform",
+    "class": "section-xtreme-high-transform",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Transform Your Outdoor Space with All-In-One Solutions"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      },
+      {
+       "type": "text",
+       "id": "kiosk_title",
+       "label": "Box Title"
+      },
+      {
+       "type": "text",
+       "id": "feature_title",
+       "label": "Title Features",
+       "default": "PRODUCT FEATURES:"
+      },
+      {
+       "type": "textarea",
+       "id": "features",
+       "label": "Product Features",
+       "placeholder": "Enter Features"
+      },
+      {
+        "type": "url",
+        "id": "kiosk_url",
+        "label": "Link"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Big Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      },
+      {
+        "type": "content",
+        "name": "Small Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Model",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "kiosk_desc",
+            "label": "Decsription"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Xtreme High Transform Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

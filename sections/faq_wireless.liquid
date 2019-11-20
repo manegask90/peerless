@@ -1,0 +1,44 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="faq-container container">
+  <div class="shop-loop-head">
+    <nav class="shopify-breadcrumb faq-nav">
+      <a href="/pages/faq">FAQs</a>
+      <span class="breadcrumb-last"><ly-as-13487680>Wireless Solutions</ly-as-13487680></span>
+    </nav>
+    <h2 class="text-center page-wireless-faq header-faq">{% comment %}ly_code_replace_for_[page.title]_begin{% endcomment %}{% include 'ly-title' with page %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}</h2>
+  </div>
+  {% for block in section.blocks %}
+    <div class="faq-block" id="{{block.settings.title | handleize }}">
+      <div class="faq-title">
+        {{- block.settings.title -}}
+      </div>
+      <div class="faq-content">
+        {{block.settings.content}}
+      </div>
+    </div>
+  {% endfor%}
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Wireless",
+  "blocks": [
+    {
+      "type": "faq_block",
+      "name": "Faq Block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type":"textarea",
+          "id": "content",
+          "label": "Block content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

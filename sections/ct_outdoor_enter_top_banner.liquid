@@ -1,0 +1,32 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="outdoor-enter-top-banner" style="background-image:url({{ section.settings.back_img.src | img_url: 'master' }});">
+  <div class="outdoor-enter-top-banner-inner">
+    <h1 class="outdoor-enter-top-banner-title">{{ section.settings.title }}</h1>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Outdoor Enter Top Banner",
+    "class": "section-outdoor-enter-top-banner",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "back_img",
+        "label": "Background Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Outdoor Entertainment at its Finest"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Xtreme High Top Banner",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

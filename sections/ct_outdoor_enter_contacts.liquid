@@ -1,0 +1,79 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="outdoor-enter-contact" style="background-image:url({{ section.settings.back_img.src | img_url: 'master' }});">
+  <div class="container">
+    <div class="outdoor-enter-contact-inner">
+      <h4 class="box-title">{{ section.settings.title }}</h4>
+      <div class="content">{{section.settings.desc}} <a href="{{section.settings.desc_url}}">{{section.settings.desc_url_text}}</a></div>
+      <div class="btn-wrap">
+        <a class="btn" href="{{section.settings.btnUrl}}">{{section.settings.btnText}}</a>
+        <a class="btn" href="{{section.settings.btnUrl1}}">{{section.settings.btnText1}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Outdoor Contact",
+    "class": "section-outdoor-enter-contact",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "back_img",
+        "label": "Background Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Xtreme™ Resources"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      },
+      {
+       "type": "textarea",
+       "id": "desc_url_text",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      },
+      {
+       "type": "url",
+       "id": "desc_url",
+       "label": "Box Decsription link"
+      },
+      {
+        "type": "text",
+        "id": "btnText",
+        "label": "Button text",
+        "default": "Brochure"
+      },
+      {
+        "type": "url",
+        "id": "btnUrl",
+        "label": "Button link"
+      },
+      {
+        "type": "text",
+        "id": "btnText1",
+        "label": "Button text",
+        "default": "User Guide"
+      },
+      {
+        "type": "url",
+        "id": "btnUrl1",
+        "label": "Button link"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Outdoor Contact Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

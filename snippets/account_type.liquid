@@ -1,0 +1,12 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- assign account_type = "consumer" -%}
+{% for tag in customer.tags %}
+  {% if tag == "B2B Admin" %}
+    {%- assign account_type = "business" -%}
+    {% break %}
+  {% endif %}
+  {% if tag == "B2B Join" %}
+    {%- assign account_type = "business_join" -%}
+    {% break %}
+  {% endif %}
+{% endfor %}

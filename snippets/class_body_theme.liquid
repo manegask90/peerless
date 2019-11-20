@@ -1,0 +1,89 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{%- comment -%}<ly-as-13489701>class general layout</ly-as-13489701>{%- endcomment -%}
+{%- case settings.general_layout -%}
+{%- when 'full_width' -%}
+	{%- assign general_layout = "wrapper-full-width" -%}
+{%- when 'boxed' -%}
+	{%- assign  general_layout = "wrapper-boxed" -%}
+{%- when 'contetn_full' -%}
+	{%- assign general_layout = "wrapper-full-width-content" -%}
+{%- when 'wide' -%}
+	{%- assign general_layout = "wrapper-wide" -%}
+{%- endcase -%}
+{%- comment -%}<ly-as-13489702>class product page layout</ly-as-13489702>{%- endcomment -%}
+{%- if product.template_suffix == 'design_images_scroll' -%}
+	{%- assign design_products = "basel-product-design-sticky" -%}
+{%- elsif product.template_suffix == 'design_compact' -%}
+	{%- assign design_products = "basel-product-design-compact" -%}
+{%- elsif product.template_suffix == 'design_alternative' -%}
+	{%- assign design_products = "basel-product-design-alt" -%}
+{%- elsif product.template_suffix == 'design_default' -%}
+	{%- assign design_products = "basel-product-design-default" -%}
+{%- elsif template contains 'product' -%}
+	{%- case settings.design_products -%}
+	{%- when '1' -%}
+		{%- assign design_products = "basel-product-design-default" -%}
+	{%- when '2' -%}
+		{%- assign design_products = "basel-product-design-alt" -%}
+	{%- when '3' -%}
+		{%- assign design_products = "basel-product-design-sticky" -%}
+	{%- when '4' -%}
+		{%- assign design_products = "basel-product-design-compact" -%}
+	{%- endcase -%}
+{%- endif -%}
+{%- comment -%}<ly-as-13489703>class header layout</ly-as-13489703>{%- endcomment -%}
+{%- capture header_class -%}
+	{%- if settings.use_rtl %} <ly-as-13489704>rtl</ly-as-13489704>{%- endif -%}
+	{%- if settings.use_dark_version %} <ly-as-13489705>basel-dark</ly-as-13489705>{%- endif -%}
+	{%- if settings.top_bar_enable %} <ly-as-13489706>basel-top-bar-on</ly-as-13489706>{%- endif -%}
+	{%- if settings.full_header_enable %} <ly-as-13489707>header-full-width</ly-as-13489707>{%- endif -%}
+	{%- if settings.header_design == 'menu-top' %} <ly-as-13489708>sticky-navigation-only</ly-as-13489708>{%- endif -%}
+	{%- if settings.sticky_header_enable %}
+		{%- case settings.header_design -%}
+			{%- when 'shop' -%}
+				{%- assign sticky_header = "real" -%}
+			{%- when 'split' -%}
+				{%- assign sticky_header = "real" -%}
+			{%- when 'menu-top' -%}
+				{%- assign sticky_header = "real" -%}
+			{%- when 'simple' -%}
+				{%- if settings.overlap_header_enable -%}
+					{%- assign sticky_header = "real" -%}
+				{%- else -%}
+					{%- assign sticky_header = "clone" -%}
+				{%- endif -%}
+			{%- else -%}
+				{%- assign sticky_header = "clone" -%}
+			{%- endcase -%}
+	{%- endif -%}
+	{%- if settings.sticky_header_enable %} enable-sticky-header sticky-header-{{sticky_header}}{%- endif -%}
+	{%- if template contains 'index' or template contains 'collection' or template contains 'blog' or template contains 'article' -%}{%- assign overlap_header = true -%}{%- else -%}{%- assign overlap_header = false -%}{%- endif -%}
+	{%- if settings.overlap_header_enable and overlap_header %} <ly-as-13489709>basel-header-overlap</ly-as-13489709>{%- endif -%}
+	{%- if settings.overlap_header_enable and overlap_header == false %} <ly-as-13489710>nathan-header-overlap</ly-as-13489710>{%- endif -%}
+{%- endcapture -%}
+{%- comment -%}<ly-as-13489711>class footer layout</ly-as-13489711>{%- endcomment -%}
+{%- capture footer_layout -%}
+	{%- if settings.sticky_footer_enable %} <ly-as-13489712>sticky-footer-on</ly-as-13489712>{%- else %} <ly-as-13489713>no-sticky-footer</ly-as-13489713>{%- endif -%}
+{%- endcapture -%}
+
+{%- comment -%}<ly-as-13489714>class search layout</ly-as-13489714>{%- endcomment -%}
+{%- capture search_layout -%}
+	{%- if settings.header_design contains 'categories' -%} <ly-as-13489715>global-search-disable</ly-as-13489715> {%- else %} global-search-{% comment %}ly_new_settings_replace_for_[ settings.basel_search_widget ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13489718"] %}{% assign ly_translation = shop.metafields[namespace]["id13489718"] %}{% else %}{% assign ly_translation = settings.basel_search_widget %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %}{%- endif -%}
+	{%- if settings.ajax_search %} <ly-as-13489716>basel-ajax-search-on</ly-as-13489716>{%- endif -%}
+{%- endcapture -%}
+
+{%- comment -%}<ly-as-13489717>class tab style one js</ly-as-13489717> {%- endcomment -%}
+{%- assign tab_class = "" -%}
+{%- capture ar_check_tab -%}{{ content_for_layout  }}{%- endcapture -%}
+{%- if ar_check_tab contains 'section_tab_style_one' -%}
+{%- assign check_tab = true -%}
+{%- endif -%}
+{%- if ar_check_tab contains 'gl_has_youtube' -%}
+{%- assign check_youtube = true -%}
+{%- endif -%}
+{%- if ar_check_tab contains 'gl_has_photowipe' -%}
+{%- assign check_photowipe = true -%}
+{%- endif -%}
+{%- if ar_check_tab or section_tab_single -%}
+{%- assign tab_class = "gl-tab-js" -%}
+{%- endif -%}
+{%- include 'last_catelog_mod' -%}

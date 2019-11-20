@@ -1,0 +1,61 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="xtreme-high-clients">
+  <div class="container">
+    <div class="xtreme-high-clients-inner">
+      <div class="xtreme-high-clients-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{section.settings.desc}}</div>
+      </div>
+        <ul class="xtreme-high-clients-list">
+          {%- for block in section.blocks -%}
+            <li class="list-item">
+                <div class="img-wrap">
+                    <img src="{{block.settings.image  | img_url: 'master' }}" alt="{{block.settings.image.alt}}" />
+                </div>
+            </li>
+          {%- endfor -%}
+        </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Xtreme High Clients",
+    "class": "section-xtreme-high-clients",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Our Clients"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "Clients image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Xtreme High Clients Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

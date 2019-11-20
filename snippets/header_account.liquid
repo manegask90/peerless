@@ -1,0 +1,13 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- if settings.account_header_enable -%}
+<div class="header-links">
+   <ul>
+      {%- if customer -%}
+      <li><a href="/account">{% comment %}ly_i18n_replace_for_[ 'layout.customer.my_account' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'layout.customer.my_account' | t }}{% endcapture %}{% include 'ly-static-string' with '13490126' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a></li>
+      <li><a href="#" class="logout" data-customerEmail="{{ customer.email}}">{% comment %}ly_i18n_replace_for_[ 'layout.customer.log_out' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'layout.customer.log_out' | t }}{% endcapture %}{% include 'ly-static-string' with '13490127' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a></li>
+      {%- else -%}
+      <li><a href="/account/login" class="login-link">{% comment %}ly_i18n_replace_for_[ 'layout.customer.log_in' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'layout.customer.log_in' | t }}{% endcapture %}{% include 'ly-static-string' with '13490128' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a></li>
+       {%- endif -%}
+   </ul>
+</div>
+{%- endif -%}

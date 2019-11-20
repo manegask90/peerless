@@ -1,0 +1,30 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="outdoor-enter-wrapper">
+  {% section 'ct_outdoor_enter_top_banner' %}
+  {% section 'ct_outdoor_enter_desc' %}
+  {% section 'ct_outdoor_enter_ultra' %}
+  {% section 'ct_outdoor_enter_awards' %}
+  {% section 'ct_outdoor_enter_popular_applications' %}
+  {% section 'ct_outdoor_enter_clients' %}
+  {% section 'ct_outdoor_enter_accessories' %}
+  {% section 'ct_outdoor_enter_displays' %}
+  {% section 'ct_outdoor_enter_video' %}
+  {% section 'ct_outdoor_enter_contacts' %}
+</div>
+<script type="text/javascript">
+  $(document).ready(function(){
+    $('.main-header').addClass('kiosk-header');
+    $('.header-wrap').addClass('kiosk-header');
+  });
+
+
+
+
+
+$('.outdoor-enter-inner .btn').click(function(){
+    $('html, body').animate({
+        scrollTop: $( $.attr(this, 'href') ).offset().top
+    }, 1000);
+    return false;
+});
+</script>

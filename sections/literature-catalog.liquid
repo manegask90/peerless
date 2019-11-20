@@ -1,0 +1,47 @@
+<div class="col-md-12 inputs-wrap">
+    <div class="inputs-wrap-title"><ly-as-13491885>{{ section.settings.catalog_title }}</ly-as-13491885></div>
+    {% for block in section.blocks %}
+        <div class="inputs-block">
+            <a href="{{ block.settings.catalog_link }}" target="_blank"><label><ly-as-13491886>{{ block.settings.catalog_link_title }}</ly-as-13491886></label></a>
+            <!-- <input type="number" name="quantity" min="1" placeholder="0"> -->
+            <select class="brochures-select literature_count" name="literature[{{block.settings.catalog_link_title}}]">
+                <option >0</option>
+                <option >1</option>
+                <option >2</option>
+            </select>
+        </div>
+    {% endfor %}
+</div> 
+
+    
+    {% schema %}
+    {
+        "name": "Literature Catalog",
+        "settings": [
+            {
+                "type": "text",
+                "id": "catalog_title",
+                "label": "Catalog Title"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "text",
+                "name": "Catalog Block",
+                "settings": [
+
+                    {
+                        "type": "text",
+                        "id": "catalog_link_title",
+                        "label": "Catalog Link Title"
+                    },
+                    {
+                        "type": "url",
+                        "id": "catalog_link",
+                        "label": "Catalog Link"
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}

@@ -1,0 +1,12 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="main-page-wrapper show_title">
+   	<!-- MAIN CONTENT AREA -->
+   	<div class="container">
+   		<h1 class="title">{{ langify_title }}</h1>
+      	<div class="row">
+         	<div class="col-md-6 col-md-offset-4 col-sm-10 col-sm-offset-1 col-xs-12 col-xs-offset-0" role="main">
+            	{% comment %}ly_code_replace_for_[ page.content ]_begin{% endcomment %}{% include 'ly-content' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}
+         	</div>
+      	</div>
+   	</div>
+</div>

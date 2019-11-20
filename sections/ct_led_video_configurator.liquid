@@ -1,0 +1,100 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="led-video-configurator" style="background-image:url({{ section.settings.back_img.src | img_url: 'master' }});">
+  <div class="container">
+    <div class="row led-video-configurator-inner">
+      <div class="col-md-6">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{section.settings.desc}}</div>
+        <a class="btn" href="{{section.settings.btnUrl}}">{{section.settings.btnText}}</a>
+      </div>
+      <div class="col-md-6">
+        <a href="{{section.settings.imgUrl}}"><img src="{{ section.settings.img.src | img_url: 'master' }}" alt="{{section.settings.img.alt}}"></a>
+        {%- if section.blocks.size > 0 -%}
+          <ul class="col-md-12 configuration-list">
+            {%- for block in section.blocks -%}
+              <li class="list-item">
+                <div class="img-wrap">
+                  <img src="{{block.settings.image  | img_url: '40x' }}" alt="Image" />
+                </div>
+                <span>{{block.settings.text}}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Led Video Configurator",
+    "class": "section-led-video-configurator",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "back_img",
+        "label": "Background Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "img",
+        "label": "block Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "LED Video Wall Configurator"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      },
+      {
+        "type": "text",
+        "id": "btnText",
+        "label": "Button text",
+        "default": "Create new video wall configuration"
+      },
+      {
+        "type": "url",
+        "id": "btnUrl",
+        "label": "Button link"
+      },
+      {
+        "type": "url",
+        "id": "imgUrl",
+        "label": "Image link"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "List Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Led Mounting Description Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

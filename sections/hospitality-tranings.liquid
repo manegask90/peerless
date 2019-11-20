@@ -1,0 +1,110 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="container">
+  <div class="row">
+
+    <div class="col-sm-6 left-bordered-col">
+      <div class="row">
+        <div class="col-xs-12">
+          {% include 'title-red-underline', head_title: 'Hospitality' %}
+        </div>
+      </div>
+      <div class="row it-distribution-items-row">
+        {% for block in section.blocks %}
+          {% if block.type == 'hospitality' %}
+            <div class="col-sm-6 it-distribution-item-col">
+              {% include 'it-distribution-item' %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+
+    <div class="col-sm-6">
+      <div class="row">
+        <div class="col-xs-12">
+          {% include 'title-red-underline', head_title: 'Sales and Installation Training' %}
+        </div>
+      </div>
+      <div class="row it-distribution-items-row">
+        {% for block in section.blocks %}
+          {% if block.type == 'sales_and_taning' %}
+            <div class="col-sm-6 it-distribution-item-col">
+              {% include 'it-distribution-item' %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  
+  </div>
+</div>
+
+
+{% schema %}
+{
+  "name": "Hospitality and Tranings",
+  "blocks": [
+    {
+      "type": "hospitality",
+      "name": "Hospitality Contacts",
+      "settings": [
+        {
+          "id": "name",
+          "type": "text",
+          "label": "Name"
+        },
+        {
+          "id": "position",
+          "type": "text",
+          "label": "Position"
+        },
+        {
+          "id": "phone",
+          "type": "text",
+          "label": "Phone"
+        },
+        {
+          "id": "c",
+          "type": "text",
+          "label": "C"
+        },
+        {
+          "id": "email",
+          "type": "text",
+          "label": "Email"
+        }
+      ]
+    },
+    {
+      "type": "sales_and_taning",
+      "name": "Sales & Tranings Contacts",
+      "settings": [
+        {
+          "id": "name",
+          "type": "text",
+          "label": "Name"
+        },
+        {
+          "id": "position",
+          "type": "text",
+          "label": "Position"
+        },
+        {
+          "id": "phone",
+          "type": "text",
+          "label": "Phone"
+        },
+        {
+          "id": "c",
+          "type": "text",
+          "label": "C"
+        },
+        {
+          "id": "email",
+          "type": "text",
+          "label": "Email"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

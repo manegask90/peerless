@@ -1,0 +1,81 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{% if section.settings.slider_show == 'yes' %}
+  <div class="custom-page-slider owl-carousel">
+    {% for block in section.blocks %}
+    <div class="custom-page-slider-text">
+      <div class="custom-page-slider-text-left">
+        <span>0{{ forloop.index }}</span>
+      </div>
+      <div class="custom-page-slider-text-right">
+        <p class="custom-page-slider-title">{{ block.settings.title }}</p>
+        <p class="custom-page-slider-subtitle">{{ block.settings.subtitle }}</p>
+        <span class="custom-page-slider-content">{{ block.settings.content }}</span>
+        {% unless block.settings.html_area == blank %}
+          <div class="btn-wrap">{{ block.settings.html_area }}</div>
+        {% endunless %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    $('.custom-page-slider').owlCarousel({
+      loop: true,
+      margin: 0,
+      nav: true,
+      dots: true,
+      items: 1
+    });
+    var img_urls = [];
+    var img_postions = [];
+    {% for block in section.blocks %}
+      var img_url = '{{ block.settings.image.src | img_url: 'master' }}';
+      img_postions.push('{{block.settings.bg_y_postion}}');
+      img_urls.push(img_url);
+    {% endfor %}
+    $('.custom-page-slider').css({
+      'background-image': 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 125%), url(' + img_urls[0] + ')',
+      'background-position-y': img_postions[0]+"%",
+    });
+    $('.custom-page-slider').on('changed.owl.carousel', function(event) {
+      $(this).css({
+        'background-image': 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 125%), url(' + img_urls[event.page.index] + ')',
+        'background-position-y': img_postions[event.page.index]+"%",
+      });
+    });
+  });
+  </script>
+{% else %}
+  <div class="custom-page-slider">
+    {% for block in section.blocks %}
+    {% if forloop.index == 1 %}
+    <div class="custom-page-slider-text">
+      <div class="custom-page-slider-text-left">
+        <span>0{{ forloop.index }}</span>
+      </div>
+      <div class="custom-page-slider-text-right">
+        <p class="custom-page-slider-title">{{ block.settings.title }}</p>
+        <p class="custom-page-slider-subtitle">{{ block.settings.subtitle }}</p>
+        <span class="custom-page-slider-content">{{ block.settings.content }}</span>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
+  <script type="text/javascript">
+  $(document).ready(function(){
+    var img_urls = [];
+    var img_postions = [];
+    {% for block in section.blocks %}
+      var img_url = '{{ block.settings.image.src | img_url: 'master' }}';
+      img_postions.push('{{block.settings.bg_y_postion}}');
+      img_urls.push(img_url);
+    {% endfor %}
+
+    $('.custom-page-slider').css({
+      'background-image': 'linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%), url(' + img_urls[0] + ')',
+      'background-position-y': img_postions[0]+"%",
+    });
+  });
+  </script>
+{% endif %}

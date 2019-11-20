@@ -1,0 +1,54 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="led-mounting-contact" style="background-image:url({{ section.settings.back_img.src | img_url: 'master' }});">
+  <div class="container">
+    <div class="led-mounting-contact-inner">
+      <h4 class="box-title">{{ section.settings.title }}</h4>
+      <div class="content">{{section.settings.desc}}</div>
+      <a class="btn" href="{{section.settings.btnUrl}}">{{section.settings.btnText}}</a>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Led Video Contact",
+    "class": "section-led-mounting-contact",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "back_img",
+        "label": "Background Image"
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Contact"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      },
+      {
+        "type": "text",
+        "id": "btnText",
+        "label": "Button text",
+        "default": "Contact Us"
+      },
+      {
+        "type": "url",
+        "id": "btnUrl",
+        "label": "Button link"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Led Mounting Description Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

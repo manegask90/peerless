@@ -1,0 +1,33 @@
+{% assign accessoriesShowed = 0 %}
+{% for item in cart.items %}
+  {% unless item.product.metafields.accessories.accessories == blank %}
+    {% assign accessories_handles = accessories_handles | append: ", " | append: item.product.metafields.accessories.accessories %}
+  {% endunless %}
+{% endfor %}
+{%- assign accessories_handles = accessories_handles | split: ',' | uniq -%}
+{% unless accessories_handles == empty %}
+  {%- assign break_at = settings.many_related_products | plus: 0 -%}
+  {%- assign gl_colum_width = 'col-galaxy' -%}
+  {%- assign gl_include = 'section_loop_product_standard' -%}
+  {%- assign settings_pr_img_size = settings.use_related_eq_height -%}
+  var cartAccessories = [{% for accessory_handle in accessories_handles %}
+    {% assign accessory_handle_strip = accessory_handle | strip %}
+    {% if accessoriesShowed > 9 %}
+        {% break %}
+    {% endif %}
+    {% assign accessoriesShowed = accessoriesShowed | plus: 1 %}
+    {% assign product = all_products[accessory_handle_strip] %}
+    {% if product == blank %}
+      {% continue %}
+    {% endif %}
+    {% assign current_variant = product.selected_or_first_available_variant %}
+      {
+        "id" : "{{  accessory_handle.id  | json }}",
+        "handle": "{{ product.handle | json }}",
+        "image" : "{{ current_variant.featured_image | json }}",
+        "url" : "{{ product.url  | json }}",
+        "sku" : "{{current_variant.sku}}",
+        "title": "{% include 'ly-title' with product %}{{ ly_translation }}",
+      },
+  {%- endfor -%}]
+{% endunless %}

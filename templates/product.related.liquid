@@ -1,0 +1,32 @@
+{% layout none %}
+
+{%- if settings.show_related_products -%}
+  {%- if settings.related_image_size != blank -%}{%- assign crop_nt = settings.related_image_size -%}{%- endif -%}
+  {%- assign loop_countdown = settings.loop_related_countdown -%}
+  {%- case settings.related_products_use -%}
+    {%- when 'use_metafields' -%}
+      {%- include 'accessories-from-metafields' -%}
+    {%- when 'use_collection' -%}
+      {%- include 'related-products-sectioned' -%}
+    {%- when 'handle' -%}
+      {%- include 'related-products-by-handle' -%}
+    {%- else -%}
+      {%- include 'related-products-by-tags' -%}
+  {%- endcase -%}
+{%-endif-%}
+
+{%- if settings.show_recently_products and pages['recently-viewed-products'].empty? != true -%}
+  {%- include 'gl-recently-viewed' -%}
+{%- endif -%}
+
+{%- if product.metafields.meta.hashtag != blank and product.metafields.meta.hashtag contains '#' -%}
+  <div class="basel-product-instagram">
+    <p class="product-instagram-intro">{% comment %}ly_i18n_replace_for_[ 'products.product.instagram_intro_html' | t: has_tag: product.metafields.meta.hashtag ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.instagram_intro_html' | t: has_tag: product.metafields.meta.hashtag }}{% endcapture %}{% include 'ly-static-string' with '13492800' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = product.metafields.meta.hashtag  %}{% assign ly_template = ly_template | replace: '[[has_tag]]', replacement %}{% if escape_content %}{{ ly_template}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+    <div id="carousel-{{product.id}}" class="instagram-widget instagram-per-row-4"><ul class="instagram-pics"></ul></div>
+  </div>
+{%- elsif product.metafields.meta.username != blank -%}
+  <div class="basel-product-instagram">
+    <p class="product-instagram-intro">{% comment %}ly_i18n_replace_for_[ 'products.product.instagram_intro_html' | t: has_tag: product.metafields.meta.username ]_begin{% endcomment %}{% capture ly_template %}{{ 'products.product.instagram_intro_html' | t: has_tag: product.metafields.meta.username }}{% endcapture %}{% include 'ly-static-string' with '13492802' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% assign replacement = product.metafields.meta.username  %}{% assign ly_template = ly_template | replace: '[[has_tag]]', replacement %}{% if escape_content %}{{ ly_template}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+    <div id="carousel-{{product.id}}" class="instagram-widget instagram-per-row-4"><ul class="instagram-pics"></ul></div>
+  </div>
+{%- endif -%}

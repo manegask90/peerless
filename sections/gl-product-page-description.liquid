@@ -1,0 +1,437 @@
+<!-- Purchasing permissions -->
+{%- include 'reviews' -%}
+
+{%- if section.blocks.size > 0 -%}
+<div class="container">
+  <ul class="tabs sp-tabs">
+    {% if product.metafields.showcase.showcase or product.metafields.shogun.below %}
+      <li class="showcase_tab active"><a href="#tab-showcase">Showcase</a></li>
+    {% endif %}
+
+    {% if product.metafields.features.features_text or product.metafields.features.features_image %}
+      <li class="basel_additional_tab_tab features-tab"><a href="#tab-features">Features</a></li>
+    {% endif %}
+
+    <li class="basel_additional_tab_tab tab-specification" style="display: none;"><a href="#tab-specification">Specifications</a></li>
+
+    {% if product.metafields.product_dimensions.dimensions %}
+      <li class="basel_additional_tab_tab"><a href="#tab-dimensions">Dimensions</a></li>
+    {% endif %}
+
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}    
+        {%- when 'description' -%}
+          <li class="description_tab{%- if forloop.first %} active{%- endif -%}"><a href="#tab-description">{{ block.settings.title }}</a></li>
+        {%- when 'additional' -%}
+          {%- if product.has_only_default_variant == false -%}
+            <li class="additional_information_tab{%- if forloop.first %} active{%- endif -%}"><a href="#{{block.id}}">{{ block.settings.title }}</a></li>
+          {%- endif -%}
+        {%- when 'bundle' -%}
+          {%- if product.metafields.nitro_bundle.bundle -%}{%- assign acct_tab = true -%}
+            <li class="bundle_tab{%- if forloop.first %} active{%- endif -%}"><a href="#tab-bundle">{{ block.settings.title }}</a></li>
+          {%- endif -%}
+        {%- when 'review' -%}
+          {%- if settings.show_product_page_rating -%}
+            {%- if block.settings.use_count_reviews -%} 
+              {%- assign product__reviews-count=0 -%}
+              {%- if product.metafields.spr.reviews -%}
+                {%- capture review_data -%}{{ product.metafields.spr.reviews }}{%- endcapture -%}
+                {%- assign rd_a1 = review_data | split: '<meta itemprop="reviewCount" content="' -%}
+                {%- assign rd_a2 = rd_a1[1] | split: '\">\n' | first -%} 
+                {%- assign product__reviews-count = rd_a2 | plus:0 -%}
+              {%- endif -%}
+            {%- endif -%}
+            <li class="reviews_tab{%- if forloop.first %} active{%- endif -%}"><a href="#{{block.id}}">{{ block.settings.title }}
+              {%- if block.settings.use_count_reviews -%} 
+                {%- if product__reviews-count <= 0 -%}
+                  {%- assign reviews-tab__header="(0)" -%}
+                {%- else -%}
+                  {%- capture reviews-tab__header -%}(<!--{{rd_a2 | plus:0}}-->{{product__reviews-count}}){%- endcapture -%}   
+                {%- endif -%} 
+                {{reviews-tab__header}}
+              {%-endif-%}
+            </a></li>
+          {%- endif -%}
+        {%- when 'html' -%}
+          <li class="basel_additional_tab_tab{%- if forloop.first %} active{%- endif -%}">  <a href="#{{block.id}}">{{ block.settings.title }}</a>
+          </li>
+        {%- when 'text' -%}
+        	<li class="basel_additional_tab_tab{%- if forloop.first %} active{%- endif -%}"><a href="#{{block.id}}">{{ block.settings.title }}</a></li>            	
+      {%- endcase -%}
+    {%- endfor -%}
+    {%- for meta in product.metafields.additions -%}
+      <li class="{{meta[0] | handleize}}_tab{%- if section.blocks.size < 1 and forloop.first %} active{% endif %}">
+        <a id="product_extra_tab_{{meta[0] | handleize}}" href="#tab{{meta[0] | handleize}}">{{meta[0]}}</a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</div>
+{%- assign active_product = product -%}
+<!-- Showcase Tab content -->
+{% if product.metafields.showcase.showcase or product.metafields.shogun.below %}
+  <div class="basel-tab-wrapper">
+    <a href="#tab-showcase" class="basel-accordion-title tab-title-description">Showcase</a>
+    <div class="shopify-Tabs-panel shopify-Tabs-panel--description panel entry-content sp-tab" id="tab-showcase">
+      <div class="col-xs-12 no-padding">
+        {{product.metafields.shogun.below}}
+        <!-- <div class="showcase-img">            
+          <img src="{{ product.metafields.showcase.showcase }}" alt="product_showcase" /> 
+        </div> -->
+      </div>
+    </div>
+  </div>
+{% endif %}
+<!-- // Showcase Tab content -->
+
+<!-- Features Tab content -->
+{% if product.metafields.features.features_text or product.metafields.features.features_image %}
+  <div class="basel-tab-wrapper tab_html">
+    <a href="#tab-features" class="basel-accordion-title tab-title-reviews">Features</a>          
+    <div class="shopify-Tabs-panel shopify-Tabs-panel--reviews panel entry-content sp-tab" id="tab-features">         
+      <div class="container tab-pad-bottom">
+        <div class="{% if product.metafields.features.features_image %}col-sm-5{% else %}col-sm-12{% endif %} col-xs-12">
+          <div class="col-xs-12 no-padding feature-block">
+            {% assign features = product.metafields.features.features_text | split: ' | ' %}
+            <ul>
+              {% for feature in features %}
+                <li>{{ feature }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+        {% if product.metafields.features.features_image %}
+        <div class="{% if product.metafields.features.features_text %}col-sm-7{% else %}col-sm-12{% endif %} col-xs-12">
+          <div class="col-xs-12 no-padding">
+            <div class="feature-img">
+              <img src="{{ product.metafields.features.features_image }}" alt="feature image">
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>            
+    </div>           
+  </div>
+{% endif %}
+<!-- // Features Tab content -->
+
+<!-- Specifications Tab content -->
+<div class="basel-tab-wrapper tab_specifications">
+  <a href="#tab-specification" class="basel-accordion-title tab-title-reviews">Specifications</a>           
+  <div class="shopify-Tabs-panel shopify-Tabs-panel--reviews panel entry-content sp-tab" id="tab-specification">
+    <div class="container tab-pad-bottom">
+    </div>            
+  </div>           
+</div>
+<!-- // Specifications Tab content -->
+
+<!-- Dimensions Tab content -->
+{% if product.metafields.product_dimensions.dimensions %}
+<div class="basel-tab-wrapper tab_html">
+  <a href="#tab-dimensions" class="basel-accordion-title tab-title-dimensions">Dimensions</a>
+  <div class="shopify-Tabs-panel shopify-Tabs-panel--reviews panel entry-content sp-tab" id="tab-dimensions">          
+    <div class="container tab-pad-bottom">
+      <div class="col-sm-12 col-xs-12">
+        <div class="col-xs-12 no-padding feature-block">   
+          <img src="{{ product.metafields.product_dimensions.dimensions }}" alt="dimensions" />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+<!-- // Dimensions Tab content -->
+
+   {%- for block in section.blocks -%}
+      {% case block.type %}
+        
+
+         {%- when 'description' -%}
+         <div class="basel-tab-wrapper">
+            <a href="#tab-description" class="basel-accordion-title tab-title-description">{{ block.settings.title }}</a>
+            <div class="shopify-Tabs-panel shopify-Tabs-panel--description panel entry-content sp-tab" id="tab-description">
+               {% include 'ly-description' with product %}{%- include 'shortcode' load: ly_translation -%}
+            </div>
+         </div>
+         {%- when 'additional' -%}
+            {%- if product.has_only_default_variant == false -%}
+            <div class="basel-tab-wrapper">
+               <a href="{{ block.id }}" class="basel-accordion-title tab-title-additional_information">{{ block.settings.title }}</a>
+               <div class="shopify-Tabs-panel shopify-Tabs-panel--additional_information panel entry-content sp-tab" id="{{ block.id }}">
+                  <table class="shop_attributes">
+                     <tbody>
+                        {% for option in active_product.options_with_values %}
+                        <tr class=">{{ option.name }}">
+                           <th>{{ option.name }}</th>
+                           <td><p>
+                             {%- assign option_index = forloop.index -%}
+                             {%- for value in option.values -%}
+                             {%- assign variant_label_state = true -%}
+                             {%- if active_product.options.size == 1 -%}
+                             {%- unless active_product.variants[forloop.index0].available  -%}
+                             {%- assign variant_label_state = false -%}
+                             {%- endunless -%}
+                             {%- endif -%} 
+                               {{ value | capitalize }}{% unless forloop.last == true %}, {% endunless %}
+                             {%- endfor -%}
+                           </p></td>
+                        </tr>
+                        {% endfor %}
+                     </tbody>
+                  </table>
+               </div>
+            </div>
+            {%- endif -%}
+         {%- when 'bundle' -%}
+            {%- if active_product.metafields.nitro_bundle.bundle -%}{%- assign acct_tab = true -%}
+           <div class="basel-tab-wrapper">
+             <div class="shopify-Tabs-panel shopify-Tabs-panel--description panel entry-content sp-tab" id="tab-bundle">
+             {%- include 'nitro-product-bundle' -%}
+             </div>
+           </div>
+        {%- endif -%}
+         {%- when 'review' -%}
+            {%- if settings.show_product_page_rating -%}
+            <div class="basel-tab-wrapper">
+              <div class="container">
+               <a href="{{ block.id }}" class="basel-accordion-title tab-title-reviews">{{ block.settings.title }}</a>
+               <div class="shopify-Tabs-panel shopify-Tabs-panel--reviews panel entry-content sp-tab" id="{{ block.id }}">
+                  <div id="shopify-product-reviews"  class='{% if customer != blank and customer.tags contains "Business" %}log{% else %}no-log{% endif %}' data-id="{{active_product.id}}">
+                      {{ active_product.metafields.spr.reviews }}
+                  </div>
+               </div>
+              </div>
+            </div>
+            {%- endif -%}
+         {%- when 'html' -%}
+         <div class="basel-tab-wrapper tab_html">
+            <a href="{{ block.id }}" class="basel-accordion-title tab-title-reviews">{{ block.settings.title }}</a>
+            <div class="shopify-Tabs-panel shopify-Tabs-panel--reviews panel entry-content sp-tab" id="{{ block.id }}">{{block.settings.code}}</div>
+         </div>
+         {%- when 'text' -%}
+         <div class="basel-tab-wrapper tab_text">
+            <a href="{{ block.id }}" class="basel-accordion-title tab-title-reviews">{{ block.settings.title }}</a>
+            <div class="shopify-Tabs-panel shopify-Tabs-panel--reviews panel entry-content sp-tab" id="{{ block.id }}"><div class="rte-setting">{{ block.settings.text }}</div></div>
+         </div>         
+
+      {%- endcase -%}
+   {%- endfor -%}
+      {%- for meta in active_product.metafields.additions -%}
+       <div class="basel-tab-wrapper"><a href="#tab{{meta[0] | handleize}}" class="basel-accordion-title tab-title-{{meta[0] | handleize}}">{{meta[0]}}</a><div id="tab{{meta[0] | handleize}}" class="shopify-Tabs-panel shopify-Tabs-panel--{{meta[0] | handleize}} panel entry-content wc-tab">{{ meta[1] }}</div></div>
+      {%- endfor -%}
+{%- else -%}
+<div class="text-center">{%- include 'no-blocks'-%}</div>   
+{%- endif -%}
+
+{%- if customer == blank or reviews == false -%}
+  <style>
+    .spr-summary-actions {
+      display: none;
+    }
+  </style>
+{%- endif -%}
+
+{%- schema -%}
+  {
+    "name": "Tab Descriptions",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Custom Metafields (namespace: additions)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "description",
+        "name": "Description",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Description"
+          }
+        ]
+      },
+        {
+          "type": "showcase",
+          "name": "Showcase",
+          "limit": 1,
+          "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Showcase"
+          },
+          {
+            "type": "image_picker",
+            "id": "showcase_img",
+            "label": "Showcase image"
+          }
+          ]
+        },
+
+		{
+        "type": "specifications",
+        "name": "Specifications",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Specifications"
+          },
+          {
+            "type": "html",
+            "id": "specifications_desc",
+            "label": "Specifications",
+			"default": "Specifications"
+          },
+          {
+            "type": "html",
+            "id": "package_specifications_desc",
+            "label": "Package Specifications",
+			"default": "Package Specifications"
+          }
+
+        ]
+      },
+		{
+          "type": "dimensions",
+          "name": "dimensions",
+          "limit": 1,
+          "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Dimensions"
+          },
+          {
+            "type": "image_picker",
+            "id": "dimensions_img",
+            "label": "Dimensions image"
+          }
+          ]
+        },
+
+      {
+        "type": "review",
+        "name": "Review",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Reviews"
+          },  
+          {
+          "type": "checkbox",
+          "id": "use_count_reviews",
+          "label": "Show number count Reviews",
+          "default": false
+          }
+        ]
+      },
+      {
+        "type": "bundle",
+        "name": "Product Bundle",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Buy With Bundle"
+          }
+        ]
+      },
+      {
+        "type": "additional",
+        "name": "Additional Information",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Additional Information"
+          }
+        ]
+      },
+
+		{
+        "type": "feature",
+        "name": "Feature",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Feature"
+          },
+		  {
+            "type": "html",
+            "id": "feature_desc",
+            "label": "Features Text",
+			"default": "Features list"
+          },
+          {
+            "type": "image_picker",
+            "id": "feature_img",
+            "label": "Feature image"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "name": "Custom HTML",
+        "settings": [
+         {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Shipping & Delivery"
+          },
+          {
+            "type": "html",
+            "id": "code",
+            "label": "HTML"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+            {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Talk about your brand"
+            },
+            {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+            }
+         ]
+      }
+    ]
+  }
+{% endschema %}
+
+<script>
+  $(document).ready(function(){
+    var company = '{{ customer.metafields.global.company }}';
+    setTimeout(function(){ 
+      $('input.spr-form-input-email').attr('type', 'text');
+      $('input.spr-form-input-email').val(company);
+    }, 3000);
+  });
+</script>

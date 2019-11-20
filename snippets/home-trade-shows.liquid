@@ -1,0 +1,436 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<link rel="stylesheet" href="{% comment %}ly_asset_replace_for_[ 'datepicker.css' | asset_url ]_begin{% endcomment %}{% assign ly_asset = 'datepicker.css' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  }}{% comment %}ly_asset_replace_end{% endcomment %}">
+<script src="{% comment %}ly_asset_replace_for_[ 'datepicker.js' | asset_url ]_begin{% endcomment %}{% assign ly_asset = 'datepicker.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  }}{% comment %}ly_asset_replace_end{% endcomment %}"></script>
+<script>
+  jQuery.fn.datepicker.language['en'] = {
+    days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+    daysShort: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    daysMin: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+    months: ['January','February','March','April','May','June', 'July','August','September','October','November','December'],
+    monthsShort: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    today: 'Today',
+    clear: 'Clear',
+    dateFormat: 'mm/dd/yyyy',
+    timeFormat: 'hh:ii aa',
+    firstDay: 0
+  };
+</script>
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="col-xs-12 no-padding calender">
+  <div class="upcoming-content-list col-xs-12 no-padding">
+    <ul>
+      <!-- <li>
+        <h2>
+          <span class="date-span">06</span>
+          <span class="month-span"><ly-as-13490176>SEP</ly-as-13490176></span>
+        </h2>
+        <h3><ly-as-13490177>CEDIA</ly-as-13490177></h3>
+        <h4><ly-as-13490178>September 6 – 8, 2018</ly-as-13490178></h4>
+        <p><ly-as-13490179>San Diego, CA</ly-as-13490179> <br> <ly-as-13490180>Booth #</ly-as-13490180></p>
+        <a href="#"><ly-as-13490181>Book A Time</ly-as-13490181></a>
+      </li> -->
+    </ul>
+  </div>
+  <div class="view-all-option col-xs-12 no-padding">
+    <a href="/blogs/trade-show"><ly-as-13490182>View Full Calendar</ly-as-13490182><span class="calender-arw"><img src="https://cdn.shopify.com/s/files/1/0123/9642/9369/files/Solid_arrow.png?11758041559251781022"></span></a>
+  </div>
+</div>
+
+{%- include 'countries' -%}
+
+<form id="book-form" class="white-popup-block mfp-hide" novalidate="">
+  <div class="form_title"><ly-as-13492534>Book a Time</ly-as-13492534></div>
+  <p><ly-as-13492555>Please provide your contact information below and we’ll get back to you shortly to confirm a time and date.</ly-as-13492555></p>
+  <div class="info-box"></div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="first_name"><ly-as-13492556>First Name</ly-as-13492556><span class="required">*</span></label>
+        <input type="text" class="form-control" id="first_name" value="{{ customer.first_name }}" name="first_name" required>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="last_name"><ly-as-13492557>Last Name</ly-as-13492557><span class="required">*</span></label>
+        <input type="text" class="form-control" id="last_name" value="{{ customer.last_name }}" name="last_name" required>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="title" class="label"><ly-as-13492558>Title</ly-as-13492558></label>
+        <input type="text" class="form-controll" id="title" name="title" required>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="company" class="label"><ly-as-13492559>Company</ly-as-13492559></label>
+        <input required type="text" class="form-controll" id="company" value="{% comment %}ly_code_replace_for_[ customer.metafields.global.company ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'global' %}{% assign key = 'company' %}{% if customer.metafields[ns][key] %}{% assign ly_translation = customer.metafields[ns][key] %}{% else %}{% assign ly_translation =  customer.metafields.global.company  %}{% endif %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}" name="company">
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="industry" class="label"><ly-as-13492560>Industry</ly-as-13492560></label>
+        <select name="industry" id="industry">
+          <option value=""><ly-as-13492561>Please Select</ly-as-13492561> </option>
+          <option value="Airports"><ly-as-13492562>Airports</ly-as-13492562></option>
+          <option value="Boats/RV"><ly-as-13492563>Boats/RV</ly-as-13492563></option>
+          <option value="Broadcast"><ly-as-13492564>Broadcast</ly-as-13492564></option>
+          <option value="Conferencing"><ly-as-13492565>Conferencing</ly-as-13492565></option>
+          <option value="Control Room"><ly-as-13492566>Control Room</ly-as-13492566></option>
+          <option value="Corporate"><ly-as-13492567>Corporate</ly-as-13492567></option>
+          <option value="Education"><ly-as-13492568>Education</ly-as-13492568></option>
+          <option value="Entertainment"><ly-as-13492569>Entertainment</ly-as-13492569></option>
+          <option value="Gaming"><ly-as-13492570>Gaming</ly-as-13492570></option>
+          <option value="Government"><ly-as-13492571>Government</ly-as-13492571></option>
+          <option value="Healthcare/Hospital"><ly-as-13492572>Healthcare/Hospital</ly-as-13492572></option>
+          <option value="Home"><ly-as-13492573>Home</ly-as-13492573></option>
+          <option value="Hospitality"><ly-as-13492574>Hospitality</ly-as-13492574></option>
+          <option value="House of Worship"><ly-as-13492575>House of Worship</ly-as-13492575></option>
+          <option value="Restaurant/Bar"><ly-as-13492576>Restaurant/Bar</ly-as-13492576></option>
+          <option value="Retail"><ly-as-13492577>Retail</ly-as-13492577></option>
+          <option value="Security"><ly-as-13492578>Security</ly-as-13492578></option>
+          <option value="Stadiums"><ly-as-13492579>Stadiums</ly-as-13492579></option>
+          <option value="Transportation"><ly-as-13492580>Transportation</ly-as-13492580></option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="clearfix"></div>
+
+    <div class="col-md-8">
+      <div class="form-group">
+        <label for="email"><ly-as-13492581>Email Address</ly-as-13492581> <span class="required">*</span></label>
+        <input type="email" class="form-controll" value="{{ customer.email }}" name="email" id="email" required>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="phone"><ly-as-13492582>Phone number</ly-as-13492582></label>
+        <input type="text" class="form-controll" value="{{ customer.phone }}" name="phone" id="phone" required>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="city"><ly-as-13492583>City</ly-as-13492583></label>
+        <input type="text" class="form-controll" id="city" name="city" required>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label for="country"><ly-as-13492585>Country</ly-as-13492585></label>
+        <select name="country" id="country" required>
+          {{countries}}
+        </select>
+      </div>
+    </div>
+    <div class="col-md-4 state_group_display_none">
+      <div class="form-group">
+        <label for="state"><ly-as-13492584>State</ly-as-13492584></label>
+        <select name="state" class="state_group" id="state"></select>
+      </div>
+    </div>
+    <div class="clearfix"></div>
+
+    <div class="col-md-12">
+      <div class="form-group">
+        <div class="label"><ly-as-13492586>INTENDED MEETING PURPOSE</ly-as-13492586></div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="meeting_purpose" checked="" value="Media Interview"><i></i>
+            <span><ly-as-13492587>Media Interview</ly-as-13492587></span>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="meeting_purpose" value="Booth Tour"><i></i>
+            <span><ly-as-13492588>Booth Tour</ly-as-13492588></span>
+          </label>
+        </div>
+        <div class="radio">
+          <label>
+            <input type="radio" name="meeting_purpose" value="Other"><i></i>
+            <span><ly-as-13492589>Other</ly-as-13492589></span>
+            <input type="text" name="meeting_purpose_other">
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="clearfix"></div>
+  
+    <div class="col-md-12">
+      <div class="form-group">
+        <label for="notes"><ly-as-13492590>Notes/Comments</ly-as-13492590></label>
+        <textarea name="notes" id="notes" required></textarea>
+      </div>
+    </div>
+    
+    <div class="col-md-12 prefered_time_wrap">
+      <div class="row">
+        <div class="col-md-4 no-padding">
+          <label><ly-as-13492591>Preferred Meeting Time</ly-as-13492591> <span class="required">*</span></label>
+          <input type="text" name="prefered_time[]" class="prefered_time" required>
+        </div>
+      </div>
+      <button type="button" class="add_time"><ly-as-13492592>+ Add Another Time/Date</ly-as-13492592></button>
+    </div>
+
+    <div class="col-md-12 required-info"><span class="required">*</span><ly-as-13492593>Required Field</ly-as-13492593></div>
+    <div class="col-md-12">
+      <input type="hidden" name="tradeShowLink">
+      <input type="hidden" name="site" value="{{settings.site}}">
+      {% include 'email-lang' %}
+      <input type="hidden" name="lang" value="{{lang}}">
+      <button type="submit"><ly-as-13492594>Book a Time</ly-as-13492594></button>
+    </div>
+  </div>
+</form>
+
+<script>
+  var sortArticles = function(articles) {
+    var temp = articles;
+    if (temp && temp.constructor===Array){
+      temp.sort(function(a,b){
+        var a_date = new Date(a.webinar_date);
+        var b_date = new Date(b.webinar_date);
+        return a_date.getTime() - b_date.getTime();
+      });
+    }
+    return temp;
+  }
+
+  var inspectArticles = function(articles) {
+    var temp;
+    var article_upcoming = [];
+    var article_registered = [];
+    var article_attended = [];
+    var article_past = [];
+    var today = new Date();
+
+    for (var i = 0; i < articles.length; i++) { 
+      var article_date = new Date(articles[i].article.webinar_date);
+      if(article_date >= today) {
+        article_upcoming.push(articles[i].article);
+      }
+      if(article_date < today) {
+        article_past.push(articles[i].article);
+      }
+    }
+    temp = {
+      "upcoming": article_upcoming,
+      "past": article_past,
+      "registered": article_registered,
+      "attended": article_attended
+    }
+    return temp;
+  }
+
+  var getMonthTitle = function(article) {
+    var article_title_date = new Date(article.webinar_date);
+    var monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"];
+    var article_month = monthNames[article_title_date.getMonth()];
+    var article_year = article_title_date.getFullYear();
+    var article_date_string = article_month + ' ' + article_year;
+    return article_date_string;
+  }
+
+  var generateHomeContent = function (articles) {
+    var html = "";
+        articlesPerPage = articles.length > 4 ? 4 : articles.length,
+        shorMonthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct","Nov", "Dec"],
+        monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October","November", "December"];
+    if (articles.length) {
+      for (var i = 0; i < articlesPerPage; i++ ) {
+        var article_start_date = new Date(articles[i].webinar_date);
+        var article_end_date =  articles[i].webinar_time != null ? new Date(articles[i].webinar_time) : 0;
+        var article_start_date_month = monthNames[article_start_date.getMonth()];
+        var article_start_date_day = article_start_date.getUTCDate() + 0;
+        var article_end_date_day = article_end_date != 0 ? article_end_date.getUTCDate() + 0 : ' ';
+        html += '<a  class="none_styles" href = "'+articles[i].url+'">';
+        //html += '<li class="article-item" id="trade-"'+articles[i].id+'" data-link="'+window.location.origin+'"/blogs/"'+articles[i].handle+'" data-id='" + articles[i].id + '">';
+        html += '<li class="article-item" id="trade-"'+articles[i].id+'"  data-link="'+window.location.origin+'"/blogs/"'+articles[i].handle+'" data-id="' + articles[i].id + '">';
+        html +=   '<h2>';
+        html +=   '<span class="date-span">'+article_start_date_day+'</span>';
+        html +=   '<span class="month-span">'+shorMonthNames[article_start_date.getMonth()]+'</span>';
+        html +=   '</h2>';
+        html +=   '<span class="hidden article-title">'+articles[i].title+'</span>';
+        if(articles[i].brand != null){
+          html +=   '<h3>'+articles[i].brand+'</h3>';
+        }else{
+          html +=   '<h3 class="opacity_brand"> null </h3>';
+        }
+        html +=   '<h4>'+article_start_date_month+' ' + article_start_date_day + ( article_end_date != 0 ? ' – '+article_end_date_day :  ' ' ) + ', '+article_start_date.getFullYear()+'</h4>';
+        html +=   '<p>'+articles[i].location;
+        if (articles[i].booth_id)
+          html +=   '<br> Booth #'+articles[i].booth_id;
+        else{
+          html +=  '<span> </span>';
+        }  
+        html +=   '</p>';
+        html +=   '<a class="btn-book-time" href="#book-form">Book A Time</a>';
+        html += '</li>';
+        html += '</a>'
+      }
+    }
+    return html;
+  }
+
+
+  jQuery(document).ready(function () {
+    var url = "/blogs/trade_json";
+		var articles;
+		var upcoming_articles, registered_articles, attended_articles, past_articles;
+		var type = 'upcoming';
+    var book_url = '/apps/peerless/contact/trade-show-meeting';
+    
+    $.ajax({
+      url: "/blogs/trade_json",
+      method: 'get',
+      async: false,
+      success: function (data) {
+        var articles = JSON.parse(data);
+        var inspectedArticles = inspectArticles(articles);
+
+        sortArticles(inspectedArticles.upcoming);
+        if (inspectedArticles.upcoming.length) {
+          var html = generateHomeContent(inspectedArticles.upcoming);
+          $('.upcoming-content-list ul').append(html);
+        }
+        // $(".posts-list").html(generateContent(articles));
+
+        initBookPopup();
+      },
+      error: function (ex) {
+        console.log(ex.responseText);
+      }
+    });
+	  function fillState () {
+	    var countryEl = $('#country'),
+	        stateEl = $('#state');
+	        states = JSON.parse(countryEl.find('option[value="'+countryEl.val()+'"]').attr('data-provinces')),
+	        stateOption = '';
+
+	    if (states.length) {
+	      states.forEach(function (stateArr) {
+	        stateOption += "<option value='"+stateArr[0]+"'>"+stateArr[1]+"</option>";
+	      });
+        $(".state_group_display_none").css("display", "block");
+	    } else {
+        $(".state_group_display_none").css("display", "none");
+      }
+
+	    stateEl.html(stateOption);
+	  }
+
+	  fillState();
+
+	  $('#country').on('change', function () {
+	    fillState();
+	  });
+
+	  $('.prefered_time').datepicker({
+	    timepicker: true,
+	    position: "top left",
+			language: "en",
+		  minDate: new Date()
+	  });
+
+	  $('.add_time').on('click', function () {
+	    var that              = $(this),
+	        form              = that.closest('form'),
+	        preferedTime      = form.find('.prefered_time'),
+	        preferedTimeFirst = form.find('.prefered_time:first-of-type'),
+	        preferedTimeWrap  = preferedTime.parent();
+
+	    // console.table(that, form, preferedTime, preferedTimeWrap);
+	    if (preferedTime.length < 3) {
+	      preferedTimeWrap.append(preferedTimeFirst.clone().removeAttr('required'));
+
+	      form.find('.prefered_time:last-of-type').datepicker({
+	        timepicker: true,
+	        position: "top left",
+					language: "en",
+					minDate: new Date()
+	      });
+	    }
+	  });
+
+	  $('#book-form').on('submit', function (e) {
+	    e.preventDefault();
+	    var that = $(this);
+	        requiredFields = that.find('[required]'),
+	        error = false;
+
+	    requiredFields.each(function (idx, el ) {
+	      if ($(this).val() == '') {
+	        $(this).addClass('error');
+	        error = true;
+	      } else {
+	        if ($(this).is('#email') && !validateEmail($(this).val())) {
+	          error = true;
+	          $(this).addClass('error');
+	        } else {
+	          $(this).removeClass('error');
+	        }
+	      }
+	    });
+
+      if (error) return;
+      
+      $('#book-form .info-box').html('');
+
+	    var data = that.serialize();
+	    that.find('button[type="submit"]').addClass('loading');
+	    var magnificPopup = $.magnificPopup.instance; // save instance in magnificPopup variable
+	    handleAjax(
+	      book_url,
+	      data,
+	      "POST",
+	      function (response) {
+	        if (response.success) {
+	          displaySuccess(response.message, '#book-form .info-box');
+	        } else {
+	          displayErrors(response.message, '#book-form .info-box');
+	        }
+	      },
+	      function () {
+	        //$('html,body').animate({scrollTop: $('.main-content').offset().top - 100}, 500);
+	        // magnificPopup.close();
+          that.find('button[type="submit"]').removeClass('loading');
+          $('.mfp-wrap').animate({
+            scrollTop: 0,
+          });
+	      },
+	      function () {
+	        displayErrors('Something went wrong, please reload page and try again', '#book-form .info-box');
+	      }
+	    )
+	  });
+  });
+
+
+
+  function initBookPopup () {
+		$('.btn-book-time').magnificPopup({
+	    type: 'inline',
+	    preloader: true,
+	    callbacks: {
+	    	open: function () {
+	    		var openBtn  = this.currItem.el;
+	    				parent   = openBtn.closest('.article-item')
+	    				dataLink = parent.attr('data-link'),
+              title    = parent.find('.article-title').text();
+          $('#book-form .info-box').html('');
+	    		$('#title').val(title);
+	    		$('#tradeShowLink').val(dataLink);
+	    	}
+	    }
+	  });
+  }
+</script>

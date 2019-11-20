@@ -1,0 +1,115 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<h2 class="top-title">{{ section.settings.top_title }}</h2>
+<p class="top-description">{{ section.settings.top_description }}</p>
+<div class="contact-form-wrapper">
+	<p class="form-description"><ly-as-13487216>Fill out this form to contact us with any questions.</ly-as-13487216></p>
+	<!-- <form accept-charset="UTF-8" id="contact_form" action="/contact" class="contact-form contact_form_care_page" method="post"> -->
+	{% form 'contact', id: "contact_form", class: "contact-form contact_form_care_page" %}
+		{%- if form.posted_successfully? -%}
+			<div class="wpcf7-response-output wpcf7-mail-sent-ok" role="alert">{% comment %}ly_i18n_replace_for_[ 'contact.form.post_success' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.post_success' | t }}{% endcapture %}{% include 'ly-static-string' with '13487223' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</div>
+		{%- elsif form.errors -%}
+			<div class="wpcf7-response-output wpcf7-validation-errors" role="alert">{{ form.errors | default_errors }}</div>
+		{%- endif -%}
+		<div class="row margin-special">
+			<div class="col-md-6">
+				<p>
+					<label><ly-as-13487217>First Name</ly-as-13487217><span class="required-field">*</span></label> 
+					<span class="wpcf7-form-control-wrap your-name">
+						<input type="text" name="contact[name]" value="{%- if form.first_name -%}{{ form.first_name }}{%- elsif customer -%}{{ customer.first_name }}{%- endif -%}" size="40" class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}" aria-required="true" aria-invalid="false">
+						<div class="error-box"><ly-as-13487133>First Name is required</ly-as-13487133></div>
+					</span> 
+				</p>
+			</div>
+			<div class="col-md-6">
+				<p>
+					<label><ly-as-13487218>Last Name</ly-as-13487218><span class="required-field">*</span></label> 
+					<span class="wpcf7-form-control-wrap your-name">
+						<input type="text" name="contact[name_last]" value="{%- if form.last_name -%}{{ form.last_name }}{%- elsif customer -%}{{ customer.last_name }}{%- endif -%}" size="40" class="{%- if form.errors contains 'name' -%}input__error{%- else -%}input__ok{%- endif -%}" aria-required="true" aria-invalid="false">
+						<div class="error-box"><ly-as-13487135>Last Name is required</ly-as-13487135></div>
+					</span> 
+				</p>
+			</div>
+		</div>
+	 	<p>
+	    <label>{% comment %}ly_i18n_replace_for_[ 'contact.form.email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.email' | t }}{% endcapture %}{% include 'ly-static-string' with '13487224' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}<span class="required-field">*</span></label> 
+			<span class="wpcf7-form-control-wrap your-email">
+				<input type="email" name="contact[email]" value="{%- if form.email -%}{{ form.email }}{%- elsif customer -%}{{ customer.email }}{%- endif -%}" size="40" class="{%- if form.errors contains 'email' -%}input__error{%- else -%}input__ok{%- endif -%}" aria-required="true" aria-invalid="false">
+				<div class="error-box email"><ly-as-13487137>Email Address is required</ly-as-13487137></div>
+				<div class="email-invalid"><ly-as-13487138>Please provide a valid Email Address.</ly-as-13487138></div>
+			</span> 
+	 	</p>
+	 	<div class="row margin-special">
+			<div class="col-md-6 phone-wrapper">
+	     	<p>
+					<label>{% comment %}ly_i18n_replace_for_[ 'contact.form.phone' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.phone' | t }}{% endcapture %}{% include 'ly-static-string' with '13487225' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+					<span class="wpcf7-form-control-wrap your-subject">
+						<input type="tel" class="{%- if form.errors contains 'phone' -%}input__error{%- else -%}input__ok{%- endif -%}" name="contact[phone]" pattern="[0-9\-]*" value="{%- if form[phone] -%}{{ form[phone] }}{%- elsif customer -%}{{ customer.phone }}{%- endif -%}" aria-required="true" aria-invalid="false">
+						<div class="error-box"><ly-as-13487140>Phone Number is required</ly-as-13487140></div>
+						<div class="phone-invalid"><ly-as-13487141>Please provide a valid Phone Number.</ly-as-13487141></div>
+					</span> 
+	     	</p>
+	    </div>
+			<div class="col-md-6">
+				<p>
+	        <label><ly-as-13487219>Contact Via:</ly-as-13487219></label> 
+					<span class="wpcf7-form-control-wrap your-name">
+						<label class="radio-inline"><input type="radio" name="contact[contact_via]" value="email" checked> <ly-as-13487220>Email</ly-as-13487220></label>
+						<label class="radio-inline"><input type="radio" name="contact[contact_via]" value="phone"><ly-as-13487221>Phone</ly-as-13487221></label>
+					</span> 
+	      </p>
+	    </div>
+	  </div>
+	  <div class="no-margin">
+	   	<p class="no-margin">
+	    	<label>{% comment %}ly_i18n_replace_for_[ 'contact.form.message' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.message' | t }}{% endcapture %}{% include 'ly-static-string' with '13487226' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label> 
+	      <span class="wpcf7-form-control-wrap your-message">
+	        <textarea name="contact[body]" cols="40" rows="10" class="{%- if form.errors contains 'body' -%}input__error{%- else -%}input__ok{%- endif -%}" aria-required="true" aria-invalid="false">{%- if form.body -%}{{ form.body }}{%- endif -%}</textarea>
+	      </span> 
+	   	</p>
+      <div class="error-box message"><ly-as-13487180>Message is required</ly-as-13487180></div>
+	  </div>
+	  <p class="require-description"><span class="required-field">*</span><ly-as-13487222>Required Field</ly-as-13487222></p>
+		{% include 'email-lang' %}
+		<input type="hidden" name="lang" value="{{lang}}">
+	  <p class="no-margin"><input type="submit" value="{% comment %}ly_i18n_replace_for_[ 'contact.form.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'contact.form.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13487227' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" class="wpcf7-form-control wpcf7-submit btn btn-color-primary"></p>
+		<!-- </form> -->
+	{% endform %}
+</div>
+
+{% schema %}
+{
+	"class": "contact_description",
+	"name": "Contact Description",
+	"settings": [
+		{
+			"type": "text",
+			"id": "top_title",
+			"label": "Title"
+		},
+		{
+			"type": "textarea",
+			"id": "top_description",
+			"label": "Description"
+		}
+	]
+}
+{% endschema %}
+
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+		$("input[name='contact[contact_via]']").change(function(){
+			if($(this).val() == "email") {
+				$('.phone-wrapper').hide();
+				$('.phone-wrapper').removeClass('active');
+			} else {
+				$('.phone-wrapper').show();
+				$('.phone-wrapper').addClass('active');
+			}
+		});
+	});
+</script>
+<style>
+	.phone-wrapper {
+		display: none;
+	}
+</style>

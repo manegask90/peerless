@@ -1,0 +1,32 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="about-banner-wrapper">
+	{% if section.settings.banner_background %}
+	<img src="{{ section.settings.banner_background | img_url: '2500x' }}" alt="About Banner" />
+	{% endif %}
+	{% if section.settings.banner_title %}
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+	      <h2 class="about-title">{{ section.settings.banner_title }}</h2>
+      </div>
+    </div>
+  </div>
+	{% endif %}
+</div>
+
+{% schema %}
+	{
+      	"name": "Literature Top",
+      	"settings": [
+     		{
+       			"type": "header",
+           	"content": "Page title"
+         	}
+        ],
+        "presets": [
+         	{
+            	"name": "About Banner",
+            	"category": "Banner"
+         	}
+      	]
+    }
+{% endschema %}

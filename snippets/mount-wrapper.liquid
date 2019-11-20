@@ -1,0 +1,53 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="mount-search-container">
+   <form role="search" method="get" id="searchform" class="searchform{%- if settings.ajax_search %} basel-ajax-search{%- endif -%}" action="/search">
+      {% comment %}
+      <div class="search-selector">
+         <select class="search-option">
+            <option value="search" selected><ly-as-13490500>Product Search</ly-as-13490500></option>
+            <option value="mount"><ly-as-13490501>MountFinder™</ly-as-13490501></option>
+         </select>
+         <span class="search-label"><ly-as-13490501>MountFinder™</ly-as-13490501></span><i class="fa fa-caret-down"></i>
+         <ul class="search-items">
+            <li class="active" data-value="search"><ly-as-13490500>Product Search</ly-as-13490500></li>
+            <li data-value="mount"><ly-as-13490501>MountFinder™</ly-as-13490501></li>
+         </ul>
+      </div>
+      {% endcomment %}
+      {% comment %}<input type="text" placeholder="{% endcomment %}
+      {% comment %}ly_i18n_replace_for_[ 'general.search.placeholder' | t ]_begin{% endcomment %}
+      {% comment %}{% capture ly_template %}{{ 'general.search.placeholder' | t }}{% endcapture %}{% include 'ly-static-string' with '13490502' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% endcomment %}
+      {% comment %}ly_i18n_replace_end{% endcomment %}
+      {% comment %}" value="{{ search.terms | escape }}" name="q" id="q" autocomplete="off" class="search-input">{% endcomment %}
+      {% comment %}
+      <input type="text" placeholder="mount finder" autocomplete="off" class="search-input mount-finder-search-input hidden">
+      {%- if settings.only_search_products -%}<input type="hidden" name="type" value="product" />{%- endif -%}
+      <button type="submit" id="searchsubmit"></button>
+      {% endcomment %}
+   </form>
+   <div class="search-results-wrapper">
+      <div class="basel-search-results">
+         <div class="autocomplete-suggestions" style="position: absolute; display: none; max-height: 300px; z-index: 9999;"></div>
+      </div>
+   </div>
+</div>
+{% comment %}
+<script type="text/javascript">
+   $(".mount-search-container .search-selector").unbind('click').click(function(){
+      if( $(window).width() > 767 ) {
+         $(this).toggleClass('shown');
+      }
+   });
+   $(".mount-wrapper .search-selector .search-items li").click(function(){
+      if( $(window).width() > 767 ) {
+         $(this).parent().siblings('.search-label').text($(this).text());
+         $(this).parent().siblings('.search-option').val($(this).data('value'));
+         $('.mount-search-container .search-input').toggleClass('hidden');
+      } else {
+         $(this).siblings('li').removeClass('active');
+         $(this).addClass('active');
+         $('.mount-search-container .search-input').toggleClass('hidden');
+      }
+   });
+</script>
+{% endcomment %}

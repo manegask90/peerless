@@ -1,0 +1,98 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="links-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 col-md-8">
+        {% if section.settings.links_description %}
+        <div class="links-description">{{ section.settings.links_description }}</div>
+        {% endif %}
+
+        {% if section.settings.careers_url or section.settings.careers_text or section.settings.contact_url or section.settings.contact_text or section.settings.trade_url or section.settings.trade_text %}
+        <div class="buttons-wrapper">
+          {%- if section.settings.careers_url or section.settings.careers_text -%}
+          <a href="{% if section.settings.careers_url %}{{section.settings.careers_url}}{% else %}javascript:void(0){% endif %}">{%- if section.settings.careers_text -%}{{section.settings.careers_text}}{%- else -%}<ly-as-13487110>Careers</ly-as-13487110>{%- endif -%}</a>
+          {%- endif -%}
+
+          {% if section.settings.contact_url or section.settings.contact_text %}
+          <a href="{% if section.settings.contact_url %}{{section.settings.contact_url}}{% else %}javascript:void(0){% endif %}">
+          {% if section.settings.contact_text %}
+                {{section.settings.contact_text}}
+          {% else %}<ly-as-13487111>Contact US</ly-as-13487111>
+          {% endif %}
+          </a>
+          {% endif %}
+
+          {%- if section.settings.trade_url or section.settings.trade_text -%}
+          <a href="{% if section.settings.trade_url %}{{section.settings.trade_url}}{% else %}javascript:void(0){% endif %}">
+          {%- if section.settings.trade_text -%}
+                {{section.settings.trade_text}}
+          {%- else -%}<ly-as-13487112>Tradeshows</ly-as-13487112>
+          {%- endif -%}
+          </a>
+          {%- endif -%}
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+	{
+  	"name": "About Links",
+  	"settings": [
+      {
+        "type": "textarea",
+        "id": "links_description",
+        "label": "Description"
+      },
+      {
+        "type": "header",
+        "content": "Careers Button"
+      },
+     	{
+        "type": "url",
+        "id": "careers_url",
+        "label": "Button URL"
+     	},
+      {
+        "type": "text",
+        "id": "careers_text",
+        "label": "Button Text"
+      },
+      {
+        "type": "header",
+        "content": "Contact Button"
+      },
+      {
+        "type": "url",
+        "id": "contact_url",
+        "label": "Button URL"
+      },
+      {
+        "type": "text",
+        "id": "contact_text",
+        "label": "Button Text"
+      },
+      {
+        "type": "header",
+        "content": "Tradeshows Button"
+      },
+      {
+        "type": "url",
+        "id": "trade_url",
+        "label": "Button URL"
+      },
+      {
+        "type": "text",
+        "id": "trade_text",
+        "label": "Button Text"
+      }
+    ],
+    "presets": [
+     	{
+        	"name": "About Links",
+        	"category": "Content"
+     	}
+  	]
+  }
+{% endschema %}

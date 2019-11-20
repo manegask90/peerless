@@ -1,0 +1,24 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="sales-info-wrapper">
+	<h2 class="sales-title">{{ section.settings.top_title }}</h2>
+	<div class="sales-content">{{ section.settings.sales_description }}</div>
+</div>
+
+{% schema %}
+{
+	"class": "sales_information",
+	"name": "Sales Information",
+	"settings": [
+		{
+			"type": "text",
+			"id": "top_title",
+			"label": "Title"
+		},
+		{
+			"type": "html",
+			"id": "sales_description",
+			"label": "Description"
+		}
+	]
+}
+{% endschema %}

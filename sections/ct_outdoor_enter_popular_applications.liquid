@@ -1,0 +1,130 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="outdoor-enter-applications">
+  <div class="container-fluid">
+    <div class="row outdoor-enter-applications-inner">
+      <div class="col-md-12 applications-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{ section.settings.desc }}</div>
+      </div>
+      <div class="applications-cards">
+        <div class="row">
+        {%- for block in section.blocks -%}
+            {%- case block.type -%}
+                {%- when 'article' -%}
+                <div class="col-md-6 col-sm-6 col-xs-6 applications-card big-block">
+                        <div class="block-inner">
+                        <div class="img-wrap">
+                            <img src="{{block.settings.image  | img_url: '730x' }}" alt="Image" />
+                        </div>
+                        <div class="content-wrap">
+                            <h5 class="app-title">{{block.settings.title}}</h5>
+                        </div>
+                        </div>
+                </div>
+                {%- when 'content' -%}
+                <div class="col-md-3 col-sm-6 col-xs-6 applications-card small-block">
+                        <div class="block-inner">
+                        <div class="img-wrap">
+                            <img src="{{block.settings.image  | img_url: '360x' }}" alt="Image" />
+                        </div>
+                        <div class="content-wrap">
+                            <h5 class="app-title">{{block.settings.title}}</h5>
+                        </div>
+                        </div>
+                </div>
+            {%- endcase -%}
+        {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Outdoor Applications",
+    "class": "section-outdoor-enter-applic",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Popular Applications"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Big Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "url",
+            "id": "banner_url",
+            "label": "Link"
+          }
+        ]
+      },
+      {
+        "type": "content",
+        "name": "Small Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "url",
+            "id": "banner_url",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Outdoor Applications Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}
+
+
+
+<script>
+  function windowSize(){
+    var window_size = $(window).width(),
+        wrap = $('.main-page-wrapper .container').width(),
+        wrap_borders = wrap + 30;
+        sum = (window_size - wrap_borders) / 2;
+        $('.outdoor-enter-applications').css({"width": window_size, "left": '-' + sum +'px'});
+}
+$(window).load(windowSize);
+$(window).resize(windowSize);
+</script>

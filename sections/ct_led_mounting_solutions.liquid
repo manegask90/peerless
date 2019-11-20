@@ -1,0 +1,87 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="led-mounting-solutions">
+  <div class="container">
+    <div class="led-mounting-solutions-inner">
+      <h4 class="box-title">{{ section.settings.title }}</h4>
+      <div class="content">{{section.settings.desc}}</div>
+    </div>
+    {%- if section.blocks.size > 0 -%}
+      <div class="led-mounting-solutions-list">
+        {%- for block in section.blocks -%}
+          <div class="col-xs-12 col-md-4">
+            <div class="logo-wrap">
+              <img src="{{block.settings.logo  | img_url: 'master' }}" alt="{{block.settings.logo.alt}}" />
+            </div>
+            <div class="img-wrap">
+              <img src="{{block.settings.image  | img_url: 'master' }}" alt="{{block.settings.image.alt}}" />
+            </div>
+            <div class="desc-text">{{block.settings.text}}</div>
+            <a class="btn" href="{{block.settings.btnUrl}}">{{block.settings.btnText}}</a>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Led Mounting Solutions",
+    "class": "section-led-mounting-solutions",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Dedicated LED Mounting Solutions"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "content",
+        "name": "Solution Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Description text"
+          },
+          {
+            "type": "text",
+            "id": "btnText",
+            "label": "Button text",
+            "default": "View Brochure"
+          },
+          {
+            "type": "url",
+            "id": "btnUrl",
+            "label": "Button link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Led Mounting Description Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

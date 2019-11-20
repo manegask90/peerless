@@ -1,0 +1,35 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<li id="menu-item-0219041994" class="language menu-item menu-item-19041994 menu-item-has-children menu-item-design-default item-event-hover">
+   <a href="#"><span>Language:</span>
+
+      {% case language %}
+         {% when 'ly73951' %}
+            <span> ENG</span>
+         {% when 'ly73952' %}
+            <span> DE</span>
+         {% when 'ly73954' %}
+            <span> ES</span>
+         {% when 'ly77552' %}
+            <span> FR</span>
+      {% endcase %}
+   </a>
+   <div class="sub-menu-dropdown color-scheme-dark">
+      <div class="container">
+         <ul class="sub-menu color-scheme-dark
+         {%- case settings.site  -%} 
+            {% when 'US' %}
+                  us-site
+               {% when 'DE' %}
+                  germany-site
+               {% when 'Latin America' %}
+                  latin-america-site
+               {% when 'FR' %}
+                  france-site
+               {% when 'UK' %}
+                  english-site
+            {%- endcase -%}">
+            {% include 'ly-languages-switcher' %}
+         </ul>
+      </div>
+   </div>
+</li> 

@@ -1,0 +1,53 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="row">
+    <div class="col-xs-12">
+      {% include 'title-with-lines', head_title: 'Business Development' %}
+    </div>
+  </div>
+  
+  <div class="row flex-distribution">
+    {% for block in section.blocks %}
+      <div class="col-xs-12 col-sm-3 it-distribution-item-col">
+          {% include 'it-distribution-item' %}
+      </div>
+    {% endfor %}
+  </div>
+  
+  {% schema %}
+  {
+    "name": "Business Development",
+    "blocks": [
+      {
+        "type": "development",
+        "name": "Development",
+        "settings": [
+          {
+            "id": "name",
+            "type": "text",
+            "label": "Name"
+          },
+          {
+            "id": "position",
+            "type": "text",
+            "label": "Position"
+          },
+          {
+            "id": "phone",
+            "type": "text",
+            "label": "Phone"
+          },
+          {
+            "id": "c",
+            "type": "text",
+            "label": "C"
+          },
+          {
+            "id": "email",
+            "type": "text",
+            "label": "Email"
+          }
+        ]
+      }
+    ]
+  }
+  {% endschema %}

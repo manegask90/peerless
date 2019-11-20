@@ -1,0 +1,18 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="it-distribution-item">
+  {% if block.settings.general_position %}
+    <h2 class="it-distribution-item-title">{{ block.settings.general_position }}</h2>
+  {% endif %}
+  <h4 class="it-distribution-item-name">{{ block.settings.name }}</h4>
+  <p class="it-distribution-item-position">{{ block.settings.position }}</p>
+  <div class="contacts">
+    {% unless block.settings.phone == blank %}
+      <p class="it-distribution-item-phone"><span><ly-as-13490397>P:</ly-as-13490397> </span>{{ block.settings.phone }}</p>
+    {% endunless %}
+    {% unless block.settings.c == blank %}
+      <p class="it-distribution-item-g"><span><ly-as-13490398>C:</ly-as-13490398> </span>{{ block.settings.c }}</p>
+    {% endunless %}
+    {% unless block.settings.email == blank %}
+      <p class="it-distribution-item-email"><span><ly-as-13490399>E:</ly-as-13490399> </span><a href="mailto:{{ block.settings.email }}">{{ block.settings.email }}</a></p>
+    {% endunless %}
+  </div>
+</div>

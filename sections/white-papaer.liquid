@@ -1,0 +1,109 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">
+  {% for block in section.blocks %}
+  <div class="block">
+      <div class="block-image">
+        <img src="{{ block.settings.image | img_url: '400x' }}">
+      </div>
+      <div class="block-content">
+        {% case language %}
+          {% when 'ly73951' %}
+            <h1>{{ block.settings.title | escape }}</h1>
+            <p>{{ block.settings.desc | escape }}</p>
+          {% when 'ly73952' %}
+            <h1>{{ block.settings.title_ge | escape }}</h1>
+            <p>{{ block.settings.desc_ge | escape }}</p>
+          {% when 'ly73954' %}
+            <h1>{{ block.settings.title_es | escape }}</h1>
+            <p>{{ block.settings.desc_es | escape }}</p>
+          {% when 'ly77552' %}
+            <h1>{{ block.settings.title_fr | escape }}</h1>
+            <p>{{ block.settings.desc_fr | escape }}</p>
+        {% endcase %}
+      </div>
+      <div class="block-button">
+        <a target="_blank" href="{% if block.settings.button_url %}{{ block.settings.button_url }}{% else %}javascript:void(0){% endif %}">{{ block.settings.sub_title | escape }}</a>
+      </div>
+  </div>
+  {% endfor %}
+</div>
+{% schema %}
+{
+  "name": "White Paper Page",
+  "class": "white-paper-sub",
+  "settings": [    
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text column",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Column heading"
+        },
+        {
+          "type": "text",
+          "id": "title_fr",
+          "label": "Heading France",
+          "default": "Column heading"
+        },
+        {
+          "type": "text",
+          "id": "title_ge",
+          "label": "Heading Germany",
+          "default": "Column heading"
+        },
+        {
+          "type": "text",
+          "id": "title_es",
+          "label": "Heading Spanish",
+          "default": "Column heading"
+        },
+        {
+          "type": "textarea",
+          "id": "desc",
+          "label": "Text",
+          "default": "Describe the main features of your brand or products using a few lines of text along with images or icons."
+        },
+        {
+          "type": "textarea",
+          "id": "desc_fr",
+          "label": "Text France",
+          "default": "Describe the main features of your brand or products using a few lines of text along with images or icons."
+        },
+        {
+          "type": "textarea",
+          "id": "desc_ge",
+          "label": "Text Germany",
+          "default": "Describe the main features of your brand or products using a few lines of text along with images or icons."
+        },
+        {
+          "type": "textarea",
+          "id": "desc_es",
+          "label": "Text Spanish",
+          "default": "Describe the main features of your brand or products using a few lines of text along with images or icons."
+        },
+        {
+          "type": "text",
+          "id": "sub_title",
+          "label": "Button Title",
+          "default": "Read More"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

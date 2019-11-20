@@ -1,0 +1,82 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}{% if section.settings.article_show == 'yes' %}
+  <div class="custom-page-container">
+    <div class="custom-page-cards">
+      {% for block in section.blocks %}
+      <div class="custom-page-card">
+        <img src="{{ block.settings.image.src | img_url: '1024x' }}">
+        <div class="custom-page-card-text">
+          <span class="custom-page-card-num">0{{ forloop.index }}</span>
+          <span class="custom-page-card-title">{{ block.settings.title }}</span>
+          <span class="custom-page-card-subtitle">{{ block.settings.subtitle }}</span>
+          <span class="custom-page-card-content">{{ block.settings.content }}</span>
+        </div>
+      </div>
+      <br class="responsive-br-{{forloop.index}}">
+      {% endfor %}
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+  {
+    "name": "Rental Article",
+    "class": "section-custom-page-article",
+    "settings": [
+      {
+        "type": "select",
+        "id": "article_show",
+        "label": "Show Article",
+        "default": "yes",
+        "options": [
+          {
+            "value": "yes",
+            "label": "Yes"
+          },
+          {
+            "value": "no",
+            "label": "No"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Article",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "default": "Lorem Ipsum"
+          },
+          {
+            "type": "text",
+            "id": "subtitle",
+            "label": "Sub Title",
+            "default": "Rental & Staging"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut.</p>"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Rental Article",
+        "settings": {
+          "article_show": "yes"
+        }
+      }
+    ]
+  }
+{% endschema %}

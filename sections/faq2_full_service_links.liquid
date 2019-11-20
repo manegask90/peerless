@@ -1,0 +1,52 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="container">
+  <div class="row">
+      <div class="col-xs-12">{% include 'title-with-lines', head_title: section.settings.title %}</div>
+  </div>
+
+  <div class="row">
+
+    {% for block in section.blocks %}
+      <div class="col-sm-4 faq__link-wrapper">
+          {% include 'title-red-underline', head_title: block.settings.title, classes: 'underline-left' %}
+
+          <ul class="faq__link-list">
+            {% for link in linklists[block.settings.links].links %}
+              <li><a href= "{{ link.url }}">{% comment %}ly_code_replace_for_[ link.title ]_begin{% endcomment %}{% include 'ly-title' with link %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</a></li>
+            {% endfor %}
+          </ul>
+      </div>
+    {% endfor %}
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "FAQ Full Service",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_about_mounts_links",
+      "name": "Faq About Mounts links",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "link_list",
+          "id": "links",
+          "label": "Links"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

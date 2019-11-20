@@ -1,0 +1,550 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="banner-area">
+   <img src="{{ section.settings.banner_background | img_url: '2500x' }}" alt="certified_banner" />
+   <div class="certified_logo">
+      <img src="{{ section.settings.banner_logo | img_url: '800x' }}" alt="certified_logo" />
+   </div>
+</div>
+<div class="certified-content">
+	<div class="top-info-wrapper">
+      <div class="left">
+         <h2 class="border-title top-title">{{ section.settings.top_info_title }}</h2>
+         <p>{{ section.settings.top_info_content }}</p>
+         <div class="img-wrap">
+            <img src="{{ section.settings.top_info_logo2 | img_url: '116x' }}" alt="certified_banner" />
+            <img src="{{ section.settings.top_info_logo | img_url: '116x' }}" alt="certified_banner" />
+            <img src="{{ section.settings.top_info_logo1 | img_url: '116x' }}" alt="certified_banner" />
+         </div>
+      </div>
+      <div class="right" style="background-image: url({{ section.settings.top_info_right_bg | img_url: '' }});">
+         <div class="title-wrap">
+            <h3 class="right-title">{{- section.settings.top_info_right_title -}}
+               <span>
+                  {{- section.settings.top_info_right_title1 -}}
+               </span></h3>
+         </div>
+         <div class="cont">
+            {{- section.settings.top_info_right_cont -}}
+         </div>
+         <div class="btn-wrap">
+            <a href="{{ section.settings.top_info_right_url }}" class="btn"><ly-as-13487129>Visit Now</ly-as-13487129></a>
+         </div>
+      </div>
+	</div>
+	<div class="certified-items-wrapper">
+      <div class="top-content">
+         <h2 class="border-title certified-info-title">{{ section.settings.certified_info_title }}</h2>
+         <p>{{ section.settings.certified_info_description }}</p>
+         <div class="img-wrap">
+            <img src="{{ section.settings.info_logo | img_url: '116x' }}" alt="certified_banner" />
+            <img src="{{ section.settings.info_logo1 | img_url: '116x' }}" alt="certified_banner" />
+         </div>
+      </div>
+      <div class="certified-items">
+         <div class="container">
+            <div class="items-wrap">
+            {% for item in section.blocks %}
+               {% assign item_class = '' %}
+               {% case item.settings.certified_level %}
+                  {% when 'Platinum Level' %}
+                    {% assign item_class = 'platinum' %}
+                  {% when 'Gold Level' %}
+                     {% assign item_class = 'gold' %}
+                  {% when 'Silver Level' %}
+                     {% assign item_class = 'silver' %}
+                  {% when 'Diamond Level' %}
+                     {% assign item_class = 'diamond' %}
+                  {% else %}
+                     {% assign item_class = 'bronze' %}
+               {% endcase %}
+               {% comment %} <div class="col-xs-12 col-sm-6"> {% endcomment %}
+                  <div class="item {{ item_class }}">
+                     <div class="item-medal"><img src="{{ item.settings.certified_medal | img_url: '500x' }}" alt="{{ item.settings.certified_title }}" /></div>
+                     <div class="item-content">
+                        <p class="item-level">{{ item.settings.certified_level }}</p>
+                        <h3 class="item-title">{{ item.settings.certified_title }}</h3>
+                        <p class="item-description">{{ item.settings.certified_description }}</p>
+                        <a href="{% if item.settings.certified_url %}{{item.settings.certified_url}}{% else %}javascript:void(0){% endif %}"><ly-as-13487130>View upcoming</ly-as-13487130></a>
+                     </div>
+                  </div>
+               {% comment %} </div> {% endcomment %}
+            {% endfor %}
+            </div>
+         </div>
+      </div>
+	</div>
+</div>
+<div class="reserve-area">
+   <div class="reserve-wrapper">
+      <div class="top-info">
+         <h2 class="reserve-title border-title white-border">{{ section.settings.reserve_title }}</h2>
+         <p class="reserve-description">{{ section.settings.reserve_description }}</p>
+      </div>
+      <form class="reserve-form" id="reserve-train-form" novalidate="">
+         <div class="country-error error-box">
+            <ly-as-13487131>Sorry, but we only offer in-person training in the United States at this time.</ly-as-13487131>
+         </div>
+         <div class="info-box"></div>
+         <div class="form-group">
+            <div class="half-cell">
+               <label for="firstName"><ly-as-13487132>First Name</ly-as-13487132></label>
+               <input type="text" class="form-control" id="firstName" name="first_name" placeholder="First Name*" required>
+               <div class="error-box"><ly-as-13487133>First Name is required</ly-as-13487133></div>
+            </div>
+            <div class="half-cell">
+               <label for="lastName"><ly-as-13487134>Last Name</ly-as-13487134></label>
+               <input type="text" class="form-control" id="lastName" name="last_name" placeholder="Last Name*" required>
+               <div class="error-box"><ly-as-13487135>Last Name is required</ly-as-13487135></div>
+            </div>
+         </div>
+         <div class="form-group">
+            <div class="half-cell">
+               <label for="emailAddress"><ly-as-13487136>Email address</ly-as-13487136></label>
+               <input type="email" class="form-control" id="emailAddress" name="email" placeholder="Email Address*" required>
+               <div class="error-box"><ly-as-13487137>Email Address is required</ly-as-13487137></div>
+               <div class="email-invalid"><ly-as-13487138>Please provide a valid Email Address.</ly-as-13487138></div>
+            </div>
+            <div class="half-cell">
+               <label for="phone"><ly-as-13487139>Phone Number</ly-as-13487139></label>
+               <input type="tel" class="form-control" id="phone" name="phone" placeholder="Phone Number" required>
+               <div class="error-box"><ly-as-13487140>Phone Number is required</ly-as-13487140></div>
+               <div class="phone-invalid"><ly-as-13487141>Please provide a valid Phone Number.</ly-as-13487141></div>
+            </div>
+         </div>
+         <div class="form-group">
+            <div class="half-cell">
+               <label for="title"><ly-as-134871361>Title</ly-as-134871361></label>
+               <input type="text" class="form-control" id="title" name="title" placeholder="Title">
+            </div>
+            <div class="half-cell">
+               <label for="company"><ly-as-134871391>Company</ly-as-134871391></label>
+               <input type="text" class="form-control" id="company" name="company" placeholder="Company*" required>
+               <div class="error-box"><ly-as-134871401>Company is required</ly-as-134871401></div>
+            </div>
+         </div>
+         <div class="form-group">
+            <div class="tri-cell">
+               <label for="city"><ly-as-13487142>City</ly-as-13487142></label>
+               <input type="text" class="form-control" id="city" name="city" placeholder="City*" required>
+               <div class="error-box"><ly-as-13487143>City is required</ly-as-13487143></div>
+            </div>
+            <div class="tri-cell">
+               <label for="state"><ly-as-13487144>State</ly-as-13487144></label>
+               <select id="state" name="state" class="form-control" required>
+                  <option value=""><ly-as-13487144>State</ly-as-13487144></option>
+                  <option value="Alabama"><ly-as-13487145>Alabama</ly-as-13487145></option>
+                  <option value="Alaska"><ly-as-13487146>Alaska</ly-as-13487146></option>
+                  <option value="American Samoa"><ly-as-13487147>American Samoa</ly-as-13487147></option>
+                  <option value="Arizona"><ly-as-13487148>Arizona</ly-as-13487148></option>
+                  <option value="Arkansas"><ly-as-13487149>Arkansas</ly-as-13487149></option>
+                  <option value="California"><ly-as-13487150>California</ly-as-13487150></option>
+                  <option value="Colorado"><ly-as-13487151>Colorado</ly-as-13487151></option>
+                  <option value="Connecticut"><ly-as-13487152>Connecticut</ly-as-13487152></option>
+                  <option value="Delaware"><ly-as-13487153>Delaware</ly-as-13487153></option>
+                  <option value="District of Columbia"><ly-as-13487154>District of Columbia</ly-as-13487154></option>
+                  <option value="Federated States of Micronesia"><ly-as-13487155>Federated States of Micronesia</ly-as-13487155></option>
+                  <option value="Florida"><ly-as-13487156>Florida</ly-as-13487156></option>
+                  <option value="Georgia"><ly-as-13487157>Georgia</ly-as-13487157></option>
+                  <option value="Guam"><ly-as-13487158>Guam</ly-as-13487158></option>
+                  <option value="Hawaii"><ly-as-13487159>Hawaii</ly-as-13487159></option>
+                  <option value="Idaho"><ly-as-13487160>Idaho</ly-as-13487160></option>
+                  <option value="Illinois"><ly-as-13487161>Illinois</ly-as-13487161></option>
+                  <option value="Indiana"><ly-as-13487162>Indiana</ly-as-13487162></option>
+                  <option value="Iowa"><ly-as-13487163>Iowa</ly-as-13487163></option>
+                  <option value="Kansas"><ly-as-13487164>Kansas</ly-as-13487164></option>
+                  <option value="Kentucky"><ly-as-13487165>Kentucky</ly-as-13487165></option>
+                  <option value="Louisiana"><ly-as-13487166>Louisiana</ly-as-13487166></option>
+                  <option value="Maine"><ly-as-13487167>Maine</ly-as-13487167></option>
+                  <option value="Marshall Islands"><ly-as-13487168>Marshall Islands</ly-as-13487168></option>
+                  <option value="Maryland"><ly-as-13487169>Maryland</ly-as-13487169></option>
+                  <option value="Massachusetts"><ly-as-13487170>Massachusetts</ly-as-13487170></option>
+                  <option value="Michigan"><ly-as-13487171>Michigan</ly-as-13487171></option>
+                  <option value="Minnesota"><ly-as-13487172>Minnesota</ly-as-13487172></option>
+                  <option value="Mississippi"><ly-as-13487173>Mississippi</ly-as-13487173></option>
+                  <option value="Missouri"><ly-as-13487174>Missouri</ly-as-13487174></option>
+                  <option value="Montana"><ly-as-13487175>Montana</ly-as-13487175></option>
+                  <option value="Nebraska"><ly-as-13487176>Nebraska</ly-as-13487176></option>
+                  <option value="Nevada"><ly-as-13487177>Nevada</ly-as-13487177></option>
+                  <option value="New Hampshire"><ly-as-13487178>New Hampshire</ly-as-13487178></option>
+                  <option value="New Jersey"><ly-as-13487179>New Jersey</ly-as-13487179></option>
+                  <option value="New Mexico"><ly-as-13487180>New Mexico</ly-as-13487180></option>
+                  <option value="New York"><ly-as-13487181>New York</ly-as-13487181></option>
+                  <option value="North Carolina"><ly-as-13487182>North Carolina</ly-as-13487182></option>
+                  <option value="North Dakota"><ly-as-13487183>North Dakota</ly-as-13487183></option>
+                  <option value="Northern Mariana Islands"><ly-as-13487184>Northern Mariana Islands</ly-as-13487184></option>
+                  <option value="Ohio"><ly-as-13487185>Ohio</ly-as-13487185></option>
+                  <option value="Oklahoma"><ly-as-13487186>Oklahoma</ly-as-13487186></option>
+                  <option value="Oregon"><ly-as-13487187>Oregon</ly-as-13487187></option>
+                  <option value="Palau"><ly-as-13487188>Palau</ly-as-13487188></option>
+                  <option value="Pennsylvania"><ly-as-13487189>Pennsylvania</ly-as-13487189></option>
+                  <option value="Puerto Rico"><ly-as-13487190>Puerto Rico</ly-as-13487190></option>
+                  <option value="Rhode Island"><ly-as-13487191>Rhode Island</ly-as-13487191></option>
+                  <option value="South Carolina"><ly-as-13487192>South Carolina</ly-as-13487192></option>
+                  <option value="South Dakota"><ly-as-13487193>South Dakota</ly-as-13487193></option>
+                  <option value="Tennessee"><ly-as-13487194>Tennessee</ly-as-13487194></option>
+                  <option value="Texas"><ly-as-13487195>Texas</ly-as-13487195></option>
+                  <option value="Utah"><ly-as-13487196>Utah</ly-as-13487196></option>
+                  <option value="Vermont"><ly-as-13487197>Vermont</ly-as-13487197></option>
+                  <option value="Virgin Islands"><ly-as-13487198>Virgin Islands</ly-as-13487198></option>
+                  <option value="Virginia"><ly-as-13487199>Virginia</ly-as-13487199></option>
+                  <option value="Washington"><ly-as-13487200>Washington</ly-as-13487200></option>
+                  <option value="West Virginia"><ly-as-13487201>West Virginia</ly-as-13487201></option>
+                  <option value="Wisconsin"><ly-as-13487202>Wisconsin</ly-as-13487202></option>
+                  <option value="Wyoming"><ly-as-13487203>Wyoming</ly-as-13487203></option>
+                  <option value="Armed Forces Americas"><ly-as-13487204>Armed Forces Americas</ly-as-13487204></option>
+                  <option value="Armed Forces Europe"><ly-as-13487205>Armed Forces Europe</ly-as-13487205></option>
+                  <option value="Armed Forces Pacific"><ly-as-13487206>Armed Forces Pacific</ly-as-13487206></option>
+               </select>
+               <div class="error-box"><ly-as-13487207>State is required</ly-as-13487207></div>
+            </div>
+            <div class="tri-cell">
+               <label for="country"><ly-as-13487208>Country</ly-as-13487208></label>
+               <select id="country" name="country" class="form-control" required>
+                 <option value="United States" selected><ly-as-13487209>United States</ly-as-13487209></option>
+                 <option value="Other"><ly-as-13487210>Other</ly-as-13487210></option>
+               </select>
+               <div class="error-box"><ly-as-13487131>Sorry, but we only offer in-person training in the United States at this time.</ly-as-13487131></div>
+            </div>
+         </div>
+         <div class="form-group">
+            <div class="half-cell">
+               <label for="countTrainees"><ly-as-13487211>Number of Trainees</ly-as-13487211></label>
+               <input type="number" class="form-control" id="countTrainees" name="trainees" placeholder="Number of Trainees*" min="1" required>
+               <div class="error-box"><ly-as-13487212>Number of Trainees is required.</ly-as-13487212></div>
+            </div>
+            <div class="half-cell">
+               <label for="location"><ly-as-13487213>Location</ly-as-13487213></label>
+               <input type="text" class="form-control" id="location" name="location" placeholder="Location (e.g. Conference Room)*" required>
+               <div class="error-box"><ly-as-13487214>Please describe where the training would be held.</ly-as-13487214></div>
+            </div>
+         </div>
+         <div class="form-group">
+            <label for="other"><ly-as-13487210>Other</ly-as-13487210></label>
+            <input type="text" class="form-control" id="other" name="other" placeholder="Are you looking for specific concepts, products, or applications?">
+         </div>
+         <div class="text-center">
+            {% include 'email-lang' %}
+            <input type="hidden" name="lang" value="{{lang}}">
+            <button type="submit" class="btn btn-default" id="reserve-action"><ly-as-13487215>Reserve Now</ly-as-13487215></button>
+         </div>
+      </form>
+   </div>
+</div>
+<div class="instructor-info-area">
+   <div class="container">
+      <div class="row">
+         <div class="col-xs-12 col-sm-8 col-sm-offset-2 col-xs-offset-0">
+            <div class="wrapper">
+               <div class="instructor-logo">
+                  <img src="{{ section.settings.instructor_logo | img_url: '800x' }}" alt="{{ section.settings.instructor_title }}" />
+               </div>
+               <div class="instructor-content">
+                  <h2 class="instructor-title border-title left-border">{{ section.settings.instructor_title }}</h2>
+                  <div class="instructor-summary">
+                     <div class="instructor-logo-mob">
+                        <img src="{{ section.settings.instructor_logo | img_url: '800x' }}" alt="{{ section.settings.instructor_title }}" />
+                     </div>
+                     <div class="instructor-summary-info">
+                        {{ section.settings.instructor_summary }}
+                     </div>
+                  </div>
+                  <div class="instructor-description">{{ section.settings.instructor_description }}</div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+
+{% schema %}
+   {
+      "name": "Certified Training",
+      "settings": [
+         {
+           "type": "header",
+           "content": "Banner"
+         },
+         {
+            "type": "image_picker",
+            "id": "banner_background",
+            "label": "Banner Background"
+         },
+         {
+            "type": "image_picker",
+            "id": "banner_logo",
+            "label": "Banner Logo"
+         },
+         {
+           "type": "header",
+           "content": "Top Info"
+         },
+         {
+            "type": "html",
+            "id": "top_info_title",
+            "label": "Top Info Title"
+         },
+         {
+            "type": "html",
+            "id": "top_info_content",
+            "label": "Top Info Content"
+         },
+         {
+            "type": "image_picker",
+            "id": "top_info_logo2",
+            "label": "Top Info Logo"
+         },
+         {
+            "type": "image_picker",
+            "id": "top_info_logo",
+            "label": "Top Info Logo"
+         },
+         {
+            "type": "image_picker",
+            "id": "top_info_logo1",
+            "label": "Top Info Logo"
+         },
+         {
+            "type": "html",
+            "id": "top_info_right_title",
+            "label": "Top Info Right Title"
+         },
+         {
+            "type": "html",
+            "id": "top_info_right_title1",
+            "label": "Top Info Right Title"
+         },
+         {
+            "type": "html",
+            "id": "top_info_right_cont",
+            "label": "Top Info Right Cont"
+         },
+         {
+            "type": "url",
+            "id": "top_info_right_url",
+            "label": "Top Info Right Url"
+         },
+         {
+            "type": "image_picker",
+            "id": "top_info_right_bg",
+            "label": "Top Info Right BG"
+         },
+         {
+           "type": "header",
+           "content": "Certified Items"
+         },
+         {
+            "type": "text",
+            "id": "certified_info_title",
+            "label": "Info Title"
+         },
+         {
+            "type": "html",
+            "id": "certified_info_description",
+            "label": "Info Content"
+         },
+         {
+            "type": "image_picker",
+            "id": "info_logo",
+            "label": "Info Logo"
+         },
+         {
+            "type": "image_picker",
+            "id": "info_logo1",
+            "label": "Info Logo"
+         },
+         {
+           "type": "header",
+           "content": "Reserve Section"
+         },
+         {
+            "type": "text",
+            "id": "reserve_title",
+            "label": "Reserve Title"
+         },
+         {
+            "type": "richtext",
+            "id": "reserve_description",
+            "label": "Reserve Description"
+         },
+         {
+           "type": "header",
+           "content": "Instructor Section"
+         },
+         {
+            "type": "image_picker",
+            "id": "instructor_logo",
+            "label": "Instructor Logo"
+         },
+         {
+            "type": "text",
+            "id": "instructor_title",
+            "label": "Instructor Title"
+         },
+         {
+            "type": "text",
+            "id": "instructor_summary",
+            "label": "Instructor Summary"
+         },
+         {
+            "type": "html",
+            "id": "instructor_description",
+            "label": "Instructor Description"
+         }
+      ],
+      "blocks": [
+         {
+            "type": "certified_item",
+            "name": "Certified Item",
+            "settings": [
+               {
+                  "type": "image_picker",
+                  "id": "certified_medal",
+                  "label": "Certified Medal Logo"
+               },
+               {
+                  "type": "text",
+                  "id": "certified_level",
+                  "label": "Certified Level"
+               },
+               {
+                  "type": "text",
+                  "id": "certified_title",
+                  "label": "Certified Title"
+               },
+               {
+                  "type": "textarea",
+                  "id": "certified_description",
+                  "label": "Description"
+               },
+               {
+                  "type": "url",
+                  "id": "certified_url",
+                  "label": "Button URL"
+               }
+            ]
+         }
+      ],
+      "presets": [
+         {
+            "name": "Certified Training Page",
+            "category": "Banner",
+            "blocks": [
+               { 
+                  "type": "certified_item"
+               }
+            ]
+         }
+      ]
+   }
+{% endschema %}
+
+
+{% comment %}ly_asset_replace_for_[ 'imask.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'imask.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+<script type="text/javascript">
+   var phoneElement = document.getElementById('phone');
+   var maskOptions = {
+      mask: '+1 (000) 000-0000'
+   };
+   var phoneMask = new IMask(phoneElement, maskOptions);
+
+   jQuery(document).ready(function(){
+      $(".reserve-form").submit(function(){
+         var validationError = validateReserveForm();
+         if (validationError) {
+            return false;
+         }
+
+         reserveTraning($(this));
+         return false;
+      });
+   });
+
+   $('#country').on('change', function () {
+      if ($(this).val() == 'Other') {
+         $('.country-error').show();
+      } else {
+         $('.country-error').hide();
+      }
+   });
+
+   $('.reserve-form [required]').on('input', function () {
+      var parent  = $(this).closest('div'),
+         errorBox = parent.find('.error-box');
+      if ($(this).val() == '') {
+         errorBox.show();
+         return;
+      }  else {
+         errorBox.hide();
+      }
+      
+      if ($(this).is('#emailAddress') && !validateEmail($(this).val())) {
+         parent.find('.email-invalid').show();
+      } else {
+         parent.find('.email-invalid').hide();
+      }
+
+      if ($(this).is('#phone') && phoneMask.unmaskedValue.length != 10) {
+         parent.find('.phone-invalid').show();
+      } else {
+         parent.find('.phone-invalid').hide();
+      }
+   });
+
+   function validateReserveForm () {
+      var requiredFields = $('.reserve-form [required]');
+      var validationError = false;
+      requiredFields.each(function () {
+         var parent  = $(this).closest('div'),
+            errorBox = parent.find('.error-box');
+         if ($(this).val() == '') {
+            errorBox.show()
+            validationError = true;
+         } else if ($(this).is('#emailAddress') && !validateEmail($(this).val())) {
+            parent.find('.email-invalid').show();
+            validationError = true;
+         } else if ($(this).is('#phone') && phoneMask.unmaskedValue.length != 10) {
+            parent.find('.phone-invalid').show();
+            validationError = true;
+         } else {
+            errorBox.hide();
+            parent.find('.email-invalid').hide();
+            parent.find('.phone-invalid').hide();
+         }
+      });
+
+      if ($('#country').val() == 'Other') {
+         $('.country-error').show();
+         validationError = true;
+      } else {
+         $('.country-error').hide();
+      }
+      if ($('#state').val() == 'State') {
+         validationError = true;
+      }
+      return validationError;
+   }
+
+   function reserveTraning (that) {
+      that.find('[type="submit"]').addClass('loading');
+      handleAjax(
+         '/apps/peerless/contact/reserve_certified',
+         that.serialize(),
+         "post",
+         function (response) {
+            if (response.success) {
+               displaySuccess(response.message, '.info-box');
+               jQuery(".reserve-form")[0].reset();
+            } else {
+               displayErrors(response.message, '.info-box');
+            }
+         },
+         function () {
+            that.find('[type="submit"]').removeClass('loading');
+         },
+         function (error) {
+           displayErrors('Something went wrong, please reload page and try again', '.info-box');
+         }
+      );
+   }
+</script>

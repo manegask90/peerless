@@ -1,0 +1,40 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}  
+  <div class="custom-text-image-container">
+    <div class="custom-text-image-grey-bg"></div>
+    <div class="custom-text-image-inner">
+      <div class="custom-text-image-left">
+        {{ section.settings.text }}
+      </div>
+      <div class="custom-text-image-right">
+        <img src="{{ section.settings.image.src | img_url: '500x' }}">
+      </div>
+    </div>
+  </div>
+
+{% schema %}
+  {
+    "name": "Custom Solutions Text",
+    "class": "section-custom-solutions-text-image",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text",
+        "default": "<p>The Peerless-AV® Custom Solutions Team maintains its own high-tech engineering and manufacturing equipment so you never have to ‘wait your turn’ as you do with companies that outsource production. Utilizing FEA simulation software for predictive modeling allows our engineering team to virtually test design performance before prototypes are produced.<br><br>Laser and CNC machining equipment offer rapid turnaround on prototypes, and faster finished products, making it easy for you to get a custom solution, even on a tough deadline.</p>"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Custom Solutions Text",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

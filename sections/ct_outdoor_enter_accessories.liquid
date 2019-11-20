@@ -1,0 +1,88 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="outdoor-enter-accessories">
+  <div class="container">
+    <div class="row outdoor-enter-accessories-inner">
+      <div class="col-md-12 accessories-top">
+        <h4 class="box-title">{{ section.settings.title }}</h4>
+        <div class="content">{{ section.settings.desc }}</div>
+      </div>
+      <div class="col-md-12 accessories-cards">
+        <div class="accessories-cards-wrap">
+        {%- for block in section.blocks -%}
+          <div class="accessories-card">
+              <a href="{{block.settings.banner_url}}">
+                  <div class="block-inner">
+                    <div class="img-wrap">
+                        <img src="{{block.settings.image  | img_url: '730x' }}" alt="Image" />
+                    </div>
+                    <div class="content-wrap">
+                        <h5 class="app-title">{{block.settings.title}}</h5>
+                    </div>
+                  </div>
+                <div class="desc">{{block.settings.desc}}</div>
+              </a>
+          </div>
+        {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+  {
+    "name": "Outdoor Accessories",
+    "class": "section-outdoor-enter-accessories",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Outdoor Accessories and Mounts"
+      },
+      {
+       "type": "textarea",
+       "id": "desc",
+       "label": "Box Decsription",
+       "placeholder": "Enter decsription"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "article",
+        "name": "Box",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "desc",
+            "label": "Decsription"
+          },
+          {
+            "type": "url",
+            "id": "banner_url",
+            "label": "Link"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "category": "Custom Sections",
+        "name": "Outdoor Accessories Box",
+        "settings": {
+        }
+      }
+    ]
+  }
+{% endschema %}

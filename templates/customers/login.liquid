@@ -1,0 +1,764 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- capture contentForQuerystring -%}{{ content_for_header }}{%- endcapture -%}
+{%- assign pageUrl = contentForQuerystring | split:'"pageurl":"' | last | split:'"' | first | split:'.myshopify.com' | last | replace:'\/','/' | replace:'%20',' ' | replace:'\u0026','&' -%}
+
+{%- assign title = 'customer.account.title' | t -%}
+{%- assign error_html = '' -%}
+
+<script>
+  {% if (customer != blank) %}
+    window.location = '/account';
+  {% endif %}
+</script>
+
+<div class="main-page-wrapper shopify-account">
+  {%- include 'page_heading', langify_title:title -%}
+  <!-- MAIN CONTENT AREA -->
+  <div class="container">
+    <div class="row">
+      <div class="site-content col-sm-12 account-template" role="main">
+        <article id="post-9" class="post-9 page type-page status-publish hentry">
+          <div class="entry-content">
+            <div class="shopify">
+              <div class="shopify-message resetSuccess" style="display:none;"><span class="fa fa-check-circle success_check"></span>{% comment %}ly_i18n_replace_for_[ 'customer.recover_password.success' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.recover_password.success' | t }}{% endcapture %}{% include 'ly-static-string' with '13491650' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</div>
+              <!-- <p class="text_content_success resetSuccess" style="display:none;">{% comment %}ly_i18n_replace_for_[ 'customer.recover_password.content_success' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.recover_password.content_success' | t }}{% endcapture %}{% include 'ly-static-string' with '13491651' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p> -->
+              <ul id="gl_shopify_error" class="shopify-error" style="display:none;">
+                  <li class="html_li" id="jas_html_frm"><i class="fa fa-exclamation-circle"></i></li>
+              </ul>
+              <div class="error_msg" style="display:none;">
+                <span class="error_text"><i class="fa fa-exclamation-circle"></i> <ly-as-13491599>An account with that email already exists</ly-as-13491599></span>
+              </div>
+              {% if contentForQuerystring contains '?checkout_url=' %}
+                {% unless customer %}
+                  <div class="checkout-message">
+                    <div class="message-content">
+                      {% comment %}ly_i18n_replace_for_[ 'cart.custom.message' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'cart.custom.message' | t }}{% endcapture %}{% include 'ly-static-string' with '13491652' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}
+                    </div>
+                  </div>
+                {% endunless %}
+              {% endif %}
+              <div class="basel-registration-page{%- if settings.login_tabs_enable and settings.login_register_enable == false %} basel-register-tabs{%- endif %}{%- if settings.login_register_enable %} one_form{%- endif -%}">
+                <div class="u-columns col2-set" id="customer_login">
+                  {%- if settings.login_register_enable == false %}
+                    <div class="u-column1 col-1 col-login" id="gl_CustomerLoginForm">
+                      <div class="login-info-box"></div>
+                      <h2>{% comment %}ly_i18n_replace_for_[ 'customer.login.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.title' | t }}{% endcapture %}{% include 'ly-static-string' with '13491653' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h2>
+                      {%- form 'customer_login',class:'login',id:'customer_login_form' -%}
+                        {%- if form.errors -%}
+                          {%- assign gl_shopify_error = true -%}
+                          {%- for field in form.errors -%}
+                            {%- if field == 'form' -%}
+                              {%- assign error_html = form.errors.messages[field] -%}
+                            {%- else -%}
+                              {%- assign error_html = form.errors.translated_fields[field] | append:form.errors.messages[field] -%}
+                            {%- endif -%}
+                            <div class="login-error">{{error_html}}</div>
+                          {%- endfor -%}
+                        {%- endif -%}
+                        <p class="shopify-FormRow shopify-FormRow--wide form-row form-row-wide">
+                          <label for="username">{% comment %}ly_i18n_replace_for_[ 'customer.login.email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.email' | t }}{% endcapture %}{% include 'ly-static-string' with '13491654' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}<span class="required"> *</span></label>
+                          <input type="text" class="shopify-Input shopify-Input--text input-text{%- if form.errors contains 'email' %} input--error{%- endif -%}" name="customer[email]" id="username" value="">
+                        </p>
+                        {%- if form.password_needed -%}
+                        <p class="shopify-FormRow shopify-FormRow--wide form-row form-row-wide">
+                           <label for="password">{% comment %}ly_i18n_replace_for_[ 'customer.login.password' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.password' | t }}{% endcapture %}{% include 'ly-static-string' with '13491655' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}<span class="required"> *</span></label>
+                            <input class="shopify-Input shopify-Input--text input-text{%- if form.errors contains 'password' %} input--error{%- endif -%}" type="password" name="customer[password]" id="CustomerPassword" id="password">
+                        </p>
+                        {%- endif -%}
+                        {%- if form.password_needed -%}
+                          <p class="shopify-LostPassword forget_pass">
+                            <img src="{{ 'lock-question__1.png' | file_url }}" class="pass_look">
+                            <a href="javascript:void(0)" onclick="showRecoverPasswordForm();return false;">{% comment %}ly_i18n_replace_for_[ 'customer.login.forgot_password' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.forgot_password' | t }}{% endcapture %}{% include 'ly-static-string' with '13491656' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                          </p>
+                        {%- endif -%}
+                        <p class="form-row">
+                          {%- if form.password_needed -%}         
+                            <label for="rememberme" class="inline inline invisible">
+                            <input class="shopify-Input shopify-Input--checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever"> <ly-as-13491600>Remember me</ly-as-13491600>           
+                            </label>
+                          {%- endif -%}
+                          <button type="submit" class="shopify-Button button">{% comment %}ly_i18n_replace_for_[ 'customer.login.sign_in' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.sign_in' | t }}{% endcapture %}{% include 'ly-static-string' with '13491657' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                        </p>
+                      {%- endform -%}
+                    </div>
+                    <div class="u-column1 col-1 col-reset_password" id="recover_password" style="display: none;">
+                      {%- form 'recover_customer_password', class:'shopify-ResetPassword lost_reset_password' -%}
+                        <h3 class="reset_pass"><img src="{{ 'lock-question__1.png' | file_url }}" style="margin-right:10px;  margin-top:-6px;"><ly-as-13491601>Forgot Password</ly-as-13491601></h3>
+                        <p class="gl_mb_0 gl_first">{% comment %}ly_i18n_replace_for_[ 'customer.recover_password.subtext' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.recover_password.subtext' | t }}{% endcapture %}{% include 'ly-static-string' with '13491658' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                        {%- if form.posted_successfully? -%}
+                          {%- assign reset_success = true -%}
+                        {%- endif -%}
+                        {%- if form.errors -%}
+                          {%- assign gl_shopify_error = true -%}
+                          {%- for field in form.errors -%}
+                            {%- if field == 'form' -%}
+                              {%- assign error_html = form.errors.messages[field] -%}
+                            {%- else -%}
+                              {%- assign error_html = form.errors.translated_fields[field] | append:form.errors.messages[field] -%}
+                            {%- endif -%}
+                          {%- endfor -%}
+                        {%- endif -%}
+                        <p class="shopify-form-row shopify-form-row--first form-row form-row-first">
+                          <label for="user_login" class="email_lable"><ly-as-13491602>Email</ly-as-13491602><span class="required">*</span></label>
+                          <input type="email" value="" name="email" id="RecoverEmail" class="shopify-Input shopify-Input--text input-text" autocorrect="off" autocapitalize="off">
+                        </p>
+                        <div class="clear"></div>
+                        <p class="shopify-form-row form-row">
+                          <input type="submit" class="shopify-Button button" value="{% comment %}ly_i18n_replace_for_[ 'customer.recover_password.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.recover_password.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13491659' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+                          <button type="button" onclick="hideRecoverPasswordForm();return false;" class="shopify-Button button">{% comment %}ly_i18n_replace_for_[ 'customer.recover_password.cancel' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.recover_password.cancel' | t }}{% endcapture %}{% include 'ly-static-string' with '13491660' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                        </p>
+                        <p class="shopify-FormRow shopify-FormRow--wide form-row form-row-wide invisible">
+                          <label for="FirstName">{% comment %}ly_i18n_replace_for_[ 'customer.register.first_name' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.register.first_name' | t }}{% endcapture %}{% include 'ly-static-string' with '13491661' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+                          <input type="text" name="customer[first_name]" id="FirstName2" autofocus="">
+                        </p>
+                        <p class="shopify-FormRow shopify-FormRow--wide form-row form-row-wide invisible">
+                          <label for="FirstName">{% comment %}ly_i18n_replace_for_[ 'customer.register.first_name' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.register.first_name' | t }}{% endcapture %}{% include 'ly-static-string' with '13491661' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+                          <input type="text" name="customer[first_name]" id="FirstName" autofocus="">
+                        </p>
+                      {%- endform -%}
+                    </div>
+                    <div class="u-column2 col-2 col-register col-register-change" id="col-register">
+                      <div class="info-box"></div>
+                      <h2>{% comment %}ly_i18n_replace_for_[ 'customer.register.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.register.title' | t }}{% endcapture %}{% include 'ly-static-string' with '13491662' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h2>
+                      {% if settings.regional_site_enabled == false %}
+                        <label for="Accounttype"><ly-as-13491603>ACCOUNT TYPE</ly-as-13491603><span class="required">*</span></label>
+                        <select id="customer_accounttype" name="customer_accounttype" onchange="business_account(this)" required class="required_field">
+                          <option value=""><ly-as-13491604>Please Select</ly-as-13491604></option>
+                          <option value="B2C"><ly-as-13491605>Consumer account</ly-as-13491605></option>
+                          <option value="B2B Unidentified"><ly-as-13491606>Business - create new company account</ly-as-13491606></option>
+                          <option value="B2B Join"><ly-as-13491607>Business - join existing company account</ly-as-13491607></option>
+                        </select>
+                      {% else %}
+                        <input type="hidden" value="B2C" id="customer_accounttype">
+                      {% endif %}
+                      <div class="col-sm-6 col-xs-12" style="padding:0;">
+                        <label for="firstname"><ly-as-13491608>First Name</ly-as-13491608><span class="required">*</span></label>
+                        <input type="text" value="" name="first_name" size="30" id="first_name" class="required_field"/>
+                      </div>
+                      <div class="col-sm-6 col-xs-12 mob-pl0" style="padding-right:0;">
+                        <label for="lastname"><ly-as-13491609>Last Name</ly-as-13491609><span class="required">*</span></label>
+                        <input type="text" value="" name="last_name" size="30" id="last_name" class="required_field"/>
+                      </div>
+
+                      <label for="email"><ly-as-13491610>EMAIL</ly-as-13491610><span class="required">*</span></label>
+                      <input type="email" value="" name="email" size="30" id="email" class="required_field"/>
+
+                      <label for="password"><ly-as-13491611>Password</ly-as-13491611><span class="required">*</span></label>
+                      <input type="password" value="" name="customer_password" size="30" id="password" class="required_field"/>
+                  
+                      <label for="confirm_password"><ly-as-13491612>CONFIRM PASSWORD</ly-as-13491612><span class="required">*</span></label>
+                      <input type="password" value="" name="confirm_password" size="30" id="confirm_password" class="required_field"/>
+                      <div id="acc_block" style="display:none;">
+                        <div class="customer_phone">
+                          <label for="phonenumber"><ly-as-13491613>PHONE NUMBER</ly-as-13491613><span class="required">*</span></label>
+                          {% comment %} <select name="phone_pin" id="phone_pin">
+                            <option value="+1">+1</option>
+                            <!-- <option value="+91">+91</option>
+                            <option value="+81">+81</option> -->
+                          </select> {% endcomment %}
+
+                          <input type="text" value="" name="phonenumber" size="30" id="phone" class="business_required_field"/>
+                        </div>
+
+                        <label for="company"><ly-as-13491614>Company</ly-as-13491614><span class="required">*</span></label>
+                        <input type="text" value="" name="company" size="30" id="company" class="business_required_field"/>
+
+                        <label for="industry"><ly-as-13491615>Industry</ly-as-13491615></label>
+                        <select id="industry" name="customer_industry">
+                          <option value=""><ly-as-13491604>Please Select</ly-as-13491604> </option>
+                          <option value="Airports"><ly-as-13491616>Airports</ly-as-13491616></option>
+                          <option value="Boats/RV"><ly-as-13491617>Boats/RV</ly-as-13491617></option>
+                          <option value="Broadcast"><ly-as-13491618>Broadcast</ly-as-13491618></option>
+                          <option value="Conferencing"><ly-as-134916181>Conferencing</ly-as-134916181></option>
+                          <option value="Control Room"><ly-as-134916182>Control Room</ly-as-134916182></option>
+                          <option value="Corporate"><ly-as-134916183>Corporate</ly-as-134916183></option>
+                          <option value="Education"><ly-as-13491619>Education</ly-as-13491619></option>
+                          <option value="Entertainment"><ly-as-13491620>Entertainment</ly-as-13491620></option>
+                          <option value="Gaming"><ly-as-13491621>Gaming</ly-as-13491621></option>
+                          <option value="Government"><ly-as-13491622>Government</ly-as-13491622></option>
+                          <option value="Healthcare/Hospital"><ly-as-13491623>Healthcare/Hospital</ly-as-13491623></option>
+                          <option value="Home"><ly-as-13491624>Home</ly-as-13491624></option>
+                          <option value="Hospitality"><ly-as-13491625>Hospitality</ly-as-13491625></option>
+                          <option value="House of Worship"><ly-as-13491626>House of Worship</ly-as-13491626></option>
+                          <option value="Restaurant/Bar"><ly-as-13491627>Restaurant/Bar</ly-as-13491627></option>
+                          <option value="Retail"><ly-as-13491628>Retail</ly-as-13491628></option>
+                          <option value="Security"><ly-as-13491629>Security</ly-as-13491629></option>
+                          <option value="Stadiums"><ly-as-13491630>Stadiums</ly-as-13491630></option>
+                          <option value="Transportation"><ly-as-13491631>Transportation</ly-as-13491631></option>
+                        </select>
+
+                        <label for="country"><ly-as-13491632>Country</ly-as-13491632><span class="required">*</span></label>
+                        <select id="country" name="customer_country" class="business_required_field">
+                          {% comment %} <option value=""><ly-as-13491604>Please Select</ly-as-13491604></option> {% endcomment %}
+                          <option value="United States"><ly-as-13491633>United States</ly-as-13491633></option>
+                          <option value="Canada"><ly-as-134916331>Canada</ly-as-134916331></option>
+                          {% comment %} <option value="United Kingdom"><ly-as-13491634>United Kingdom</ly-as-13491634></option> {% endcomment %}
+                          {% comment %} <option value="France"><ly-as-13491635>France</ly-as-13491635></option> {% endcomment %}
+                          {% comment %} <option value="Germany"><ly-as-13491636>Germany</ly-as-13491636></option> {% endcomment %}
+                          {% comment %} <option value="Spain"><ly-as-13491637>Spain</ly-as-13491637></option> {% endcomment %}
+                        </select>
+                      </div>
+                      <input type="hidden" id="customer_tags" name="customer_tags" value="cunsumar">
+                      {% if settings.site == 'UK' %}
+                        <input type="hidden" id="customer_tags" name="customer_language" value="English">
+                      {% elsif settings.site == 'FR' %}
+                        <input type="hidden" id="customer_tags" name="customer_language" value="French">
+                      {% elsif settings.site == 'DE' %}
+                        <input type="hidden" id="customer_tags" name="customer_language" value="German">
+                      {% elsif settings.site == 'Latin America' %}
+                        <label for="language"><ly-as-13491638>Language</ly-as-13491638><span class="required">*</span></label>
+                        <select id="language" name="customer_language" class="required_field">
+                          <option value=""><ly-as-13491604>Please Select</ly-as-13491604></option>
+                          <option value="English"><ly-as-13491639>English</ly-as-13491639></option>
+                          <option value="French"><ly-as-13491640>French</ly-as-13491640></option>
+                          <option value="German"><ly-as-13491641>German</ly-as-13491641></option>
+                          <option value="Spanish"><ly-as-13491642>Spanish</ly-as-13491642></option>
+                        </select>
+                      {% elsif settings.site == 'US' %}
+                        <label for="language"><ly-as-13491638>Language</ly-as-13491638><span class="required">*</span></label>
+                        <select id="language" name="customer_language" class="required_field">
+                          <option value=""><ly-as-13491604>Please Select</ly-as-13491604></option>
+                          <option value="English"><ly-as-13491639>English</ly-as-13491639></option>
+                          <option value="French"><ly-as-13491640>French</ly-as-13491640></option>
+                          <option value="German"><ly-as-13491641>German</ly-as-13491641></option>
+                          <option value="Spanish"><ly-as-13491642>Spanish</ly-as-13491642></option>
+                        </select>
+                      {% endif %}
+                      <p class="check_box"> 
+                        <span class="checkbox_css" style="width:20px;float:left;height:30px;">
+                          <input type="checkbox" checked="checked" id="reciveNewsletter">
+                          <span class="checkmark"></span>
+                        </span>
+                        <span class="checkbox_text"><ly-as-13491643>Yes, I’d like to receive updates from Peerless-AV® about new products and offers.</ly-as-13491643></span>
+                      </p>
+                      <button type="submit" onclick="customer_rgister()" class="customer_reg" ><ly-as-13491644>Register</ly-as-13491644></button>
+                      <a href="/policies/privacy-policy"><span class="reg_privacy"><ly-as-13491645>Privacy Policy</ly-as-13491645></span></a><br>
+                      <a href="/pages/tc"><span class="reg_privacy"><ly-as-13491646>Terms of Service</ly-as-13491646></span></a>
+                    </div>
+                    {%- if settings.login_tabs_enable %}
+                      <div class="col-2 col-register-text col-register-text-change">
+                        <span class="register-or">{% comment %}ly_i18n_replace_for_[ 'customer.login.register_or' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.register_or' | t }}{% endcapture %}{% include 'ly-static-string' with '13491663' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</span>
+                        <h2>{% comment %}ly_i18n_replace_for_[ 'customer.register.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.register.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13491664' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h2>
+                        {%- if settings.registration_text != blank -%}
+                          <div class="registration-info">
+                            <p class="paragraph_center" style="text-align: left;">{% comment %}ly_new_settings_replace_for_[ settings.registration_text_consumar ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13491647"] %}{% assign ly_translation = shop.metafields[namespace]["id13491647"] %}{% else %}{% assign ly_translation = settings.registration_text_consumar %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %}</p>
+                            <p  class="marginLeft paragraph_center3" style="text-align: left;">{% comment %}ly_new_settings_replace_for_[ settings.registration_text ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13491649"] %}{% assign ly_translation = shop.metafields[namespace]["id13491649"] %}{% else %}{% assign ly_translation = settings.registration_text %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %}</p>
+                            <p class="marginLeft paragraph_center2" style="text-align: left;">{% comment %}ly_new_settings_replace_for_[ settings.registration_text_business ]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign namespace = language | append: "as" %}{% if shop.metafields[namespace]["id13491648"] %}{% assign ly_translation = shop.metafields[namespace]["id13491648"] %}{% else %}{% assign ly_translation = settings.registration_text_business %}{% endif %}{{ ly_translation }}{% comment %}ly_new_settings_replace_end{% endcomment %}</p>
+
+                          </div>
+                        {%- endif -%}
+                        <a href="#" class="btn btn-color-black basel-switch-to-register" data-login="{% comment %}ly_i18n_replace_for_[ 'customer.login.sign_in' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.sign_in' | t }}{% endcapture %}{% include 'ly-static-string' with '13491657' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}" data-register="{% comment %}ly_i18n_replace_for_[ 'customer.register.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.register.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13491664' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">{% comment %}ly_i18n_replace_for_[ 'customer.register.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.register.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13491664' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                      </div>
+                    {%- endif -%}
+                  {%- else -%}
+                    <div class="col-sm-3"></div>
+                    <div class="col-sm-6">
+                      <div id="gl_CustomerLoginForm">
+                        <h2>{% comment %}ly_i18n_replace_for_[ 'customer.login.title' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.title' | t }}{% endcapture %}{% include 'ly-static-string' with '13491653' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</h2>
+                        {%- form 'customer_login',class:'login' -%}
+                          {%- if form.errors -%}
+                            {%- assign gl_shopify_error = true -%}
+                            {%- for field in form.errors -%}
+                              {%- if field == 'form' -%}
+                                {%- assign error_html = form.errors.messages[field] -%}
+                              {%- else -%}
+                                {%- assign error_html = form.errors.translated_fields[field] | append:form.errors.messages[field] -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endif -%}
+                          <p class="shopify-FormRow shopify-FormRow--wide form-row form-row-wide">
+                            <label for="username">{% comment %}ly_i18n_replace_for_[ 'customer.login.email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.email' | t }}{% endcapture %}{% include 'ly-static-string' with '13491654' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} <span class="required">*</span></label>
+                            <input type="text" class="shopify-Input shopify-Input--text input-text{%- if form.errors contains 'email' %} input--error{%- endif -%}" name="customer[email]" id="username" value="">
+                          </p>
+                          {%- if form.password_needed -%}
+                            <p class="shopify-FormRow shopify-FormRow--wide form-row form-row-wide">
+                              <label for="password">{% comment %}ly_i18n_replace_for_[ 'customer.login.password' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.password' | t }}{% endcapture %}{% include 'ly-static-string' with '13491655' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} <span class="required">*</span></label>
+                              <input class="shopify-Input shopify-Input--text input-text{%- if form.errors contains 'password' %} input--error{%- endif -%}" type="password" name="customer[password]" id="CustomerPassword" id="password">
+                            </p>
+                          {%- endif -%}
+                          {%- if form.password_needed -%}
+                            <p class="shopify-LostPassword lost_password">
+                              <a href="javascript:void(0)" onclick="showRecoverPasswordForm();return false;">{% comment %}ly_i18n_replace_for_[ 'customer.login.forgot_password' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.forgot_password' | t }}{% endcapture %}{% include 'ly-static-string' with '13491656' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                            </p>
+                          {%- endif -%}
+                          <p class="form-row">
+                            {%- if form.password_needed -%}         
+                              <label for="rememberme" class="inline inline invisible">
+                                <input class="shopify-Input shopify-Input--checkbox" name="rememberme" type="checkbox" id="rememberme" value="forever"> <ly-as-13491600>Remember me</ly-as-13491600>           
+                              </label>
+                            {%- endif -%}
+                            <input type="submit" class="shopify-Button button" name="login" value="{% comment %}ly_i18n_replace_for_[ 'customer.login.sign_in' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.login.sign_in' | t }}{% endcapture %}{% include 'ly-static-string' with '13491657' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+                            <a href="/account/register"  class="shopify-Button button">{% comment %}ly_i18n_replace_for_[ 'customer.register.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.register.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13491664' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                          </p>
+                        {%- endform -%}
+                      </div>
+                      <div id="recover_password" style="display: none;">
+                        {%- form 'recover_customer_password', class:'shopify-ResetPassword lost_reset_password' -%}
+                          <p class="gl_mb_0 gl_first">{% comment %}ly_i18n_replace_for_[ 'customer.recover_password.subtext' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.recover_password.subtext' | t }}{% endcapture %}{% include 'ly-static-string' with '13491658' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                          {%- if form.posted_successfully? -%}
+                            {%- assign reset_success = true -%}
+                          {%- endif -%}
+                          {%- if form.errors -%}
+                            {%- assign gl_shopify_error = true -%}
+                            {%- for field in form.errors -%}
+                              {%- if field == 'form' -%}
+                                {%- assign error_html = form.errors.messages[field] -%}
+                              {%- else -%}
+                                {%- assign error_html = form.errors.translated_fields[field] | append:form.errors.messages[field] -%}
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endif -%}
+                          <p class="shopify-form-row shopify-form-row--first form-row form-row-first">
+                            <label for="user_login">{% comment %}ly_i18n_replace_for_[ 'customer.recover_password.email' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.recover_password.email' | t }}{% endcapture %}{% include 'ly-static-string' with '13491665' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+                            <input type="email" value="" name="email" id="RecoverEmail" class="shopify-Input shopify-Input--text input-text" autocorrect="off" autocapitalize="off">
+                          </p>
+                          <div class="clear"></div>
+                          <p class="shopify-form-row form-row">
+                            <input type="submit" class="shopify-Button button" value="{% comment %}ly_i18n_replace_for_[ 'customer.recover_password.submit' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.recover_password.submit' | t }}{% endcapture %}{% include 'ly-static-string' with '13491659' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+                            <button type="button" onclick="hideRecoverPasswordForm();return false;" class="shopify-Button button">{% comment %}ly_i18n_replace_for_[ 'customer.recover_password.cancel' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.recover_password.cancel' | t }}{% endcapture %}{% include 'ly-static-string' with '13491660' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</button>
+                          </p>
+                          <p class="shopify-FormRow shopify-FormRow--wide form-row form-row-wide invisible">
+                            <label for="FirstName">{% comment %}ly_i18n_replace_for_[ 'customer.register.first_name' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.register.first_name' | t }}{% endcapture %}{% include 'ly-static-string' with '13491661' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+                            <input type="text" name="customer[first_name]" id="FirstName1" autofocus="">
+                          </p>
+                          <p class="shopify-FormRow shopify-FormRow--wide form-row form-row-wide invisible">
+                            <label for="FirstName">{% comment %}ly_i18n_replace_for_[ 'customer.register.first_name' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.register.first_name' | t }}{% endcapture %}{% include 'ly-static-string' with '13491661' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</label>
+                            <input type="text" name="customer[first_name]" id="FirstName" autofocus="">
+                          </p>
+                        {%- endform -%}
+                      </div>
+                    </div>
+                    <div class="col-sm-3"></div>
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div><!-- end container -->
+</div><!-- .main-page-wrapper -->
+
+{% comment %}ly_asset_replace_for_[ 'imask.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'imask.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+<script type="text/javascript">
+  var element = document.querySelector('input[name="phonenumber"]');
+  var maskOptions = {
+    mask: '+1 (000) 000-0000'
+  };
+  var mask = new IMask(element, maskOptions);
+
+  business_account();
+
+  var langObj = {
+    "English": "ly73951",
+    "Spanish": "ly73954",
+    "French": "ly77552",
+    "German": "ly73952",
+  };
+
+  var urlSearchParams = new URLSearchParams(window.location.search.slice(1));
+  var redirect = urlSearchParams.get('redirect') ? urlSearchParams.get('redirect') : '/account',
+      redirect = urlSearchParams.get('checkout_url') ? urlSearchParams.get('checkout_url') : redirect;
+
+
+  $('#customer_login_form').on('submit', function (e) {
+    var that   = $(this),
+        action = that.attr('action'),
+        email  = that.find('#username'),
+        pass   = that.find('#CustomerPassword'),
+        submit = that.find('[type="submit"]'),
+        data   = {},
+        error  = {};
+
+    $('.error-item').hide();
+    that.find('input[name="checkout_url"]').remove();
+
+    if (!validateEmail(email.val())) error['username'] = 'Please enter valid email';
+    if (email.val() == '') error['username'] = 'Email can not be empty';
+    if (pass.val() == '') error['CustomerPassword'] = 'Password cannot be empty';
+
+    // hide prev errors
+    that.find('.alert').remove();
+
+    if (Object.values(error).length) {
+      showLoginErrors(error);
+      return false;
+    }
+
+    // get data for graphql
+    data.pass = pass.val();
+    data.email = email.val();
+
+    if (!that.hasClass('to-many-request')) {
+      e.preventDefault();
+      submit.addClass('loading');
+
+      loginUser(
+        that.serialize(), 
+        function (response, status, xhr) {
+          var tempDom = $('<div>').append(response);
+          // check if user disabled
+          // cookieUserEmail = localStorage.getItem('userEmail');
+      
+          {% comment %} if ( cookieUserEmail == email.val()) {
+            cookieCartUser = $.cookie("cartUser");
+            $.cookie("cart", cookieCartUser, { path: '/'});
+          }  {% endcomment %}
+
+          restoreCart(email.val());
+          
+          if (tempDom.find('#disabled-user').length) {
+            displayErrors(['This account has been disabled. For assistance, contact your administrator.'], '.login-info-box');
+            logoutUser();
+            submit.removeClass('loading');
+            return;
+          }
+
+          // get user access token
+          if ($(response).find('.header-links .logout').length) {
+            var userLang = null;
+            if (tempDom.find('#user_lang_meta').length && tempDom.find('#user_lang_meta').attr('content')) {
+              userLang = tempDom.find('#user_lang_meta').attr('content');
+            }
+
+            getAceessToken(data, 
+              function () {
+                submit.removeClass('loading');
+                if (langObj[userLang]) langify.helper.saveLanguageCustom(langObj[userLang], redirect);
+                else window.location = redirect;
+              }
+            );
+          }
+
+          // find error in html
+          if ($(response).find('.login-error').length) {
+            var errors = [];
+            $(response).find('.login-error').each(function () {
+              errors.push($(this).html());
+            });
+            displayErrors(errors, '.login-info-box');
+            submit.removeClass('loading');
+          }
+        },
+        function (jqXHR) {
+          if (jqXHR.status == 429) {
+            restoreCart(email.val());
+            storeUserCredential(data); // store credentials in localstorage
+            that.addClass('to-many-request').submit(); // this will redirect user to /chalenge link
+            throw new ToManyRequest('To Many Request');
+          }
+          displayErrors(['Error happend. Please reload page, and try again.'], '.login-info-box');
+          submit.removeClass('loading');
+        }
+      );
+    }
+  });
+
+  function restoreCart (curentEmail) {
+    if (localStorage.getItem('usersCart')) {
+      var usersCart = JSON.parse(localStorage.getItem('usersCart'));
+      if(usersCart && usersCart[curentEmail]) {
+        jQuery.post('/cart/update.js', {
+          updates: usersCart[curentEmail]
+        });
+      }
+    }
+  }
+
+  function ToManyRequest(message) {
+    this.message = message;
+    this.name = "To Many Request";
+  }
+
+  /*
+    Show/hide the recover password form when requested.
+  */
+  function showRecoverPasswordForm() {
+    document.getElementById('recover_password').style.display = 'block';
+    document.getElementById('gl_CustomerLoginForm').style.display='none';
+  }
+
+  function hideRecoverPasswordForm() {
+    document.getElementById('recover_password').style.display = 'none';
+    document.getElementById('gl_CustomerLoginForm').style.display = 'block';
+    document.getElementById('gl_shopify_error').style.display = 'none';
+  }
+
+  // Allow deep linking to the recover password form
+  if (window.location.hash == '#recover') { showRecoverPasswordForm() }
+
+  // reset_success is only true when the reset form is
+  {% if reset_success -%}
+    var x = document.getElementsByClassName('resetSuccess');
+    x[0].style.display = 'block';  x[1].style.display = 'block';
+  {% endif -%}
+    {% if gl_shopify_error -%}
+    {%- if error_html != blank -%}
+    var html = {{error_html | json }};
+    var element = document.getElementById("jas_html_frm");
+      element.innerHTML = '';
+      //element.innerHTML = '{{ 'customer.login.error' | t }} '+html;
+      element.innerHTML = 'An account with that email does not exist';
+    {%- endif -%}
+    document.getElementById('gl_shopify_error').style.display = 'block';
+  {% endif -%}
+  
+  function business_account(){
+    var val = $('#customer_accounttype').val();
+    if(val != "B2C" && val != ''){
+      $('#acc_block').css('display','block');
+    }else{
+      $('#acc_block').css('display','none');
+    }
+  }
+  
+  $(document).on('change', '.col-register-change .required_field', function () {
+    if ($(this).val().trim() === '') {
+      $(this).addClass('email_err_msg');
+    } else {
+      $(this).removeClass('email_err_msg');
+    }
+  });
+
+  $(document).on('change', '.col-register-change .business_required_field', function () {
+    var customer_type = $('#customer_accounttype').val();
+    if (customer_type != 'B2C' && customer_type != '') {
+      if ($(this).val().trim() === '') {
+        $(this).addClass('email_err_msg');
+      } else {
+        $(this).removeClass('email_err_msg');
+      }
+    }
+  });
+
+  function customer_rgister(){
+    var submintBtn         = $('.customer_reg');
+    var account_type       = $('#customer_accounttype').val(); 
+    var first_name         = $('#first_name').val();
+    var last_name          = $('#last_name').val();
+    var email              = $('#email').val();
+    var phone              = $('#phone').val();
+    //var phone_pin          = $('#phone_pin').val();
+    var password           = $('#password').val();
+    var confirm_password   = $('#confirm_password').val();
+    var language           = $('#language').val();
+    var company            = $('#company').val();
+    var country            = $('#country').val();
+    var industry           = $('#industry').val();
+
+    var validateAsBuisness = $('#customer_accounttype').val() != 'B2C' && $('#customer_accounttype').val() != '';
+
+    var customer_tags = account_type;
+
+    var requiredFieldsSelector = '.col-register-change .required_field';
+
+    if (validateAsBuisness) {
+      requiredFieldsSelector += ', .col-register-change .business_required_field';
+    }
+
+    $(requiredFieldsSelector).each(function () {
+      if ($(this).val().trim() === '') {
+        $(this).addClass( "email_err_msg" );
+      } else {
+        $(this).removeClass( "email_err_msg" );
+      }
+    });
+
+    if (validateEmail(email)) {
+      $('#email').removeClass('email_err_msg');
+    } else {
+      $('#email').addClass('email_err_msg');
+    }
+
+    if ($('.col-register-change .required_field.email_err_msg').length) {
+      return;
+    }
+
+    if (validateAsBuisness && $('.col-register-change .business_required_field.email_err_msg').length) {
+      return;
+    }
+
+    submintBtn.addClass('loading')
+    
+    var data ={
+        action:"create",
+        account_type: account_type,
+        first_name: first_name,
+        last_name: last_name,
+        email: email,
+        password: password,
+        password_confirmation: confirm_password,
+        language: language,
+        tags: customer_tags
+    };
+
+    if ($('#reciveNewsletter').prop("checked")) {
+      data['accepts_marketing'] = true;
+    }
+
+    if (validateAsBuisness) {
+      data['phone']     = "+1" + mask.unmaskedValue;
+      //data['phone_pin'] = phone_pin;
+      data['industry']  = industry;
+      data['country']   = country;
+      data['company']   = company;
+    }
+
+    data['registration_by_user'] = true;
+
+    var appUrl = '/apps/peerless/customers/create';
+    $.ajax({
+      crossDomain: true, 
+      type: 'POST',
+      dataType: 'json',
+      url: appUrl,
+      data: data,
+      success: function(res) {
+        if (res.success) {
+          if (res.updated) {
+            displayUserUpdated('User was successfully created! Please check you email.', '.info-box');
+            submintBtn.removeClass('loading');
+            scrollToInfo();
+            return;
+          } else {
+            displayUserUpdated('User was successfully created! Login in ...', '.info-box');
+          }
+
+          scrollToInfo();
+          $('#col-register input[type="text"]').val('');
+          $('#col-register input[type="email"]').val('');
+          $('#col-register input[type="password"]').val('');
+
+          var userData = [
+            {name: "form_type", value: "customer_login"},
+            {name: "utf8", value: "✓"},
+            {name: "customer[email]", value: data.email},
+            {name: "customer[password]", value: data.password},
+          ];
+          var serilizedData = jQuery.param(userData);
+
+          loginUser(
+            serilizedData,
+            function (response, status, xhr) {
+              var tempDom = $('<div>').append(response);
+              // check if user disabled
+              if (tempDom.find('#disabled-user').length) {
+                displayErrors(['This account has been disabled. For assistance, contact your administrator.'], '.info-box');
+                logoutUser();
+                submintBtn.removeClass('loading');
+                return;
+              }
+
+              // get user access token
+              if ($(response).find('.header-links .logout').length) {
+                var userLang = null;
+                if (tempDom.find('#user_lang_meta').length && tempDom.find('#user_lang_meta').attr('content')) {
+                  userLang = tempDom.find('#user_lang_meta').attr('content');
+                }
+
+                getAceessToken(data, 
+                  function () {
+                    submintBtn.removeClass('loading');
+
+                    if (langObj[userLang]) langify.helper.saveLanguageCustom(langObj[userLang], redirect);
+                    else window.location = redirect;
+                  }
+                );
+              }
+
+              // find error in html
+              if ($(response).find('.login-error').length) {
+                var errors = [];
+                $(response).find('.login-error').each(function () {
+                  errors.push($(this).html());
+                });
+                displayErrors(errors, '.info-box');
+
+                submintBtn.removeClass('loading');
+              }
+            },
+            function (jqXHR) {
+              if (jqXHR.status == 429) {
+                storeUserCredential(data); // store credentials in localstorage
+                throw new ToManyRequest('To Many Request');
+              }
+              displayErrors(['Error happend. Please reload page, and try again.'], '.info-box');
+              submintBtn.removeClass('loading')
+            }
+          );
+        } else {
+          displayErrors(res.error, '.info-box');
+          scrollToInfo();
+
+          submintBtn.removeClass('loading');
+        }
+      },
+      error: function(data){
+        submintBtn.removeClass('loading')
+      },
+      complete: function () {
+      }
+    });
+  }
+
+  function displayUserUpdated(message, passWrap) {
+    $(passWrap).html("<div class='alert alert-success'>"+message+"</div>");
+  }
+
+  function scrollToInfo(){
+    $('html,body').animate({
+        scrollTop: $('.info-box').offset().top - 100},
+      'slow');
+    }
+
+  $(document).on('change', 'select#country', function(e) {
+    var select_country = $(this).val();
+    if(select_country == 'Canada'){
+      $('#warning-can').show();
+    }
+  });
+
+  $("body").on("click", "#warning-can .btn", function(){
+    $("#warning-can").hide();
+  });
+
+  function loginUser (data, onSuccess, onError, onComplete) {
+    if(typeof onSuccess === 'undefined') {
+      var onSuccess = null
+    } else if(typeof onComplete === 'undefined') {
+      var onComplete = null
+    } else if(typeof onError === 'undefined') {
+      var onError = null
+    }
+
+    $.ajax({
+      type: "POST",
+      url: "/account/login",
+      data: data,
+      success: function (response, status) {
+        if (onSuccess) onSuccess(response, status);
+      },
+
+      error: function (jqXHR) {
+        if (onError) onError(jqXHR);
+      },
+
+      complete: function () {
+        if (onComplete) onComplete();
+      }
+    });
+  }
+</script>
+
+<div id="warning-can">
+  <div class="warning-can-wrapper">
+    <h3 class="title"><ly-as-13491574>Warning</ly-as-13491574></h3>
+    <p><ly-as-13491575>Since shipping rates to Canada may vary, you will not be able to purchase products online, you need to contact Peerless or submit a purchase order if you want to make a purchase.</ly-as-13491575></p>
+    <a href="javascript:void(0)" class="btn btn-confirm"><ly-as-13491576>OK</ly-as-13491576></a>
+    <a href="javascript:void(0)" class="btn btn-close"><ly-as-13491570>Close</ly-as-13491570></a>
+  </div>
+</div>
+
+<script src='https://www.google.com/recaptcha/api.js&hl=ru'></script>

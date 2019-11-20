@@ -1,0 +1,39 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}<div class="main-page-wrapper about-page">
+  <section class="about-banner">
+    {% section 'select_region_banner' %}
+  </section>
+  <div class="container">
+    {% section 'select_region' %}
+  </div>
+</div>
+
+<style>
+   .template-page .main-header {
+      position: relative;
+      z-index: 30;
+      background: transparent;
+      border-bottom: none;
+   }
+   body.template-page .main-page-wrapper.about-page {
+      margin-top: -95px;
+   }
+   .main-nav .menu > li > a,
+   .right-column > div a,
+   .right-column .basel-cart-design-3>a .basel-cart-number {
+      color: #fff;
+   }
+   .right-column > div a:hover,
+   .right-column .basel-cart-design-3>a:hover .basel-cart-number {
+      color: #ee3423;
+   }
+   .sticky-header.act-scroll .main-nav .menu > li > a,
+   .sticky-header.act-scroll .right-column > div a,
+   .sticky-header.act-scroll .right-column .basel-cart-design-3>a .basel-cart-number {
+      color: #191919;
+   }
+   .sticky-header.act-scroll .main-nav .menu > li > a:hover,
+   .sticky-header.act-scroll .right-column > div a:hover,
+   .sticky-header.act-scroll .right-column .basel-cart-design-3>a:hover .basel-cart-number {
+      color: #ee3423;
+   }
+</style>

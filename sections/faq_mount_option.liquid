@@ -1,0 +1,122 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+<div class="faq-container container">
+    <div class="shop-loop-head">
+        <nav class="shopify-breadcrumb faq-nav">
+            <a href="/pages/faq">FAQs</a>
+            <span class="breadcrumb-last"><ly-as-13487677>Mount Options</ly-as-13487677></span>
+        </nav>
+        <h2 class="text-left header-faq" id="h2-pad-left-40">{% comment %}ly_code_replace_for_[ page.title ]_begin{% endcomment %}{% include 'ly-title' with page %}{{ ly_translation }}{% comment %}ly_code_replace_end{% endcomment %}</h2>
+    </div>
+    {% for block in section.blocks %}
+        <div class="faq-block mount-opt" id="{{block.settings.title | handleize }}" style="grid-template-columns: 40% 60%;">
+            {% if block.settings.title == '' %}
+                <div class="faq-title hide-title" id="mount-options">
+            {% else %}
+                <div class="faq-title" id="mount-options">
+            {%- endif -%}
+                {{- block.settings.title -}}
+                </div>
+        <div class="faq-content">
+            {{block.settings.content}}
+            <div class="first-list">
+                        <div class="list-content">{{block.settings.list}}</div>
+                    {% if block.settings.image != blank %}
+                        <div class="list-image"><img src="{{ block.settings.image | img_url: '' }}" id=""/></div>
+                    {% endif %}
+            </div>
+            <div class="second-list">
+                        <div class="list-content">{{block.settings.second_list}}</div>
+                    {% if block.settings.second_image != blank %}
+                        <div class="list-image"><img src="{{ block.settings.second_image | img_url: '' }}" id=""/></div>
+                    {% endif %}
+            </div>
+            {{block.settings.second_content}}
+            <div class="third-list">
+                        <div class="list-content">{{block.settings.third_list}}</div>
+                    {% if block.settings.third_image != blank %}
+                        <div class="list-image"><img src="{{ block.settings.third_image | img_url: '' }}" id=""/></div>
+                    {% endif %}
+            </div>
+            {{block.settings.third_content}}
+            {% if block.settings.fourth_image != blank %}
+                <div class="list-image"><img src="{{ block.settings.fourth_image | img_url: '' }}" id=""/></div>
+            {% endif %}
+            {{block.settings.fourth_content}}
+        </div>
+    </div>
+  {% endfor%}
+</div>
+
+{% schema %}
+{
+  "name": "Mount Options",
+  "blocks": [
+    {
+      "type": "mount_options_block",
+      "name": "Mount Options block",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "textarea",
+          "id": "list",
+          "label": "First list" 
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "First image"
+        },
+        {
+          "type": "textarea",
+          "id": "second_content",
+          "label": "Second Content"
+        },
+        {
+          "type": "textarea",
+          "id": "second_list",
+          "label": "Second list" 
+        },
+        {
+          "type": "image_picker",
+          "id": "second_image",
+          "label": "Second image"
+        },
+        {
+          "type": "textarea",
+          "id": "third_list",
+          "label": "Third list" 
+        },
+        {
+          "type": "image_picker",
+          "id": "third_image",
+          "label": "Third image"
+        },
+        {
+          "type": "textarea",
+          "id": "third_content",
+          "label": "Third Content"
+        },
+        {
+          "type": "image_picker",
+          "id": "fourth_image",
+          "label": "Fourth image"
+        },
+        {
+          "type": "textarea",
+          "id": "fourth_content",
+          "label": "Fourth Content"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

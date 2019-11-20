@@ -1,0 +1,47 @@
+<div class="col-md-12 inputs-wrap">
+    <div class="inputs-wrap-title"><ly-as-13491887>{{ section.settings.brochures_title }}</ly-as-13491887></div>
+    {% for block in section.blocks %}
+            <div class="inputs-block">
+                <a href="{{ block.settings.brochures_link }}" target="_blank"><label><ly-as-13491886>{{ block.settings.brochures_link_title }}</ly-as-13491886></label></a>
+                <!-- <input type="number" name="quantity" min="1" placeholder="0"> -->
+                <select class="brochures-select literature_count" name="literature[{{block.settings.brochures_link_title}}]">
+                        {% comment %} <label class="item-literature"><ly-as-13491886>{{ block.settings.brochures_link_title }}</ly-as-13491886></label> {% endcomment %}
+                    <option >0</option>
+                    <option >1</option>
+                    <option >2</option>
+                </select>
+
+            </div>      
+    {% endfor %}
+</div> 
+    
+{% schema %}
+        {
+            "name": "Literature Brochures",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "brochures_title",
+                    "label": "Brochures Title"
+                }
+            ],
+            "blocks": [
+                {
+                    "type": "text",
+                    "name": "Brochures Block",
+                    "settings": [
+                        {
+                            "type": "text",
+                            "id": "brochures_link_title",
+                            "label": "Brochures Link Title"
+                        },
+                        {
+                            "type": "url",
+                            "id": "brochures_link",
+                            "label": "Brochures Link"
+                        }
+                    ]
+                }
+            ]
+        }
+{% endschema %}

@@ -1,0 +1,651 @@
+{% comment %}ly_global_begin{% endcomment %}{% include 'ly-global' %}{% comment %}ly_global_end{% endcomment %}
+{%- include 'user_management' -%}
+
+{%- if customer == blank or account_type == "consumer" or account_type == "business_join" and user_management == "0" -%}
+  <script>
+    restrictAccess();
+  </script>
+{%- endif -%}
+
+{%- assign title = 'customer.account.title' | t -%}
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+<div class="main-page-wrapper account-wrapper">
+  {%- include 'page_heading', langify_title:title -%}
+  <!-- MAIN CONTENT AREA -->
+  <div class="container">
+    <div class="row">
+      <div class="site-content col-sm-12" role="main">
+        <article id="post-9" class="post-9 page type-page status-publish hentry">
+          <div class="info-box"></div>
+          <div class="entry-content">
+            <div class="shopify">
+              {% include 'account-nav' %}
+              <!-- .basel-my-account-sidebar -->
+              <div class="shopify-MyAccount-content user-management" id="user-management-wrap">
+                <p class="page-title">{% comment %}ly_i18n_replace_for_[ 'customer.account.management' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.management' | t }}{% endcapture %}{% include 'ly-static-string' with '13492606' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                <span class="loading"></span>
+
+                <div class="approval-needed">
+                  <div class="top-bar">
+                    {% comment %} <p class="section-title">{% comment %}ly_i18n_replace_for_[ 'customer.account.approval_needed' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.approval_needed' | t }}{% endcapture %}{% include 'ly-static-string' with '13492607' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %} <span class="count"></span></p> {% endcomment %}
+                    <div class="actions-wrap">
+                      <form action="#" class="customer-search">
+                        <input type="text" placeholder="{% comment %}ly_i18n_replace_for_[ 'customer.account.search' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.search' | t }}{% endcapture %}{% include 'ly-static-string' with '13492608' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}">
+                        <button type="submit"><i class="fa fa-search"></i></button>
+                      </form>
+                      <a href="#" class="add-new-customer">{% comment %}ly_i18n_replace_for_[ 'customer.account.add_new' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.add_new' | t }}{% endcapture %}{% include 'ly-static-string' with '13492609' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</a>
+                    </div>
+                  </div>
+
+                  {% comment %} <div class="approval-needed__list">
+                    <table id="approval-needed__table" class="display">
+                      <thead>
+                        <th><span><ly-as-13492595>Name</ly-as-13492595></span></th>
+                        <th><span><ly-as-13492596>Email Address</ly-as-13492596></span></th>
+                        <th></th>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+                  </div> {% endcomment %}
+                </div>
+
+                <div class="all-users">
+                  <p class="section-title">{% comment %}ly_i18n_replace_for_[ 'customer.account.all_users' | t ]_begin{% endcomment %}{% capture ly_template %}{{ 'customer.account.all_users' | t }}{% endcapture %}{% include 'ly-static-string' with '13492610' %}{% if ly_translation %}{% assign escape_content = true %}{% assign ly_template = ly_translation %}{% else %}{% assign escape_content = false %}{% endif %}{% if escape_content %}{{ ly_template | escape}}{% else %}{{ ly_template }}{% endif %}{% comment %}ly_i18n_replace_end{% endcomment %}</p>
+                  <div class="all-users__list">
+                    <table id="all-users__table" class="display" style="width:100%">
+                      <thead>
+                        <tr>
+                          <th><span><ly-as-13492595>Name</ly-as-13492595></span></th>
+                          <th><span><ly-as-13492597>Permissions</ly-as-13492597></span></th>
+                          <th><span><ly-as-13492598>Last Activity</ly-as-13492598></span></th>
+                          <th><span><ly-as-13492599>Status</ly-as-13492599></span></th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody></tbody>
+                    </table>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div><!-- end container -->
+</div><!-- .main-page-wrapper -->
+
+{% raw %}
+  <script id="review-template" type="text/x-handlebars-template">
+    <div class="close"><i class="fa fa-times"></i></div>
+    <div class="review-customer">
+      <h5>Review requests</h5>
+      <div class="review-desc">Approve or deny this request</div>
+      <div class="review-body">
+        <table>
+          <tr><td>Name:</td><td>{{first_name}} {{last_name}}</td></tr>
+          <tr><td>Email:</td><td>{{email}}</td></tr>
+          <tr><td>Phone Number:</td><td id="review-phone">{{maskPhone this ../maskPhone}}</td></tr>
+          <tr><td>Company:</td><td>{{company_name}}</td></tr>
+          <tr><td>Industry:</td><td>{{industry}}</td></tr>
+          <tr><td>Country:</td><td>{{country}}</td></tr>
+        </table>
+      </div>
+      <div class="denial_reason">
+        <h4>Reason for denial</h4>
+        <textarea 
+          id="denial_reason_message" 
+          placeholder="Enter the reason they did not get approved (optional)" 
+          cols="30" 
+          rows="10"></textarea>
+          <button class="deny" data-id="{{id}}">Finish</button>
+      </div>
+      <div class="review-footer">
+        <button class="open_deny">
+        <i class="fa fa-close"></i>Deny</button>
+        <button class="approve" data-id="{{id}}">
+          <i class="fa fa-check"></i>Approve</button>
+      </div>
+    </div>
+  </script>
+{% endraw %}
+
+{% raw %}
+  <script id="edit-template" type="text/x-handlebars-template">
+    <div class="close"><i class="fa fa-times"></i></div>
+    <div class="edit-customer">
+        <div class="nav-wrap">
+          <a href="#" {{#unless permissions }} class="active" {{/unless}} data-tab="edit-account-tab">Edit Account</a>
+          <a href="#" {{#if permissions }} class="active" {{/if}} data-tab="permissions-tab">Change Permissons</a>
+        </div>
+
+        <form class="tab edit-account-tab {{#unless permissions }}active{{/unless}}" novalidate>
+          <div class="edit-customer_inner">
+            <div class="edit-info-box"></div>
+            <fieldset class="name-wrap">
+              <div class="first_name">
+                <label for="first_name">First Name<span class="required-sign"> *</span></label>
+                <input type="text" id="first_name" name="first_name" value="{{first_name}}" required>
+              </div>
+              <div class="last_name">
+                <label for="last_name">First Name<span class="required-sign"> *</span></label>
+                <input type="text" id="last_name" name="last_name" value="{{last_name}}" required>
+              </div>
+            </fieldset>
+            <fieldset class="email-wrap">
+              <label for="email">Email Address<span class="required-sign"> *</span></label>
+              <input type="email" id="email" name="email" value="{{email}}" required>
+            </fieldset>
+            <fieldset class="phone-wrap">
+              <label for="phone">Phone Number<span class="required-sign"> *</span></label>
+              <div class="inline-wrapper">
+                {{!-- <select name="phone_pin" id="phone_pin" required>
+                  <option {{#ifEquals phone_pin "+1"}} selected {{/ifEquals}} value="+1" data-region="USA">+1</option>
+                </select> --}}
+                <input type="tel" id="phone" name="phone" value="{{phone}}" required />
+              </div>
+            </fieldset>
+            <fieldset class="language-wrap">
+              <label for="language">Language<span class="required-sign">*</span></label>
+              <select id="language" name="language" required>
+                <option {{#ifEquals language "English" }} selected {{/ifEquals}} value="English">English</option>
+                <option {{#ifEquals language "French" }} selected {{/ifEquals}} value="French">French</option>
+                <option {{#ifEquals language "Spanish" }} selected {{/ifEquals}} value="Spanish">Spanish</option>
+              </select>
+            </fieldset>
+            <fieldset class="newsletter">
+              <label class="checkbox_css"><input type="checkbox" id="newsletter" name="newsletter"
+                {{#contains tags 'newsletter' }} checked="" {{/contains}}/>
+                <span class="checkmark"></span>
+                <span>Yes, send updates from Peerless-AV® about new products and offers.</span>
+              </label>
+            </fieldset>
+            <input type="hidden" name="id" value="{{id}}">
+            <button type="submit">Save Changes</button>
+          </div>
+        </form>
+
+        <form class="tab permissions-tab {{#if permissions }}active{{/if}}" novalidate>
+          <div class="permissions-info-box"></div>
+          <div class="permission-inner">
+            <div class="permission-row company">
+              <div class="overview">
+                <h6>Company Admin</h6>
+                <div class="desc">
+                  <p>Grants access to all permissions, and they receive email updates on Community posts and reported reviews from company users.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" {{#ifEquals company_admin 1}} checked {{/ifEquals}} name="company_admin" value="1">
+                  <i></i>
+                  <span>Yes</span>
+                </label>
+                <label>
+                  <input type="radio" {{#ifEquals company_admin 0}} checked {{/ifEquals}} name="company_admin" value="0">
+                  <i></i>
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row purchasing">
+              <div class="overview">
+                <h6>Purchasing</h6>
+                <div class="desc">
+                  <p>Allows them to add products to their cart and check out.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" {{#ifEquals purchasing 1}} checked {{/ifEquals}} name="purchasing" value="1">
+                  <i></i>
+                  <span>Yes</span>
+                </label>
+                <label>
+                  <input type="radio" {{#ifEquals purchasing 0}} checked {{/ifEquals}} name="purchasing" value="0">
+                  <i></i>
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row reviews">
+              <div class="overview">
+                <h6>Reviews</h6>
+                <div class="desc">
+                  <p>Allows posting of reviews on products.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" {{#ifEquals reviews 1}} checked {{/ifEquals}} name="reviews" value="1">
+                  <i></i>
+                  <span>Yes</span>
+                </label>
+                <label>
+                  <input type="radio" {{#ifEquals reviews 0}} checked {{/ifEquals}} name="reviews" value="0">
+                  <i></i>
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row order-history">
+              <div class="overview">
+                <h6>Order History</h6>
+                <div class="desc">
+                  <p>Select between viewing and tracking orders for the entire company, just their orders or not at all.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" 
+                    {{#ifEquals order_history "company"}} checked {{/ifEquals}} 
+                    name="order_history" value="company">
+                  <i></i>
+                  <span>Company</span>
+                </label>
+                <label>
+                  <input type="radio" 
+                    {{#ifEquals order_history "self"}} checked {{/ifEquals}} 
+                    name="order_history" value="self">
+                  <i></i>
+                  <span>Self</span>
+                </label>
+                <label>
+                  <input type="radio" 
+                    {{#ifEquals order_history "none"}} checked {{/ifEquals}} 
+                    name="order_history" value="none">
+                  <i></i>
+                  <span>None</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row invoices">
+              <div class="overview">
+                <h6>Invoices</h6>
+                <div class="desc">
+                  <p>Select between viewing and downloading invoices for the entire company, just their orders or not at all.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" 
+                  {{#ifEquals invoices "company"}} checked {{/ifEquals}} 
+                  name="invoices" value="company">
+                  <i></i>
+                  <span>Company</span>
+                </label>
+                {{!-- <label>
+                  <input type="radio" 
+                  {{#ifEquals invoices "self"}} checked {{/ifEquals}} 
+                  name="invoices" value="self">
+                  <i></i>
+                  <span>Self</span>
+                </label> --}}
+                <label>
+                  <input type="radio" 
+                  {{#ifEquals invoices "none"}} checked {{/ifEquals}} 
+                  name="invoices" value="none">
+                  <i></i>
+                  <span>None</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row user-management">
+              <div class="overview">
+                <h6>User Management</h6>
+                <div class="desc">
+                  <p>Allows creation of new users, editing of existing users, and approval of requests to join the company account.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" {{#ifEquals user_management 1}} checked {{/ifEquals}} name="user_management" value="1">
+                  <i></i>
+                  <span>Yes</span>
+                </label>
+                <label>
+                  <input type="radio" {{#ifEquals user_management 0}} checked {{/ifEquals}} name="user_management" value="0">
+                  <i></i>
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+            
+            <input type="hidden" name="customer_id" value="{{id}}">
+            <button type="submit">Finish</button>
+          </div>
+        </form>
+    </div>
+  </script>
+{% endraw %}
+
+
+
+{% comment %} {{!
+<div class="permission-row pricing">
+  <div class="overview">
+    <h6>Pricing</h6>
+    <div class="desc">
+      Select between revealing company’s special pricing, only the list price or no price at all.
+    </div>
+  </div>
+  <div class="options">
+    <label>
+      <input type="radio" 
+        {{#ifEquals pricing "special_pricing"}} checked {{/ifEquals}}
+        name="pricing" value="special_pricing">
+      <i></i>
+      <span>Special Pricing</span>
+    </label>
+    <label>
+      <input type="radio" 
+        {{#ifEquals pricing "list"}} checked {{/ifEquals}}
+        name="pricing" value="list">
+      <i></i>
+      <span>List</span>
+    </label>
+    <label>
+      <input type="radio" 
+        {{#ifEquals pricing "none"}} checked {{/ifEquals}} 
+        name="pricing" value="none">
+      <i></i>
+      <span>None</span>
+    </label>
+  </div>
+</div>
+}} {% endcomment %}
+{% raw %}
+  <script id="create-template" type="text/x-handlebars-template">
+    <div class="close"><i class="fa fa-times"></i></div>
+    <div class="create-customer">
+      <form class="create-form" novalidate>
+        <div class="tab email-tab active">
+          <h5>Add new user</h5>
+          <div class="email-wrap">
+            <div class="email-info-box"></div>
+            <div class="desc">Enter the email address of the user you wish to add.</div>
+            <fieldset>
+              <label for="email">Email <span class="required-sign">*</span></label>
+              <input type="email" id="email" name="email" required>
+            </fieldset>
+            <button type="button" class="check-email">Continue</button>
+          </div>
+          <div class="join-user">
+            <p class="join-message"></p>
+            <div class="btn-wrap">
+              <button type="button" class="enter-different-email">
+                Enter different email
+              </button>
+              <button type="button" class="add-user">
+                Add user
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="tab user-data-tab">
+          <div class="user-info-box"></div>
+          <h5>Add new user</h5>
+          <div class="desc">Enter the following information to create a new user.</div>
+          <fieldset class="email-wrap">
+            <div class="email-label">
+              Email:
+            </div>
+            <div class="email">
+            </div>
+          </fieldset>
+          <fieldset class="name-wrap">
+            <div class="first_name">
+              <label for="first_name">First Name <span class="required-sign">*</span></label>
+              <input type="text" id="first_name" name="first_name" required>
+            </div>
+            <div class="last_name">
+              <label for="last_name">First Name <span class="required-sign">*</span></label>
+              <input type="text" id="last_name" name="last_name" required>
+            </div>
+          </fieldset>
+          <fieldset class="phone-wrap">
+            <label for="phone">Phone Number<span class="required-sign">*</span></label>
+            <div class="inline-wrapper">
+              {{!-- <select name="phone_pin" id="phone_pin" required>
+                <option value="+1" data-region="USA">+1</option>
+              </select> --}}
+              <input type="tel" id="phone" name="phone" required />
+            </div>
+          </fieldset>
+          <fieldset class="language-wrap">
+            <label for="language">Language<span class="required-sign">*</span></label>
+            <select id="language" name="language" required>
+              <option value="English">English</option>
+              <option value="French">French</option>
+              <option value="Spanish">Spanish</option>
+            </select>
+          </fieldset>
+          <fieldset class="newsletter">
+            <label class="checkbox_css"><input type="checkbox" id="newsletter" name="accepts_marketing"/>
+              <span class="checkmark"></span>
+              <span class="label">Yes, send updates from Peerless-AV® about new products and offers.</span>
+            </label>
+          </fieldset>
+          <button type="button">Continue</button>
+        </div>
+        <div class="tab permissions-tab">
+          <h5>Add new user</h5>
+          <div class="permissions-info-box"></div>
+          <div class="desc">Change permissions user have access to.</div>
+          <div class="permission-inner">
+            <div class="permission-row company">
+              <div class="overview">
+                <h6>Company Admin</h6>
+                <div class="desc">
+                  Grants access to all permissions, and they receive email updates on Community posts and reported reviews from company users.
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" name="company_admin" value="1">
+                  <i></i>
+                  <span>Yes</span>
+                </label>
+                <label>
+                  <input type="radio" checked name="company_admin" value="0">
+                  <i></i>
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row purchasing">
+              <div class="overview">
+                <h6>Purchasing</h6>
+                <div class="desc">
+                  <p>Allows them to add products to their cart and check out.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" checked name="purchasing" value="1">
+                  <i></i>
+                  <span>Yes</span>
+                </label>
+                <label>
+                  <input type="radio" name="purchasing" value="0">
+                  <i></i>
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row reviews">
+              <div class="overview">
+                <h6>Reviews</h6>
+                <div class="desc">
+                  <p>Allows posting of reviews on products.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" checked name="reviews" value="1">
+                  <i></i>
+                  <span>Yes</span>
+                </label>
+                <label>
+                  <input type="radio" name="reviews" value="0">
+                  <i></i>
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row order-history">
+              <div class="overview">
+                <h6>Order History</h6>
+                <div class="desc">
+                  <p>Select between viewing and tracking orders for the entire company, just their orders or not at all.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" 
+                    checked
+                    name="order_history" value="company">
+                  <i></i>
+                  <span>Company</span>
+                </label>
+                <label>
+                  <input type="radio" 
+                    name="order_history" value="self">
+                  <i></i>
+                  <span>Self</span>
+                </label>
+                <label>
+                  <input type="radio" 
+                    name="order_history" value="none">
+                  <i></i>
+                  <span>None</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row invoices">
+              <div class="overview">
+                <h6>Invoices</h6>
+                <div class="desc">
+                  <p>Select between viewing and downloading invoices for the entire company, just their orders or not at all.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" 
+                  checked
+                  name="invoices" value="company">
+                  <i></i>
+                  <span>Company</span>
+                </label>
+                {{!-- <label>
+                  <input type="radio" 
+                  name="invoices" value="self">
+                  <i></i>
+                  <span>Self</span>
+                </label> --}}
+                <label>
+                  <input type="radio" 
+                  name="invoices" value="none">
+                  <i></i>
+                  <span>None</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="permission-row user-management">
+              <div class="overview">
+                <h6>User Management</h6>
+                <div class="desc">
+                  <p>Allows creation of new users, editing of existing users, and approval of requests to join the company account.</p>
+                </div>
+              </div>
+              <div class="options">
+                <label>
+                  <input type="radio" name="user_management" value="1">
+                  <i></i>
+                  <span>Yes</span>
+                </label>
+                <label>
+                  <input type="radio" checked name="user_management" value="0">
+                  <i></i>
+                  <span>No</span>
+                </label>
+              </div>
+            </div>
+            <input type="hidden" value="B2B Join" name="account_type">
+            <button type="submit">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </script>
+{% endraw %}
+
+{% raw %}
+  <script id="enable-disable-template" type="text/x-handlebars-template">
+    <div class="close"><i class="fa fa-times"></i></div>
+    <div class="enable-disable-modal" data-state="{{state}}" data-id="{{id}}">
+      <h3>{{title}}</h3>
+      <div class="modal-inner">{{message}}</div>
+      <button>{{btn_text}}</button>
+    </div>
+  </script>
+{% endraw %}
+
+<div class="unsavedChanges">
+  <div class="unsavedChanges-inner">
+    <h4><ly-as-13492601>Unsaved Changes!</ly-as-13492601></h4>
+    <div class="content"><ly-as-13492602>You have unsaved changes. Are you sure you want to</ly-as-13492602> <br /> <ly-as-13492603>leave without saving?</ly-as-13492603></div>
+    <div class="btn-wrap">
+      <button class="btn leave"><ly-as-13492604>Leave without saving</ly-as-13492604></button>
+      <button class="btn stay"><ly-as-13492605>Stay and review changes</ly-as-13492605></button>
+    </div>
+  </div>
+</div>
+
+{% comment %}ly_asset_replace_for_[ 'imask.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'imask.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+{% comment %}
+  {{ 'https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js' | script_tag }}
+  {{ 'https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap.min.js' | script_tag }}
+{% endcomment %}
+
+{{ 'dataTable.js' | asset_url | script_tag }}
+
+{{ 'https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.js' | script_tag }}
+
+<script type="text/javascript">
+  var customer = {
+    id:       '{{customer.id}}',
+    company:  '{% comment %}ly_code_replace_for_[customer.metafields.global.company]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'global' %}{% assign key = 'company' %}{% if customer.metafields[ns][key] %}{% assign ly_translation = customer.metafields[ns][key] %}{% else %}{% assign ly_translation = customer.metafields.global.company %}{% endif %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}',
+    industry: '{% comment %}ly_code_replace_for_[customer.metafields.global.industry]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'global' %}{% assign key = 'industry' %}{% if customer.metafields[ns][key] %}{% assign ly_translation = customer.metafields[ns][key] %}{% else %}{% assign ly_translation = customer.metafields.global.industry %}{% endif %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}',
+    country:  '{% comment %}ly_code_replace_for_[customer.metafields.global.country]_begin{% endcomment %}{% assign language = cart.attributes["language"] %}{% if language == nil %}{% assign language = shop.metafields["languages"]["default"] %}{% endif %}{% assign ns = language | append: 'global' %}{% assign key = 'country' %}{% if customer.metafields[ns][key] %}{% assign ly_translation = customer.metafields[ns][key] %}{% else %}{% assign ly_translation = customer.metafields.global.country %}{% endif %}{{ly_translation}}{% comment %}ly_code_replace_end{% endcomment %}',
+  };
+
+  //var cart = {{ cart | json }};
+  //var lang = langify.helper.getSelectedLanguage();
+  //console.log('lang', lang);
+</script>
+
+{% comment %}ly_asset_replace_for_[ 'user_management.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'user_management.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+{% comment %}ly_asset_replace_for_[ 'account-scripts.js' | asset_url | script_tag ]_begin{% endcomment %}{% assign ly_asset = 'account-scripts.js' %}{% include 'ly-asset' with ly_asset %}{{ ly_translation  | script_tag }}{% comment %}ly_asset_replace_end{% endcomment %}
+
+<style type="text/css">
+  .website-wrapper,
+  .main-page-wrapper {
+    background: #f3f3f3;
+  }
+</style>
